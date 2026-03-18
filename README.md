@@ -1,4 +1,4 @@
-# C_programming
+# C library with portable and safer APIs
 
 ## Overview
 
@@ -16,6 +16,8 @@ This repository contains a collection of portable C application programming inte
 - **Safer integer arithmetic**  
   Safer integer arithmetic C API for runtime integer operation error debugging and reporting.  
   Safer integer types for emulation of built-in integers and for debugging and reporting integer operation and conversion errors (requires C++)
+- **Conversions**
+  API for conversions between integers and strings.
 - **Simple tokenizer**  
   A tokenizer library for splitting text into simple tokens.
 - **Terminal text color**  
