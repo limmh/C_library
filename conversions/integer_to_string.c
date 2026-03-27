@@ -95,6 +95,11 @@ i32string_type i32_to_i32string(int32_t value, int base, int_to_string_option_ty
 		string.content[index++] = characters[carry];
 	}
 
+	if (value == 0) {
+		assert(index == 0U);
+		string.content[index++] = '0';
+	}
+
 	if (settings.add_prefix) {
 		if (base == 16) {
 			string.content[index++] = settings.use_uppercase ? 'X' : 'x';
@@ -109,10 +114,7 @@ i32string_type i32_to_i32string(int32_t value, int base, int_to_string_option_ty
 
 	if (value < 0) {
 		string.content[index++] = '-';
-	} else if (value == 0) {
-		assert(index == 0U);
-		string.content[index++] = characters[0];
-	} else if (settings.add_plus_sign) {
+	} else if (value > 0 and settings.add_plus_sign) {
 		string.content[index++] = '+';
 	}
 
@@ -148,6 +150,11 @@ u32string_type u32_to_u32string(uint32_t value, int base, int_to_string_option_t
 		string.content[index++] = characters[remainder];
 	}
 
+	if (value == 0U) {
+		assert(index == 0U);
+		string.content[index++] = characters[0];
+	}
+
 	if (settings.add_prefix) {
 		if (base == 16) {
 			string.content[index++] = settings.use_uppercase ? 'X' : 'x';
@@ -160,10 +167,7 @@ u32string_type u32_to_u32string(uint32_t value, int base, int_to_string_option_t
 		}
 	}
 
-	if (value == 0U) {
-		assert(index == 0U);
-		string.content[index++] = characters[0];
-	} else if (settings.add_plus_sign) {
+	if (value > 0U and settings.add_plus_sign) {
 		string.content[index++] = '+';
 	}
 
@@ -223,6 +227,11 @@ i64string_type i64_to_i64string(int64_t value, int base, int_to_string_option_ty
 		string.content[index++] = characters[carry];
 	}
 
+	if (value == 0) {
+		assert(index == 0U);
+		string.content[index++] = characters[0];
+	}
+
 	if (settings.add_prefix) {
 		if (base == 16) {
 			string.content[index++] = settings.use_uppercase ? 'X' : 'x';
@@ -237,10 +246,7 @@ i64string_type i64_to_i64string(int64_t value, int base, int_to_string_option_ty
 
 	if (value < 0) {
 		string.content[index++] = '-';
-	} else if (value == 0) {
-		assert(index == 0U);
-		string.content[index++] = characters[0];
-	} else if (settings.add_plus_sign) {
+	} else if (value > 0 and settings.add_plus_sign) {
 		string.content[index++] = '+';
 	}
 
@@ -276,6 +282,11 @@ u64string_type u64_to_u64string(uint64_t value, int base, int_to_string_option_t
 		string.content[index++] = characters[remainder];
 	}
 
+	if (value == 0U) {
+		assert(index == 0U);
+		string.content[index++] = characters[0];
+	}
+
 	if (settings.add_prefix) {
 		if (base == 16) {
 			string.content[index++] = settings.use_uppercase ? 'X' : 'x';
@@ -288,10 +299,7 @@ u64string_type u64_to_u64string(uint64_t value, int base, int_to_string_option_t
 		}
 	}
 
-	if (value == 0U) {
-		assert(index == 0U);
-		string.content[index++] = characters[0];
-	} else if (settings.add_plus_sign) {
+	if (value > 0U and settings.add_plus_sign) {
 		string.content[index++] = '+';
 	}
 

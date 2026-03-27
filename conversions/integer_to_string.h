@@ -47,10 +47,6 @@ INLINE_OR_STATIC i32string_type base2_i32_to_i32string(int32_t value) {
 	return i32_to_i32string(value, 2, int_to_string_option_default);
 }
 
-INLINE_OR_STATIC i32string_type base2_i32_to_i32string_in_uppercase(int32_t value) {
-	return i32_to_i32string(value, 2, int_to_string_option_uppercase);
-}
-
 INLINE_OR_STATIC i32string_type base2_i32_to_i32string_with_prefix(int32_t value) {
 	return i32_to_i32string(value, 2, int_to_string_option_lowercase | int_to_string_option_add_prefix);
 }
@@ -63,32 +59,12 @@ INLINE_OR_STATIC i32string_type base8_i32_to_i32string(int32_t value) {
 	return i32_to_i32string(value, 8, int_to_string_option_default);
 }
 
-INLINE_OR_STATIC i32string_type base8_i32_to_i32string_in_uppercase(int32_t value) {
-	return i32_to_i32string(value, 8, int_to_string_option_uppercase);
-}
-
 INLINE_OR_STATIC i32string_type base8_i32_to_i32string_with_prefix(int32_t value) {
 	return i32_to_i32string(value, 8, int_to_string_option_lowercase | int_to_string_option_add_prefix);
 }
 
-INLINE_OR_STATIC i32string_type base8_i32_to_i32string_with_prefix_in_uppercase(int32_t value) {
-	return i32_to_i32string(value, 8, int_to_string_option_uppercase | int_to_string_option_add_prefix);
-}
-
 INLINE_OR_STATIC i32string_type base10_i32_to_i32string(int32_t value) {
 	return i32_to_i32string(value, 10, int_to_string_option_default);
-}
-
-INLINE_OR_STATIC i32string_type base10_i32_to_i32string_in_uppercase(int32_t value) {
-	return i32_to_i32string(value, 10, int_to_string_option_uppercase);
-}
-
-INLINE_OR_STATIC i32string_type base10_i32_to_i32string_with_prefix(int32_t value) {
-	return i32_to_i32string(value, 10, int_to_string_option_lowercase | int_to_string_option_add_prefix);
-}
-
-INLINE_OR_STATIC i32string_type base10_i32_to_i32string_with_prefix_in_uppercase(int32_t value) {
-	return i32_to_i32string(value, 10, int_to_string_option_uppercase | int_to_string_option_add_prefix);
 }
 
 INLINE_OR_STATIC i32string_type base16_i32_to_i32string(int32_t value) {
@@ -112,10 +88,6 @@ INLINE_OR_STATIC u32string_type base2_u32_to_u32string(uint32_t value) {
 	return u32_to_u32string(value, 2, int_to_string_option_default);
 }
 
-INLINE_OR_STATIC u32string_type base2_u32_to_u32string_in_uppercase(uint32_t value) {
-	return u32_to_u32string(value, 2, int_to_string_option_uppercase);
-}
-
 INLINE_OR_STATIC u32string_type base2_u32_to_u32string_with_prefix(uint32_t value) {
 	return u32_to_u32string(value, 2, int_to_string_option_lowercase | int_to_string_option_add_prefix);
 }
@@ -128,32 +100,12 @@ INLINE_OR_STATIC u32string_type base8_u32_to_u32string(uint32_t value) {
 	return u32_to_u32string(value, 8, int_to_string_option_default);
 }
 
-INLINE_OR_STATIC u32string_type base8_u32_to_u32string_in_uppercase(uint32_t value) {
-	return u32_to_u32string(value, 8, int_to_string_option_uppercase);
-}
-
 INLINE_OR_STATIC u32string_type base8_u32_to_u32string_with_prefix(uint32_t value) {
 	return u32_to_u32string(value, 8, int_to_string_option_lowercase | int_to_string_option_add_prefix);
 }
 
-INLINE_OR_STATIC u32string_type base8_u32_to_u32string_with_prefix_in_uppercase(uint32_t value) {
-	return u32_to_u32string(value, 8, int_to_string_option_uppercase | int_to_string_option_add_prefix);
-}
-
 INLINE_OR_STATIC u32string_type base10_u32_to_u32string(uint32_t value) {
 	return u32_to_u32string(value, 10, int_to_string_option_default);
-}
-
-INLINE_OR_STATIC u32string_type base10_u32_to_u32string_in_uppercase(uint32_t value) {
-	return u32_to_u32string(value, 10, int_to_string_option_uppercase);
-}
-
-INLINE_OR_STATIC u32string_type base10_u32_to_u32string_with_prefix(uint32_t value) {
-	return u32_to_u32string(value, 10, int_to_string_option_lowercase | int_to_string_option_add_prefix);
-}
-
-INLINE_OR_STATIC u32string_type base10_u32_to_u32string_with_prefix_in_uppercase(uint32_t value) {
-	return u32_to_u32string(value, 10, int_to_string_option_uppercase | int_to_string_option_add_prefix);
 }
 
 INLINE_OR_STATIC u32string_type base16_u32_to_u32string(uint32_t value) {
@@ -177,10 +129,6 @@ INLINE_OR_STATIC i64string_type base2_i64_to_i64string(int64_t value) {
 	return i64_to_i64string(value, 2, int_to_string_option_default);
 }
 
-INLINE_OR_STATIC i64string_type base2_i64_to_i64string_in_uppercase(int64_t value) {
-	return i64_to_i64string(value, 2, int_to_string_option_uppercase);
-}
-
 INLINE_OR_STATIC i64string_type base2_i64_to_i64string_with_prefix(int64_t value) {
 	return i64_to_i64string(value, 2, int_to_string_option_lowercase | int_to_string_option_add_prefix);
 }
@@ -193,32 +141,12 @@ INLINE_OR_STATIC i64string_type base8_i64_to_i64string(int64_t value) {
 	return i64_to_i64string(value, 8, int_to_string_option_default);
 }
 
-INLINE_OR_STATIC i64string_type base8_i64_to_i64string_in_uppercase(int64_t value) {
-	return i64_to_i64string(value, 8, int_to_string_option_uppercase);
-}
-
 INLINE_OR_STATIC i64string_type base8_i64_to_i64string_with_prefix(int64_t value) {
 	return i64_to_i64string(value, 8, int_to_string_option_lowercase | int_to_string_option_add_prefix);
 }
 
-INLINE_OR_STATIC i64string_type base8_i64_to_i64string_with_prefix_in_uppercase(int64_t value) {
-	return i64_to_i64string(value, 8, int_to_string_option_uppercase | int_to_string_option_add_prefix);
-}
-
 INLINE_OR_STATIC i64string_type base10_i64_to_i64string(int64_t value) {
 	return i64_to_i64string(value, 10, int_to_string_option_default);
-}
-
-INLINE_OR_STATIC i64string_type base10_i64_to_i64string_in_uppercase(int64_t value) {
-	return i64_to_i64string(value, 10, int_to_string_option_uppercase);
-}
-
-INLINE_OR_STATIC i64string_type base10_i64_to_i64string_with_prefix(int64_t value) {
-	return i64_to_i64string(value, 10, int_to_string_option_lowercase | int_to_string_option_add_prefix);
-}
-
-INLINE_OR_STATIC i64string_type base10_i64_to_i64string_with_prefix_in_uppercase(int64_t value) {
-	return i64_to_i64string(value, 10, int_to_string_option_uppercase | int_to_string_option_add_prefix);
 }
 
 INLINE_OR_STATIC i64string_type base16_i64_to_i64string(int64_t value) {
@@ -242,10 +170,6 @@ INLINE_OR_STATIC u64string_type base2_u64_to_u64string(uint64_t value) {
 	return u64_to_u64string(value, 2, int_to_string_option_default);
 }
 
-INLINE_OR_STATIC u64string_type base2_u64_to_u64string_in_uppercase(uint64_t value) {
-	return u64_to_u64string(value, 2, int_to_string_option_uppercase);
-}
-
 INLINE_OR_STATIC u64string_type base2_u64_to_u64string_with_prefix(uint64_t value) {
 	return u64_to_u64string(value, 2, int_to_string_option_lowercase | int_to_string_option_add_prefix);
 }
@@ -258,32 +182,12 @@ INLINE_OR_STATIC u64string_type base8_u64_to_u64string(uint64_t value) {
 	return u64_to_u64string(value, 8, int_to_string_option_default);
 }
 
-INLINE_OR_STATIC u64string_type base8_u64_to_u64string_in_uppercase(uint64_t value) {
-	return u64_to_u64string(value, 8, int_to_string_option_uppercase);
-}
-
 INLINE_OR_STATIC u64string_type base8_u64_to_u64string_with_prefix(uint64_t value) {
 	return u64_to_u64string(value, 8, int_to_string_option_lowercase | int_to_string_option_add_prefix);
 }
 
-INLINE_OR_STATIC u64string_type base8_u64_to_u64string_with_prefix_in_uppercase(uint64_t value) {
-	return u64_to_u64string(value, 8, int_to_string_option_uppercase | int_to_string_option_add_prefix);
-}
-
 INLINE_OR_STATIC u64string_type base10_u64_to_u64string(uint64_t value) {
 	return u64_to_u64string(value, 10, int_to_string_option_default);
-}
-
-INLINE_OR_STATIC u64string_type base10_u64_to_u64string_in_uppercase(uint64_t value) {
-	return u64_to_u64string(value, 10, int_to_string_option_uppercase);
-}
-
-INLINE_OR_STATIC u64string_type base10_u64_to_u64string_with_prefix(uint64_t value) {
-	return u64_to_u64string(value, 10, int_to_string_option_lowercase | int_to_string_option_add_prefix);
-}
-
-INLINE_OR_STATIC u64string_type base10_u64_to_u64string_with_prefix_in_uppercase(uint64_t value) {
-	return u64_to_u64string(value, 10, int_to_string_option_uppercase | int_to_string_option_add_prefix);
 }
 
 INLINE_OR_STATIC u64string_type base16_u64_to_u64string(uint64_t value) {
