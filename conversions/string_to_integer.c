@@ -397,9 +397,6 @@ const char *string_to_int_error_message(string_to_int_error_type error)
 
 string_to_i32_result_type string_to_i32(const char *string, size_t length, int base)
 {
-	size_t index = 0U;
-	const int32_t minimum = INT32_MIN, maximum = INT32_MAX;
-	int32_t integer = 0, limit = 0;
 	string_to_i32_result_type result = {0};
 	int_string_info_type info = string_to_int_get_string_info(string, length, base);
 
@@ -410,55 +407,56 @@ string_to_i32_result_type string_to_i32(const char *string, size_t length, int b
 	}
 
 	if (info.contains_valid_integer) {
+		size_t index = 0U;
 		if (not info.integer_is_negative) {
-			limit = maximum / (base * base);
+			const int32_t limit = INT32_MAX / (base * base);
 			for (index = info.start_index; index <= info.end_index; ++index) {
 				const int32_t digit_value = digit_to_integer(info.string[index]);
-				if (integer < limit) {
-					integer *= base;
+				if (result.value < limit) {
+					result.value *= base;
 				} else {
-					const i32_result_type r = safer_i32_multiply(integer, base);
-					integer = r.value;
+					const i32_result_type r = safer_i32_multiply(result.value, base);
+					result.value = r.value;
 					result.error = integer_operation_error_to_string_to_int_error(r.error);
 					if (result.error != string_to_int_error_none)
 						break;
 				}
-				if (integer < limit) {
-					integer += digit_value;
+				if (result.value < limit) {
+					result.value += digit_value;
 				} else {
-					const i32_result_type r = safer_i32_add(integer, digit_value);
-					integer = r.value;
+					const i32_result_type r = safer_i32_add(result.value, digit_value);
+					result.value = r.value;
 					result.error = integer_operation_error_to_string_to_int_error(r.error);
 					if (result.error != string_to_int_error_none)
 						break;
 				}
 			}
 		} else {
-			limit = minimum / (base * base);
+			const int32_t limit = INT32_MIN / (base * base);
 			for (index = info.start_index; index <= info.end_index; ++index) {
 				const int32_t digit_value = digit_to_integer(info.string[index]);
-				if (integer > limit) {
-					integer *= base;
+				if (result.value > limit) {
+					result.value *= base;
 				} else {
-					const i32_result_type r = safer_i32_multiply(integer, base);
-					integer = r.value;
+					const i32_result_type r = safer_i32_multiply(result.value, base);
+					result.value = r.value;
 					result.error = integer_operation_error_to_string_to_int_error(r.error);
 					if (result.error != string_to_int_error_none)
 						break;
 				}
-				if (integer > limit) {
-					integer -= digit_value;
+				if (result.value > limit) {
+					result.value -= digit_value;
 				} else {
-					const i32_result_type r = safer_i32_minus(integer, digit_value);
-					integer = r.value;
+					const i32_result_type r = safer_i32_minus(result.value, digit_value);
+					result.value = r.value;
 					result.error = integer_operation_error_to_string_to_int_error(r.error);
 					if (result.error != string_to_int_error_none)
 						break;
 				}
 			}
 		}
-		result.value = integer;
 	}
+
 	return result;
 }
 
@@ -473,12 +471,8 @@ string_to_i32_result_type i32string_to_i32_(const i32string_type *p_i32string, i
 
 string_to_u32_result_type string_to_u32(const char *string, size_t length, int base)
 {
-	size_t index = 0U;
-	const uint32_t maximum = UINT32_MAX;
-	uint32_t integer = 0U, limit = 0U;
 	string_to_u32_result_type result = {0};
 	int_string_info_type info = string_to_int_get_string_info(string, length, base);
-	result.error = info.error;
 
 	if (info.error == string_to_int_error_none and not info.contains_valid_integer) {
 		result.error = string_to_int_error_incomplete_string;
@@ -487,35 +481,36 @@ string_to_u32_result_type string_to_u32(const char *string, size_t length, int b
 	}
 
 	if (info.contains_valid_integer) {
+		size_t index = 0U;
 		if (not info.integer_is_negative) {
-			limit = maximum / (uint32_t) (base * base);
+			const uint32_t limit = UINT32_MAX / (uint32_t) (base * base);
 			for (index = info.start_index; index <= info.end_index; ++index) {
 				const uint32_t digit_value = (uint32_t) digit_to_integer(info.string[index]);
-				if (integer < limit) {
-					integer *= (uint32_t) base;
+				if (result.value < limit) {
+					result.value *= (uint32_t) base;
 				} else {
-					const u32_result_type r = safer_u32_multiply(integer, (uint32_t) base);
-					integer = r.value;
+					const u32_result_type r = safer_u32_multiply(result.value, (uint32_t) base);
+					result.value = r.value;
 					result.error = integer_operation_error_to_string_to_int_error(r.error);
 					if (result.error != string_to_int_error_none)
 						break;
 				}
-				if (integer < limit) {
-					integer += digit_value;
+				if (result.value < limit) {
+					result.value += digit_value;
 				} else {
-					const u32_result_type r = safer_u32_add(integer, digit_value);
-					integer = r.value;
+					const u32_result_type r = safer_u32_add(result.value, digit_value);
+					result.value = r.value;
 					result.error = integer_operation_error_to_string_to_int_error(r.error);
 					if (result.error != string_to_int_error_none)
 						break;
 				}
 			}
 		} else {
-			integer = 0U;
+			result.value = 0U;
 			result.error = string_to_int_error_value_smaller_than_minimum_unsigned_value;
 		}
-		result.value = integer;
 	}
+
 	return result;
 }
 
@@ -529,9 +524,6 @@ string_to_u32_result_type u32string_to_u32_(const u32string_type *p_u32string, i
 
 string_to_i64_result_type string_to_i64(const char *string, size_t length, int base)
 {
-	size_t index = 0U;
-	const int64_t minimum = INT64_MIN, maximum = INT64_MAX;
-	int64_t integer = 0, limit = 0;
 	string_to_i64_result_type result = {0};
 	int_string_info_type info = string_to_int_get_string_info(string, length, base);
 
@@ -542,55 +534,56 @@ string_to_i64_result_type string_to_i64(const char *string, size_t length, int b
 	}
 
 	if (info.contains_valid_integer) {
+		size_t index = 0U;
 		if (not info.integer_is_negative) {
-			limit = maximum / (base * base);
+			const int64_t limit = INT64_MAX / (base * base);
 			for (index = info.start_index; index <= info.end_index; ++index) {
 				const int64_t digit_value = digit_to_integer(info.string[index]);
-				if (integer < limit) {
-					integer *= base;
+				if (result.value < limit) {
+					result.value *= base;
 				} else {
-					const i64_result_type r = safer_i64_multiply(integer, base);
-					integer = r.value;
+					const i64_result_type r = safer_i64_multiply(result.value, base);
+					result.value = r.value;
 					result.error = integer_operation_error_to_string_to_int_error(r.error);
 					if (result.error != string_to_int_error_none)
 						break;
 				}
-				if (integer < limit) {
-					integer += digit_value;
+				if (result.value < limit) {
+					result.value += digit_value;
 				} else {
-					const i64_result_type r = safer_i64_add(integer, digit_value);
-					integer = r.value;
+					const i64_result_type r = safer_i64_add(result.value, digit_value);
+					result.value = r.value;
 					result.error = integer_operation_error_to_string_to_int_error(r.error);
 					if (result.error != string_to_int_error_none)
 						break;
 				}
 			}
 		} else {
-			limit = minimum / (base * base);
+			const int64_t limit = INT64_MIN / (base * base);
 			for (index = info.start_index; index <= info.end_index; ++index) {
 				const int64_t digit_value = digit_to_integer(info.string[index]);
-				if (integer > limit) {
-					integer *= base;
+				if (result.value > limit) {
+					result.value *= base;
 				} else {
-					const i64_result_type r = safer_i64_multiply(integer, base);
-					integer = r.value;
+					const i64_result_type r = safer_i64_multiply(result.value, base);
+					result.value = r.value;
 					result.error = integer_operation_error_to_string_to_int_error(r.error);
 					if (result.error != string_to_int_error_none)
 						break;
 				}
-				if (integer > limit) {
-					integer -= digit_value;
+				if (result.value > limit) {
+					result.value -= digit_value;
 				} else {
-					const i64_result_type r = safer_i64_minus(integer, digit_value);
-					integer = r.value;
+					const i64_result_type r = safer_i64_minus(result.value, digit_value);
+					result.value = r.value;
 					result.error = integer_operation_error_to_string_to_int_error(r.error);
 					if (result.error != string_to_int_error_none)
 						break;
 				}
 			}
 		}
-		result.value = integer;
 	}
+
 	return result;
 }
 
@@ -604,9 +597,6 @@ string_to_i64_result_type i64string_to_i64_(const i64string_type *p_i64string, i
 
 string_to_u64_result_type string_to_u64(const char *string, size_t length, int base)
 {
-	size_t index = 0U;
-	const uint64_t maximum = UINT64_MAX;
-	uint64_t integer = 0U, limit = 0U;
 	string_to_u64_result_type result = {0};
 	int_string_info_type info = string_to_int_get_string_info(string, length, base);
 
@@ -617,35 +607,36 @@ string_to_u64_result_type string_to_u64(const char *string, size_t length, int b
 	}
 
 	if (info.contains_valid_integer) {
+		size_t index = 0U;
 		if (not info.integer_is_negative) {
-			limit = maximum / (uint64_t) (base * base);
+			const uint64_t limit = UINT64_MAX / (uint64_t) (base * base);
 			for (index = info.start_index; index <= info.end_index; ++index) {
 				const uint64_t digit_value = (uint64_t) digit_to_integer(info.string[index]);
-				if (integer < limit) {
-					integer *= (uint64_t) base;
+				if (result.value < limit) {
+					result.value *= (uint64_t) base;
 				} else {
-					const u64_result_type r = safer_u64_multiply(integer, (uint64_t) base);
-					integer = r.value;
+					const u64_result_type r = safer_u64_multiply(result.value, (uint64_t) base);
+					result.value = r.value;
 					result.error = integer_operation_error_to_string_to_int_error(r.error);
 					if (result.error != string_to_int_error_none)
 						break;
 				}
-				if (integer < limit) {
-					integer += digit_value;
+				if (result.value < limit) {
+					result.value += digit_value;
 				} else {
-					const u64_result_type r = safer_u64_add(integer, digit_value);
-					integer = r.value;
+					const u64_result_type r = safer_u64_add(result.value, digit_value);
+					result.value = r.value;
 					result.error = integer_operation_error_to_string_to_int_error(r.error);
 					if (result.error != string_to_int_error_none)
 						break;
 				}
 			}
 		} else {
-			integer = 0U;
+			result.value = 0U;
 			result.error = string_to_int_error_value_smaller_than_minimum_unsigned_value;
 		}
-		result.value = integer;
 	}
+
 	return result;
 }
 
