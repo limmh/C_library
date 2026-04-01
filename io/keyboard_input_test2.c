@@ -1,4 +1,5 @@
 #include "keyboard_input.h"
+#include "sleep.h"
 #include <ctype.h>
 #include <iso646.h>
 #include <stdio.h>
@@ -16,9 +17,18 @@ int main(void)
 		size_t index = 0U;
 		keyboard_input_type input = {0};
 
-		keyboard_input_result_type result = get_keyboard_input_from_terminal();
+		sleep_ms(20);
+		keyboard_input_result_type result = get_keyboard_input_from_terminal_nonblocking();
 		input = result.input;
 		error = result.error;
+
+		if (error != 0) {
+			printf("An error occurred: %s\n", strerror(error));
+		}
+
+		if (input.number_of_bytes == 0U) {
+			continue;
+		}
 
 		++count;
 
@@ -28,26 +38,18 @@ int main(void)
 			printf("%02X ", input.keycode[index]);
 		}
 
-		if (input.number_of_bytes > 0U) {
-			printf("(");
-			for (index = 0U; index < input.number_of_bytes; ++index) {
-				const unsigned char c = input.keycode[index];
-				if (isspace(c)) {
-					printf("<%d>", c);
-				} else if (isprint(c)) {
-					printf("%c", c);
-				} else {
-					printf("<%d>", c);
-				}
+		printf("(");
+		for (index = 0U; index < input.number_of_bytes; ++index) {
+			const unsigned char c = input.keycode[index];
+			if (isspace(c)) {
+				printf("<%d>", c);
+			} else if (isprint(c)) {
+				printf("%c", c);
+			} else {
+				printf("<%d>", c);
 			}
-			printf(")");
 		}
-
-		if (error != 0) {
-			printf("\nAn error occurred: %s", strerror(error));
-		}
-
-		printf("\n");
+		printf(")\n");
 
 		if (input.number_of_bytes == 1U and input.keycode[0] == Esc_key) {
 			break;
