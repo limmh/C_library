@@ -6,22 +6,28 @@
 
 int main(void)
 {
+	int error = 0;
 	const int Esc_key = 0x1B;
 	unsigned long count = 0U;
+	Boolean_type echo_mode = Boolean_false;
 
 	printf("Press Esc to exit.\n");
 
+	echo_mode = keyboard_input_terminal_echo_mode();
+	error = keyboard_input_set_terminal_echo_mode(Boolean_false);
+	if (error != 0) {
+		printf("An error occurred: %s\n", strerror(error));
+	}
+
 	for (;;) {
-		int error = 0;
 		size_t index = 0U;
 		keyboard_input_type input = {0};
 
-		keyboard_input_result_type result = get_keyboard_input_from_terminal();
+		keyboard_input_result_type result = keyboard_input_from_terminal();
 		input = result.input;
 		error = result.error;
 
 		++count;
-
 		printf("Input %lu: ", count);
 
 		for (index = 0U; index < input.number_of_bytes; ++index) {
@@ -54,5 +60,6 @@ int main(void)
 		}
 	}
 
+	(void) keyboard_input_set_terminal_echo_mode(echo_mode);
 	return 0;
 }

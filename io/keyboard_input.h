@@ -21,8 +21,7 @@ typedef struct keyboard_input_result_type
 } keyboard_input_result_type;
 
 /*
- * Reads one keyboard input event from the terminal without line buffering or echo.
- *
+ * Reads one keyboard input event from the terminal without line buffering.
  * Blocks until at least one byte is available from the terminal.
  *
  * On Linux, the terminal is temporarily switched to raw mode for the duration
@@ -43,12 +42,10 @@ typedef struct keyboard_input_result_type
  *   extended key (arrow keys, function keys, etc.).
  * - The caller must not access keycode[i] for i >= input.number_of_bytes.
  */
-keyboard_input_result_type
-get_keyboard_input_from_terminal(void);
+keyboard_input_result_type keyboard_input_from_terminal(void);
 
 /*
- * Reads one keyboard input event from the terminal without line buffering or echo.
- *
+ * Reads one keyboard input event from the terminal without line buffering.
  * Does not block.
  *
  * Return value:
@@ -62,9 +59,26 @@ get_keyboard_input_from_terminal(void);
  *   extended key (arrow keys, function keys, etc.).
  * - The caller must not access keycode[i] for i >= input.number_of_bytes.
  */
+keyboard_input_result_type keyboard_input_from_terminal_nonblocking(void);
 
-keyboard_input_result_type
-get_keyboard_input_from_terminal_nonblocking(void);
+/*
+ * Sets the terminal echo mode.
+ * Boolean_true : echo is enabled  (keys will be displayed on the terminal)
+ * Boolean_false: echo is disabled (keys will not be displayed on the terminal)
+ *
+ * Return value:
+ * error code (errno)
+ */
+int keyboard_input_set_terminal_echo_mode(Boolean_type echo_mode);
+
+/*
+ * Gets the terminal echo mode.
+ *
+ * Return value:
+ * Boolean_true : echo is enabled
+ * Boolean_false: echo is disabled
+ */
+Boolean_type keyboard_input_terminal_echo_mode(void);
 
 /*
  * Returns Boolean_true if the input represents an extended key (a key with no
@@ -78,8 +92,8 @@ get_keyboard_input_from_terminal_nonblocking(void);
  * for legacy function keys, 0xE0 for navigation/arrow keys) followed by a
  * scan code byte.
  */
-Boolean_type
-keyboard_input_is_extended_key(keyboard_input_type input);
+Boolean_type keyboard_input_is_extended_key_(const keyboard_input_type *p_input);
+#define keyboard_input_is_extended_key(input) keyboard_input_is_extended_key_(&(input))
 
 #ifdef __cplusplus
 }
