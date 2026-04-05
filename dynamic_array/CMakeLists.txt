@@ -9,6 +9,8 @@ add_library(
 	dynamic_array STATIC
 	"${CMAKE_CURRENT_SOURCE_DIR}/dynamic_array.c"
 	"${CMAKE_CURRENT_SOURCE_DIR}/dynamic_array.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/dynamic_array_interface_impl.c"
+	"${CMAKE_CURRENT_SOURCE_DIR}/dynamic_array_interface.h"
 )
 target_compile_options(
 	dynamic_array PRIVATE
@@ -35,6 +37,8 @@ add_library(
 	dynamic_array_debug STATIC
 	"${CMAKE_CURRENT_SOURCE_DIR}/dynamic_array.c"
 	"${CMAKE_CURRENT_SOURCE_DIR}/dynamic_array.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/dynamic_array_interface_impl.c"
+	"${CMAKE_CURRENT_SOURCE_DIR}/dynamic_array_interface.h"
 )
 target_compile_options(
 	dynamic_array_debug PRIVATE
@@ -61,6 +65,8 @@ add_library(
 	dynamic_array_unsafe STATIC
 	"${CMAKE_CURRENT_SOURCE_DIR}/dynamic_array.c"
 	"${CMAKE_CURRENT_SOURCE_DIR}/dynamic_array.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/dynamic_array_interface_impl.c"
+	"${CMAKE_CURRENT_SOURCE_DIR}/dynamic_array_interface.h"
 )
 target_compile_options(
 	dynamic_array_unsafe PRIVATE
@@ -88,6 +94,8 @@ add_library(
 	static_pool STATIC
 	"${CMAKE_CURRENT_SOURCE_DIR}/static_pool.c"
 	"${CMAKE_CURRENT_SOURCE_DIR}/static_pool.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/dynamic_array_interface_impl.c"
+	"${CMAKE_CURRENT_SOURCE_DIR}/dynamic_array_interface.h"
 )
 set_target_properties(
 	static_pool PROPERTIES

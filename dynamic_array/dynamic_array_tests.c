@@ -37,16 +37,6 @@ static void unit_test_pool_deinit(void)
 	memset(&static_pool, 0, sizeof(static_pool));
 }
 
-static dynamic_array_allocator_type unit_test_allocator = {
-	&unit_test_allocate,
-#ifndef DYNAMIC_ARRAY_TESTS_DO_NOT_USE_REALLOCATION_FUNCTION
-	&unit_test_reallocate,
-#else
-	NULL,
-#endif
-	&unit_test_deallocate
-};
-
 static jmp_buf s_execution_context;
 static int s_error_code = 0;
 
@@ -56,12 +46,26 @@ static void exception_handler(dynamic_array_error_type error_code)
 	longjmp(s_execution_context, error_code);
 }
 
+static const dynamic_array_interface_type *dynamic_array_unit_test_interface(void)
+{
+	static const dynamic_array_interface_type interface = {
+#ifndef DYNAMIC_ARRAY_TESTS_DO_NOT_USE_REALLOCATION_FUNCTION
+		{&unit_test_allocate, &unit_test_reallocate, &unit_test_deallocate},
+#else
+		{&unit_test_allocate, NULL, &unit_test_deallocate},
+#endif
+		&exception_handler,
+		&dynamic_array_default_error_reporter
+	};
+	return &interface;
+}
+
 #ifndef DYNAMIC_ARRAY_EXCEPTION_TESTS_DISABLED
 TEST(char_dynamic_array_with_no_buffer, "A character dynamic array with no buffer")
 {
 	dynamic_array_type(char) array = {0};
-	const dynamic_array_error_type error = dynamic_array_check(array);
-	ASSERT_EQUAL(error, dynamic_array_error_no_buffer);
+	const dynamic_array_debug_info_type debug_info = dynamic_array_check(array);
+	ASSERT_EQUAL(debug_info.error, dynamic_array_error_no_buffer);
 	dynamic_array_delete(array);
 }
 
@@ -69,24 +73,23 @@ TEST(allocation_and_reallocation_failure, "Allocation and reallocation failure")
 {
 	const size_t largest_memory_size = static_pool_largest_chunk_size();
 	dynamic_array_type(char) array = {0};
-	dynamic_array_error_type error = dynamic_array_error_none;
+	dynamic_array_debug_info_type debug_info = {0};
 	Boolean_type exception_has_occurred = Boolean_false;
 
 	unit_test_pool_init();
-	dynamic_array_set_exception_handler(&exception_handler);
 	s_error_code = 0;
 
 	if (setjmp(s_execution_context) == 0) {
-		array = dynamic_array_create_with_allocator(char, largest_memory_size + 1U, unit_test_allocator);
+		array = dynamic_array_create_with_interface(char, largest_memory_size + 1U, *dynamic_array_unit_test_interface());
 	} else {
 		exception_has_occurred = Boolean_true;
 	}
 	ASSERT(exception_has_occurred);
 	ASSERT_EQUAL(s_error_code, (int) dynamic_array_error_memory_allocation_failure);
 
-	array = dynamic_array_create_with_allocator(char, largest_memory_size, unit_test_allocator);
-	error = dynamic_array_check(array);
-	ASSERT_EQUAL(error, (int) dynamic_array_error_none);
+	array = dynamic_array_create_with_interface(char, largest_memory_size, *dynamic_array_unit_test_interface());
+	debug_info = dynamic_array_check(array);
+	ASSERT_EQUAL(debug_info.error, (int) dynamic_array_error_none);
 
 	if (setjmp(s_execution_context) == 0) {
 		dynamic_array_resize(char, array, largest_memory_size + 1U);
@@ -107,10 +110,9 @@ TEST(out_of_bounds_access_to_char_dynamic_array_with_no_element, "A character dy
 	Boolean_type exception_has_occurred = Boolean_false;
 
 	unit_test_pool_init();
-	dynamic_array_set_exception_handler(&exception_handler);
 	s_error_code = 0;
 
-	array = dynamic_array_create_with_allocator(char, initial_size, unit_test_allocator);
+	array = dynamic_array_create_with_interface(char, initial_size, *dynamic_array_unit_test_interface());
 	ASSERT_UINT_EQUAL(dynamic_array_size(array), 0U);
 
 	if (setjmp(s_execution_context) == 0) {
@@ -133,7 +135,6 @@ TEST(out_of_bounds_access_to_char_dynamic_array_with_no_element, "A character dy
 
 	dynamic_array_delete(array);
 	s_error_code = 0;
-	dynamic_array_set_exception_handler(NULL);
 	unit_test_pool_deinit();
 }
 #endif
@@ -144,7 +145,7 @@ TEST(size_test_for_char_dynamic_array_with_no_element, "A character dynamic arra
 	dynamic_array_type(char) array = {0};
 
 	unit_test_pool_init();
-	array = dynamic_array_create_with_allocator(char, initial_size, unit_test_allocator);
+	array = dynamic_array_create_with_interface(char, initial_size, *dynamic_array_unit_test_interface());
 	ASSERT_UINT_EQUAL(dynamic_array_size(array), 0U);
 	dynamic_array_delete(array);
 	unit_test_pool_deinit();
@@ -156,7 +157,7 @@ TEST(test_for_char_dynamic_array_initialized_with_one_element, "A character dyna
 	dynamic_array_type(char) array = {0};
 
 	unit_test_pool_init();
-	array = dynamic_array_create_with_allocator(char, initial_size, unit_test_allocator);
+	array = dynamic_array_create_with_interface(char, initial_size, *dynamic_array_unit_test_interface());
 	ASSERT_UINT_EQUAL(dynamic_array_size(array), 1U);
 	ASSERT_EQUAL(dynamic_array_element(char, array, 0U), '\0');
 	dynamic_array_delete(array);
@@ -169,7 +170,7 @@ TEST(value_test_for_char_dynamic_array_with_one_element, "Changing the value of 
 	dynamic_array_type(char) array = {0};
 
 	unit_test_pool_init();
-	array = dynamic_array_create_with_allocator(char, initial_size, unit_test_allocator);
+	array = dynamic_array_create_with_interface(char, initial_size, *dynamic_array_unit_test_interface());
 
 	dynamic_array_element(char, array, 0U) = '0';
 	ASSERT_EQUAL(dynamic_array_element(char, array, 0U), '0');
@@ -201,7 +202,7 @@ TEST(char_dynamic_array_with_one_element_and_a_new_element_is_added_to_the_back,
 	dynamic_array_type(char) array = {0};
 
 	unit_test_pool_init();
-	array = dynamic_array_create_with_allocator(char, initial_size, unit_test_allocator);
+	array = dynamic_array_create_with_interface(char, initial_size, *dynamic_array_unit_test_interface());
 
 	dynamic_array_element(char, array, 0U) = 'H';
 	dynamic_array_append_element(char, array, 'i');
@@ -221,7 +222,7 @@ TEST(char_dynamic_array_with_one_element_and_a_new_element_is_added_to_the_front
 	dynamic_array_type(char) array = {0};
 
 	unit_test_pool_init();
-	array = dynamic_array_create_with_allocator(char, initial_size, unit_test_allocator);
+	array = dynamic_array_create_with_interface(char, initial_size, *dynamic_array_unit_test_interface());
 
 	dynamic_array_element(char, array, 0U) = 'i';
 	dynamic_array_add_element_at_index(char, array, 0U, 'p');
@@ -240,7 +241,7 @@ TEST(char_dynamic_array_initialized_from_static_array, "Initialize a char dynami
 	dynamic_array_type(char) array = {0};
 
 	unit_test_pool_init();
-	array = dynamic_array_create_from_source_with_allocator(char, buffer, sizeof_array(buffer), unit_test_allocator);
+	array = dynamic_array_create_from_source_with_interface(char, buffer, sizeof_array(buffer), *dynamic_array_unit_test_interface());
 
 	ASSERT_UINT_EQUAL(dynamic_array_size(array), 12U); /* including NUL */
 	ASSERT_EQUAL(dynamic_array_element(char, array, 0U), 'H');
@@ -268,7 +269,7 @@ TEST(string_operations_on_char_dynamic_array, "String operations")
 	size_t index = 0U;
 
 	unit_test_pool_init();
-	array = dynamic_array_create_with_allocator(char, initial_size, unit_test_allocator);
+	array = dynamic_array_create_with_interface(char, initial_size, *dynamic_array_unit_test_interface());
 	index = 0U;
 	dynamic_array_add_elements_at_index(char, array, index, buffer, sizeof_array(buffer));
 
@@ -314,7 +315,7 @@ TEST(dynamic_integer_array, "Dynamic integer array")
 	dynamic_array_type(int) array = {0};
 
 	unit_test_pool_init();
-	array = dynamic_array_create_with_allocator(int, initial_size, unit_test_allocator);
+	array = dynamic_array_create_with_interface(int, initial_size, *dynamic_array_unit_test_interface());
 
 	dynamic_array_append_elements(int, array, integer_array, sizeof_array(integer_array));
 	ASSERT_UINT_EQUAL(dynamic_array_size(array), 10U);
@@ -375,7 +376,7 @@ TEST(user_defined_type_test, "User-defined type")
 	};
 
 	unit_test_pool_init();
-	array = dynamic_array_create_with_allocator(person_type, initial_size, unit_test_allocator);
+	array = dynamic_array_create_with_interface(person_type, initial_size, *dynamic_array_unit_test_interface());
 
 	dynamic_array_append_element(person_type, array, John_Smith);
 	dynamic_array_append_element(person_type, array, Rebecca_Parker);

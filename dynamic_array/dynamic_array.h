@@ -3,7 +3,7 @@
 #ifndef DYNAMIC_ARRAY_H
 #define DYNAMIC_ARRAY_H
 
-#include "allocator_type.h"
+#include "dynamic_array_interface.h"
 #include "static_assert.h"
 #include <assert.h>
 #include <stddef.h>
@@ -20,89 +20,6 @@ typedef struct dynamic_array_type_
 /* This macro is only for annotation. */
 #define dynamic_array_type(element_type) dynamic_array_type_
 
-typedef enum dynamic_array_error_type
-{
-	dynamic_array_error_none = 0,
-	dynamic_array_error_null_pointer_exception,
-	dynamic_array_error_struct_size_mismatch,
-	dynamic_array_error_no_buffer,
-	dynamic_array_error_incorrect_capacity,
-	dynamic_array_error_incorrect_element_size,
-	dynamic_array_error_index_out_of_range,
-	dynamic_array_error_element_size_mismatch,
-	dynamic_array_error_addition_overflow_detected,
-	dynamic_array_error_multiplication_overflow_detected,
-	dynamic_array_error_no_allocator,
-	dynamic_array_error_memory_allocation_failure,
-	dynamic_array_error_memory_reallocation_failure,
-	dynamic_array_error_no_memory_allocation_function,
-	dynamic_array_error_no_memory_deallocation_function
-} dynamic_array_error_type;
-
-typedef struct dynamic_array_debug_info_type
-{
-	const char *file_name; /* application source file */
-	const char *library_file_name; /* library source file */
-	int line_number; /* application source file */
-	int library_line_number; /* library source file */
-	size_t struct_size;
-	size_t internal_struct_size;
-	size_t info_1;
-	size_t info_2;
-	dynamic_array_error_type error;
-} dynamic_array_debug_info_type;
-
-typedef allocator_type dynamic_array_allocator_type;
-
-/*
-Provides an exception handler callback function.
-
-Parameter:
-exception_handler_funcptr: A pointer to an exception handler function
-
-Return value: None.
-*/
-void dynamic_array_set_exception_handler(
-	void (*exception_handler_funcptr)(dynamic_array_error_type)
-);
-
-/*
-Provides an error reporting handler callback function.
- 
-Parameter:
-report_error_funcptr: A pointer to an error report function.
-
-Return value: None.
-
-Function signature of error reporting handler:
-void report_error(dynamic_array_debug_info_type debug_info);
-
-Parameters:
-debug_info         : Debug information.
-
-Return value: None.
-
-Errors and additional debug info:
-1.  dynamic_array_error_none: no additional info (info_1 == 0, info_2 == 0)
-2.  dynamic_array_error_null_pointer_exception: no additional info
-3.  dynamic_array_error_struct_size_mismatch: info_1 == size of external data structure, info_2 == size of internal data structure
-4.  dynamic_array_error_no_buffer: no additional info
-5.  dynamic_array_error_incorrect_capacity: info_1 == capacity, info_2 == number of array elements
-6.  dynamic_array_error_incorrect_element_size: info_1 == element size
-7.  dynamic_array_error_index_out_of_range: info_1 == index, info_2 == number of array elements
-8.  dynamic_array_error_element_size_mismatch: info_1 == external element size, info_2 == internal element size
-9.  dynamic_array_error_addition_overflow_detected: info_1 == operand 1, info_2 == operand 2
-10. dynamic_array_error_multiplication_overflow_detected: info_1 == operand 1, info_2 == operand 2
-11. dynamic_array_error_no_allocator: no additional info
-12. dynamic_array_error_memory_allocation_failure: info_1 == number of bytes requested, info_2 == 0
-13. dynamic_array_error_memory_reallocation_failure: info_1 == number of bytes requested, info_2 == 0
-14. dynamic_array_error_no_memory_allocation_function: no additional info
-15. dynamic_array_error_no_memory_deallocation_function: no additional info
- */
-void dynamic_array_set_error_reporting_handler(
-	void (*report_error_funcptr)(dynamic_array_debug_info_type)
-);
-
 /*
 Function declarations and macros
 Most functions will invoke the exception handler on error.
@@ -117,7 +34,7 @@ source            : The source of data to be copied when the dynamic array is fi
 number_of_elements: The number of elements that the dynamic array will contain when it is first created.
                     If source is not NULL, then number_of_elements shall not exceed the number of elements that the source array contains.
 element_size      : The number of bytes of each element in the array.
-allocator         : A pointer to an allocator. The allocator must have a longer life time than the dynamic array. If it is a null pointer, a default allocator will be used.
+interface         : A pointer to an interface. The interface must have a longer life time than the dynamic array. If it is a null pointer, the default interface will be used.
 file_name         : The name or path of the source file which calls the function. For debugging purpose.
 line_number       : The line number of the source file at which the function is called. For debugging purpose.
 struct_size       : The number of bytes of a dynamic_array_type_. For debugging purpose.
@@ -138,25 +55,25 @@ dynamic_array_create_(
 	const void *source,
 	size_t number_of_elements,
 	size_t element_size,
-	dynamic_array_allocator_type *allocator,
+	const dynamic_array_interface_type *interface,
 	const char *file_name,
 	int line_number,
 	size_t struct_size
 );
 
 #define dynamic_array_create(type, initial_size) \
-	dynamic_array_create_(NULL, initial_size, sizeof(type), NULL, __FILE__, __LINE__, sizeof(dynamic_array_type_))
+	dynamic_array_create_(NULL, initial_size, sizeof(type), dynamic_array_default_interface(), __FILE__, __LINE__, sizeof(dynamic_array_type_))
 
-#define dynamic_array_create_with_allocator(type, initial_size, allocator) \
-	dynamic_array_create_(NULL, initial_size, sizeof(type), &(allocator), __FILE__, __LINE__, sizeof(dynamic_array_type_))
+#define dynamic_array_create_with_interface(type, initial_size, interface) \
+	dynamic_array_create_(NULL, initial_size, sizeof(type), &(interface), __FILE__, __LINE__, sizeof(dynamic_array_type_))
 
 #define dynamic_array_create_from_source(type, source, source_size) \
 	(assert(sizeof(type) == sizeof((source)[0])), \
-	dynamic_array_create_(source, source_size, sizeof(type), NULL, __FILE__, __LINE__, sizeof(dynamic_array_type_)))
+	dynamic_array_create_(source, source_size, sizeof(type), dynamic_array_default_interface(), __FILE__, __LINE__, sizeof(dynamic_array_type_)))
 
-#define dynamic_array_create_from_source_with_allocator(type, source, source_size, allocator) \
+#define dynamic_array_create_from_source_with_interface(type, source, source_size, interface) \
 	(assert(sizeof(type) == sizeof((source)[0])), \
-	dynamic_array_create_(source, source_size, sizeof(type), &(allocator), __FILE__, __LINE__, sizeof(dynamic_array_type_)))
+	dynamic_array_create_(source, source_size, sizeof(type), &(interface), __FILE__, __LINE__, sizeof(dynamic_array_type_)))
 
 /*
 Performs cleanup and releases the memory occupied by the dynamic array.
@@ -180,7 +97,7 @@ void dynamic_array_delete_(
 	dynamic_array_delete_(&(array), __FILE__, __LINE__, sizeof(array))
 
 /*
-Retrieves the allocator
+Retrieves the interface
 
 Parameters
 dynamic_array: A pointer to a valid dynamic_array_type_ variable. Must not be a null pointer.
@@ -189,21 +106,21 @@ line_number  : The line of the source file at which the function is called. For 
 struct_size  : The number of bytes of dynamic_array_type_. For debugging purpose.
 
 Return value:
-A pointer to the allocator used by the dynamic array. DO NOT modify any function pointer member of the allocator.
+A pointer to the interface used by the dynamic array. DO NOT modify any member of the interface.
 */
-const dynamic_array_allocator_type*
-dynamic_array_get_allocator_(
+const dynamic_array_interface_type*
+dynamic_array_get_interface_(
 	const dynamic_array_type_ *dynamic_array,
 	const char *file_name,
 	int line_number,
 	size_t struct_size
 );
 
-#define dynamic_array_get_allocator(array) \
-	dynamic_array_get_allocator_(&(array), __FILE__, __LINE__, sizeof(array))
+#define dynamic_array_get_interface(array) \
+	dynamic_array_get_interface_(&(array), __FILE__, __LINE__, sizeof(array))
 
 /*
-Checks the dynamic array for any error. The returned error is the first error detected.
+Checks the dynamic array for any error. The returned debug information is for the first error detected.
 
 Parameters
 dynamic_array: A pointer to a valid dynamic_array_type_ variable. Must not be a null pointer.
@@ -211,9 +128,9 @@ file_name    : The name of path of the source file which calls the function. For
 line_number  : The line of the source file at which the function is called. For debugging purpose.
 struct_size  : The number of bytes of dynamic_array_type_. For debugging purpose.
 
-Return value: The first error detected.
+Return value: The debug information for the first error detected.
 */
-dynamic_array_error_type
+dynamic_array_debug_info_type
 dynamic_array_check_(
 	const dynamic_array_type_ *dynamic_array,
 	const char *file_name,
