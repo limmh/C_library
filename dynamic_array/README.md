@@ -1,32 +1,34 @@
 # dynamic_array
 
-A robust, generic dynamic array library.
+A generic dynamic array C API.
 
 ## Overview
 
-This library provides an opaque, type-agnostic dynamic array implementation, supporting safe memory management, extensible error reporting, custom memory allocators, and a comprehensive set of macros for ease of use.
-The API is designed for safety and correctness, suitable for high security and high reliability applications.
+The API provides an opaque, type-agnostic dynamic array container, supporting safe memory management, extensible error reporting, custom memory allocators, and a comprehensive set of macros for ease of use.
+It is designed for safety and correctness, suitable for high security and high reliability applications.
 
 ## Features
 
-- Type-safe element access via macros.
-- Custom allocator support.
-- Runtime checks for buffer overflows, memory allocation failures, element size mismatches, and more.
-- Exception handling and customizable error reporting.
-- Automatic resizing and zero-initialization of elements.
+- The API provides bounds checks to prevent out-of-bounds access and other runtime checks.
+- Support for custom allocators.
+- Customizable exception handling and error reporting or logging.
 
 ## Usage Example
 
 ```c
 #include "dynamic_array.h"
 
-dynamic_array_type(int) arr = dynamic_array_create(int, 16);  // Create a dynamic array for ints
-dynamic_array_append_element(int, arr, 42);                   // Append an element
-int value = dynamic_array_element(int, arr, 0);               // Access an element
-dynamic_array_delete(arr);                                    // Clean up
+int main(void)
+{
+    dynamic_array_type(int) dynarray = dynamic_array_create(int, 16);  // Create a dynamic array for ints
+    dynamic_array_append_element(int, dynarray, 42);                   // Append an element
+    int value = dynamic_array_element(int, dynarray, 0);               // Access an element
+    dynamic_array_delete(dynarray);                                    // Clean up
+    return 0;
+}
 ```
 
-## Main Types
+## Data Types
 
 - `dynamic_array_type(element_type)`: Opaque array type (use in variable declarations).
 - `dynamic_array_allocator_type`: Structure for custom memory allocators.
@@ -35,18 +37,21 @@ dynamic_array_delete(arr);                                    // Clean up
 
 ## Key Macros
 
-- Creation: `dynamic_array_create(type, size)`, `dynamic_array_create_with_allocator(type, size, allocator)`
+- Creation: `dynamic_array_create(element_type, size)`, `dynamic_array_create_with_interface(element_type, size, interface)`
 - Cleanup: `dynamic_array_delete(array)`
-- Element access: `dynamic_array_element(type, array, index)`
+- Element access: `dynamic_array_element(element_type, array, index)`
 - Adding/removing elements: `dynamic_array_append_element`, `dynamic_array_add_element_at_index`, `dynamic_array_remove_element_at_index`, etc.
-- Resizing: `dynamic_array_resize(type, array, new_size)`
+- Resizing: `dynamic_array_resize(array, new_size)`
 - Capacity and size: `dynamic_array_capacity(array)`, `dynamic_array_size(array)`
-- Error handling: `dynamic_array_set_exception_handler`, `dynamic_array_set_error_reporting_handler`
 - Diagnostics: `dynamic_array_check(array)`
 
 ## Error Handling
 
-You can provide exception and error reporting handlers. By default, errors terminate the program.
+You can provide an exception handler and an error reporting function via an interface. By default, errors terminate the program.
+
+## Unit Tests
+
+Unit tests are available. Refer to the unit tests for more examples.
 
 ## Compatibility
 

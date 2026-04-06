@@ -702,7 +702,6 @@ void dynamic_array_remove_elements_starting_from_index_(
 void dynamic_array_resize_(
 	dynamic_array_type_ *dynamic_array,
 	size_t new_size,
-	size_t element_size,
 	const char *file_name,
 	int line_number,
 	size_t struct_size
@@ -725,25 +724,12 @@ void dynamic_array_resize_(
 		return;
 	}
 #else
-	UNUSED_PARAMETER(element_size);
 	UNUSED_PARAMETER(file_name);
 	UNUSED_PARAMETER(line_number);
 	UNUSED_PARAMETER(struct_size);
 #endif
 	assert(array != NULL);
 	assert(array->interface != NULL);
-	assert(element_size == array->element_size);
-#ifndef DYNAMIC_ARRAY_NO_RUNTIME_CHECKS
-	if (element_size != array->element_size) {
-		debug_info.error = dynamic_array_error_element_size_mismatch;
-		debug_info.library_line_number = __LINE__;
-		debug_info.info_1 = element_size;
-		debug_info.info_2 = array->element_size;
-		dynamic_array_report_error(array->interface->error_reporter, debug_info);
-		dynamic_array_handle_exception(array->interface->exception_handler, debug_info.error);
-		return;
-	}
-#endif
 	if (new_number_of_elements > array->number_of_elements) {
 		size_t extra_number_of_elements = 0U;
 		size_t offset = 0U;

@@ -85,17 +85,17 @@ int main(int argc, char *argv[])
 		return 0;
 	}
 
-	dynamic_array_type(unsigned char) bytes = dynamic_array_create(unsigned char, 8U);
+	dynamic_array_type(unsigned char) bytes = dynamic_array_create_empty(unsigned char);
 	for (int i = 1; i < argc; ++i) {
 		errno = 0;
 		int error_code = 0;
-		size_t file_size = 0U;
+		size_t file_size = 0U, number_of_bytes_read = 0U;
 		FILE *fp = fopen(argv[i], "rb");
 		if (fp != NULL) {
 			file_size = get_file_size(fp);
-			dynamic_array_resize(unsigned char, bytes, file_size);
-			fread(&dynamic_array_element(unsigned char, bytes, 0U), sizeof(dynamic_array_element(unsigned char, bytes, 0U)),
-				dynamic_array_size(bytes), fp);
+			dynamic_array_resize(bytes, file_size);
+			number_of_bytes_read = fread(&dynamic_array_element(unsigned char, bytes, 0U), sizeof(unsigned char), dynamic_array_size(bytes), fp);
+			assert(number_of_bytes_read <= file_size);
 			fclose(fp);
 			fp = NULL;
 		} else {
@@ -103,8 +103,8 @@ int main(int argc, char *argv[])
 			printf("%s: %s\n", argv[i], ((error_code != 0) ? strerror(error_code) : "Cannot open file."));
 		}
 		if (error_code == 0) {
-			printf("%s: %lu byte%s\n", argv[i], (unsigned long)(file_size), ((file_size > 1U) ? "s" : ""));
-			print_binary_data(stdout, &dynamic_array_element(unsigned char, bytes, 0U), dynamic_array_size(bytes));
+			printf("%s: %lu byte%s\n", argv[i], (unsigned long)(number_of_bytes_read), ((number_of_bytes_read > 1U) ? "s" : ""));
+			print_binary_data(stdout, &dynamic_array_element(unsigned char, bytes, 0U), number_of_bytes_read);
 			printf("\n");
 		}
 	}

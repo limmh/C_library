@@ -64,10 +64,10 @@ static void insert_into_char_dynamic_array_if_not_found(dynamic_array_type(char)
 static dynamic_array_type(char)
 get_string_from_input(void)
 {
-	dynamic_array_type(char) array = dynamic_array_create(char, 0U);
+	dynamic_array_type(char) array = dynamic_array_create_empty(char);
 	int c = fgetc(stdin);
 	while (c != '\n' and c != EOF) {
-		dynamic_array_append_element(char, array, c);
+		dynamic_array_append_element(char, array, (char) c);
 		c = fgetc(stdin);
 	}
 	dynamic_array_append_element(char, array, '\0');
@@ -76,8 +76,8 @@ get_string_from_input(void)
 
 int main(int argc, char **argv)
 {
-	dynamic_array_type(char) hexadecimal_characters = dynamic_array_create(char, 0U);
-	dynamic_array_type(char) invalid_characters = dynamic_array_create(char, 0U);
+	dynamic_array_type(char) hexadecimal_characters = dynamic_array_create_empty(char);
+	dynamic_array_type(char) invalid_characters = dynamic_array_create_empty(char);
 
 	for (int i = 1; i < argc; ++i) {
 		const size_t length = strlen(argv[i]);
@@ -123,7 +123,7 @@ int main(int argc, char **argv)
 				((n > 1U) ? "are" : "is"),(unsigned long) n, ((n > 1U) ? "s" : ""));
 		} else {
 			const size_t N = number_of_hexadecimal_characters / 2U;
-			dynamic_array_type(uint8_t) bytes = dynamic_array_create(uint8_t, 0U);
+			dynamic_array_type(uint8_t) bytes = dynamic_array_create_empty(uint8_t);
 
 			for (size_t i = 0U; i < N; ++i) {
 				const size_t index1 = 2U * i;

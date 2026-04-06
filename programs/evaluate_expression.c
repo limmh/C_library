@@ -103,24 +103,24 @@ simple_tokenizer_token_type_to_expression_token_type(simple_tokenizer_token_type
 		break;
 	case simple_tokenizer_token_punctuation:
 		if (1U == simple_tokenizer_token.value.length) {
-			const char operator = simple_tokenizer_token.value.string[0];
-			if      (operator == '+')
+			const char operator_symbol = simple_tokenizer_token.value.string[0];
+			if      (operator_symbol == '+')
 				new_token_type = expression_token_operator_addition;
-			else if (operator == '-')
+			else if (operator_symbol == '-')
 				new_token_type = expression_token_operator_subtraction;
-			else if (operator == '*')
+			else if (operator_symbol == '*')
 				new_token_type = expression_token_operator_multiplication;
-			else if (operator == '/')
+			else if (operator_symbol == '/')
 				new_token_type = expression_token_operator_division;
-			else if (operator == '=')
+			else if (operator_symbol == '=')
 				new_token_type = expression_token_operator_assignment;
-			else if (operator == '.')
+			else if (operator_symbol == '.')
 				new_token_type = expression_token_operator_dot;
-			else if (operator == '(')
+			else if (operator_symbol == '(')
 				new_token_type = expression_token_left_parenthesis;
-			else if (operator == ')')
+			else if (operator_symbol == ')')
 				new_token_type = expression_token_right_parenthesis;
-			else if (operator == '_')
+			else if (operator_symbol == '_')
 				new_token_type = expression_token_identifier;
 			else
 				new_token_type = expression_token_unsupported;
@@ -142,7 +142,7 @@ simple_tokenizer_token_type_to_expression_token_type(simple_tokenizer_token_type
 static dynamic_array_type(expression_token_type)
 simple_tokenizer_tokens_to_expression_tokens(const simple_tokenizer_token_type *p_input_tokens, size_t input_token_count)
 {
-	dynamic_array_type(expression_token_type) tokens = dynamic_array_create(expression_token_type, 0U);
+	dynamic_array_type(expression_token_type) tokens = dynamic_array_create_empty(expression_token_type);
 	expression_token_type token = {.value = {.string = NULL, .length = 0U}, .type = expression_token_unknown};
 
 	for (size_t index = 0U; index < input_token_count; ++index) {
@@ -245,7 +245,7 @@ static dynamic_array_type(char)
 generate_expression_string(const expression_token_type *ptokens, size_t token_count, const char *separator, size_t separator_length)
 {
 	assert(ptokens != NULL);
-	dynamic_array_type(char) expression = dynamic_array_create(char, 0U);
+	dynamic_array_type(char) expression = dynamic_array_create_empty(char);
 	for (size_t i = 0U; i < token_count; ++i) {
 		const expression_token_type token = ptokens[i];
 		dynamic_array_append_elements(char, expression, token.value.string, token.value.length);
@@ -382,7 +382,7 @@ generate_partially_corrected_expression_tokens(const expression_token_type *ptok
 	const char *read_only_plus = "+";
 	const_stringref_type plus_stringref = {.string = read_only_plus, .length = 1U};
 	const expression_token_type operator_plus_token = {.value = plus_stringref, .type = expression_token_operator_addition};
-	dynamic_array_type(expression_token_type) tokens = dynamic_array_create(expression_token_type, 0U);
+	dynamic_array_type(expression_token_type) tokens = dynamic_array_create_empty(expression_token_type);
 
 	for (size_t i = 0U; i < token_count; ++i) {
 		bool add_plus_token = false;
@@ -419,10 +419,10 @@ generate_partially_corrected_expression_tokens(const expression_token_type *ptok
 	return tokens;
 }
 
-static int operator_precedence_level(char operator)
+static int operator_precedence_level(char operator_symbol)
 {
 	int level = 0;
-	switch (operator) {
+	switch (operator_symbol) {
 	case '+':
 	case '-': // fall through intended
 		level = 1;
@@ -441,8 +441,8 @@ static dynamic_array_type(expression_token_type)
 infix_expression_tokens_to_postfix_expression_tokens(const expression_token_type *ptokens, size_t token_count)
 {
 	assert(ptokens != NULL);
-	dynamic_array_type(expression_token_type) output_tokens = dynamic_array_create(expression_token_type, 0U);
-	dynamic_array_type(expression_token_type) operator_tokens = dynamic_array_create(expression_token_type, 0U);
+	dynamic_array_type(expression_token_type) output_tokens = dynamic_array_create_empty(expression_token_type);
+	dynamic_array_type(expression_token_type) operator_tokens = dynamic_array_create_empty(expression_token_type);
 
 	for (size_t i = 0U; i < token_count; ++i) {
 		const expression_token_type token = ptokens[i];
@@ -544,8 +544,8 @@ evaluate_postfix_expression_tokens(const expression_token_type *ptokens, size_t 
 		.number = {.value = {.integer = 0}, .type = number_type_integer},
 		.error = evaluation_result_error_none
 	};
-	dynamic_array_type(number_type) numbers = dynamic_array_create(number_type, 0U);
-	dynamic_array_type(char) number_string = dynamic_array_create(char, 0U);
+	dynamic_array_type(number_type) numbers = dynamic_array_create_empty(number_type);
+	dynamic_array_type(char) number_string = dynamic_array_create_empty(char);
 
 	for (size_t i = 0U; i < token_count; ++i) {
 		const expression_token_type token = ptokens[i];
@@ -553,7 +553,7 @@ evaluate_postfix_expression_tokens(const expression_token_type *ptokens, size_t 
 		case expression_token_integer:
 			{
 				number_type number = {0};
-				dynamic_array_resize(char, number_string, token.value.length);
+				dynamic_array_resize(number_string, token.value.length);
 				memcpy(&dynamic_array_element(char, number_string, 0U), token.value.string, token.value.length * sizeof(char));
 				dynamic_array_push_back(char, number_string, '\0');
 				number.value.integer = (int64_t) strtoll(&dynamic_array_element(char, number_string, 0U), NULL, 10);
@@ -564,7 +564,7 @@ evaluate_postfix_expression_tokens(const expression_token_type *ptokens, size_t 
 		case expression_token_decimal_number:
 			{
 				number_type number = {0};
-				dynamic_array_resize(char, number_string, token.value.length);
+				dynamic_array_resize(number_string, token.value.length);
 				memcpy(&dynamic_array_element(char, number_string, 0U), token.value.string, token.value.length * sizeof(char));
 				dynamic_array_push_back(char, number_string, '\0');
 				number.value.decimal = strtod(&dynamic_array_element(char, number_string, 0U), NULL);
@@ -750,7 +750,7 @@ int main(int argc, char **argv)
 		return 0;
 	}
 
-	dynamic_array_type(char)  expression = dynamic_array_create(char, 0U);
+	dynamic_array_type(char)  expression = dynamic_array_create_empty(char);
 	const char *substring = argv[1];
 	dynamic_array_append_elements(char, expression, substring, strlen(substring));
 	for (int i = 2U; i < argc; ++i) {
@@ -761,7 +761,7 @@ int main(int argc, char **argv)
 	dynamic_array_push_back(char, expression, '\0');
 
 	dynamic_array_type(simple_tokenizer_token_type)  simple_tokens =
-		dynamic_array_create(simple_tokenizer_token_type, 0U);
+		dynamic_array_create_empty(simple_tokenizer_token_type);
 
 	const size_t number_of_simple_tokens =
 		simple_tokenizer_tokenize(
@@ -770,11 +770,7 @@ int main(int argc, char **argv)
 			NULL, 0U
 		);
 
-	dynamic_array_resize(
-		simple_tokenizer_token_type,
-		simple_tokens,
-		number_of_simple_tokens
-	);
+	dynamic_array_resize(simple_tokens, number_of_simple_tokens);
 
 	(void)
 	simple_tokenizer_tokenize(

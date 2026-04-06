@@ -92,7 +92,7 @@ TEST(allocation_and_reallocation_failure, "Allocation and reallocation failure")
 	ASSERT_EQUAL(debug_info.error, (int) dynamic_array_error_none);
 
 	if (setjmp(s_execution_context) == 0) {
-		dynamic_array_resize(char, array, largest_memory_size + 1U);
+		dynamic_array_resize(array, largest_memory_size + 1U);
 	} else {
 		exception_has_occurred = Boolean_true;
 	}
@@ -113,7 +113,7 @@ TEST(out_of_bounds_access_to_char_dynamic_array_with_no_element, "A character dy
 	s_error_code = 0;
 
 	array = dynamic_array_create_with_interface(char, initial_size, *dynamic_array_unit_test_interface());
-	ASSERT_UINT_EQUAL(dynamic_array_size(array), 0U);
+	ASSERT_SIZE_EQUAL(dynamic_array_size(array), 0U);
 
 	if (setjmp(s_execution_context) == 0) {
 		dynamic_array_element(char, array, 0U) = 1;
@@ -141,12 +141,12 @@ TEST(out_of_bounds_access_to_char_dynamic_array_with_no_element, "A character dy
 
 TEST(size_test_for_char_dynamic_array_with_no_element, "A character dynamic array with no element has a size of zero.")
 {
-	const size_t initial_size = 0U;
 	dynamic_array_type(char) array = {0};
 
 	unit_test_pool_init();
-	array = dynamic_array_create_with_interface(char, initial_size, *dynamic_array_unit_test_interface());
-	ASSERT_UINT_EQUAL(dynamic_array_size(array), 0U);
+	array = dynamic_array_create_empty_with_interface(char, *dynamic_array_unit_test_interface());
+	ASSERT_SIZE_EQUAL(dynamic_array_size(array), 0U);
+	ASSERT(dynamic_array_is_empty(array));
 	dynamic_array_delete(array);
 	unit_test_pool_deinit();
 }
@@ -158,7 +158,7 @@ TEST(test_for_char_dynamic_array_initialized_with_one_element, "A character dyna
 
 	unit_test_pool_init();
 	array = dynamic_array_create_with_interface(char, initial_size, *dynamic_array_unit_test_interface());
-	ASSERT_UINT_EQUAL(dynamic_array_size(array), 1U);
+	ASSERT_SIZE_EQUAL(dynamic_array_size(array), 1U);
 	ASSERT_EQUAL(dynamic_array_element(char, array, 0U), '\0');
 	dynamic_array_delete(array);
 	unit_test_pool_deinit();
@@ -207,7 +207,7 @@ TEST(char_dynamic_array_with_one_element_and_a_new_element_is_added_to_the_back,
 	dynamic_array_element(char, array, 0U) = 'H';
 	dynamic_array_append_element(char, array, 'i');
 
-	ASSERT_UINT_EQUAL(dynamic_array_size(array), 2U);
+	ASSERT_SIZE_EQUAL(dynamic_array_size(array), 2U);
 	ASSERT_EQUAL(dynamic_array_element(char, array, 0U), 'H');
 	ASSERT_EQUAL(dynamic_array_element(char, array, 1U), 'i');
 
@@ -227,7 +227,7 @@ TEST(char_dynamic_array_with_one_element_and_a_new_element_is_added_to_the_front
 	dynamic_array_element(char, array, 0U) = 'i';
 	dynamic_array_add_element_at_index(char, array, 0U, 'p');
 
-	ASSERT_UINT_EQUAL(dynamic_array_size(array), 2U);
+	ASSERT_SIZE_EQUAL(dynamic_array_size(array), 2U);
 	ASSERT_EQUAL(dynamic_array_element(char, array, 0U), 'p');
 	ASSERT_EQUAL(dynamic_array_element(char, array, 1U), 'i');
 
@@ -237,25 +237,14 @@ TEST(char_dynamic_array_with_one_element_and_a_new_element_is_added_to_the_front
 
 TEST(char_dynamic_array_initialized_from_static_array, "Initialize a char dynamic array from a static array")
 {
-	const char buffer[] = "Hello World";	
+	const char buffer[] = "Hello World";
 	dynamic_array_type(char) array = {0};
 
 	unit_test_pool_init();
 	array = dynamic_array_create_from_source_with_interface(char, buffer, sizeof_array(buffer), *dynamic_array_unit_test_interface());
 
-	ASSERT_UINT_EQUAL(dynamic_array_size(array), 12U); /* including NUL */
-	ASSERT_EQUAL(dynamic_array_element(char, array, 0U), 'H');
-	ASSERT_EQUAL(dynamic_array_element(char, array, 1U), 'e');
-	ASSERT_EQUAL(dynamic_array_element(char, array, 2U), 'l');
-	ASSERT_EQUAL(dynamic_array_element(char, array, 3U), 'l');
-	ASSERT_EQUAL(dynamic_array_element(char, array, 4U), 'o');
-	ASSERT_EQUAL(dynamic_array_element(char, array, 5U), ' ');
-	ASSERT_EQUAL(dynamic_array_element(char, array, 6U), 'W');
-	ASSERT_EQUAL(dynamic_array_element(char, array, 7U), 'o');
-	ASSERT_EQUAL(dynamic_array_element(char, array, 8U), 'r');
-	ASSERT_EQUAL(dynamic_array_element(char, array, 9U), 'l');
-	ASSERT_EQUAL(dynamic_array_element(char, array, 10U), 'd');
-	ASSERT_EQUAL(dynamic_array_element(char, array, 11U), '\0');
+	ASSERT_SIZE_EQUAL(dynamic_array_size(array), 12U); /* including NUL */
+	ASSERT_STRING_EQUAL(&dynamic_array_element(char, array, 0U), "Hello World");
 
 	dynamic_array_delete(array);
 	unit_test_pool_deinit();
@@ -273,36 +262,20 @@ TEST(string_operations_on_char_dynamic_array, "String operations")
 	index = 0U;
 	dynamic_array_add_elements_at_index(char, array, index, buffer, sizeof_array(buffer));
 
-	ASSERT_UINT_EQUAL(dynamic_array_size(array), 12U);
-	ASSERT_EQUAL(dynamic_array_element(char, array, 0U), 'H');
-	ASSERT_EQUAL(dynamic_array_element(char, array, 1U), 'e');
-	ASSERT_EQUAL(dynamic_array_element(char, array, 2U), 'l');
-	ASSERT_EQUAL(dynamic_array_element(char, array, 3U), 'l');
-	ASSERT_EQUAL(dynamic_array_element(char, array, 4U), 'o');
-	ASSERT_EQUAL(dynamic_array_element(char, array, 5U), ' ');
-	ASSERT_EQUAL(dynamic_array_element(char, array, 6U), 'W');
-	ASSERT_EQUAL(dynamic_array_element(char, array, 7U), 'o');
-	ASSERT_EQUAL(dynamic_array_element(char, array, 8U), 'r');
-	ASSERT_EQUAL(dynamic_array_element(char, array, 9U), 'l');
-	ASSERT_EQUAL(dynamic_array_element(char, array, 10U), 'd');
-	ASSERT_EQUAL(dynamic_array_element(char, array, 11U), '\0');
+	ASSERT_SIZE_EQUAL(dynamic_array_size(array), 12U);
+	ASSERT_STRING_EQUAL(&dynamic_array_element(char, array, 0U), "Hello World");
 
 	index = 6U;
 	dynamic_array_add_elements_at_index(char, array, index, "Sir", strlen("Sir"));
 	index = 9U;
 	dynamic_array_remove_elements_starting_from_index(char, array, index, 5U /*number of elements to remove*/);
 
-	ASSERT_UINT_EQUAL(dynamic_array_size(array), 10U);
-	ASSERT_EQUAL(dynamic_array_element(char, array, 0U), 'H');
-	ASSERT_EQUAL(dynamic_array_element(char, array, 1U), 'e');
-	ASSERT_EQUAL(dynamic_array_element(char, array, 2U), 'l');
-	ASSERT_EQUAL(dynamic_array_element(char, array, 3U), 'l');
-	ASSERT_EQUAL(dynamic_array_element(char, array, 4U), 'o');
-	ASSERT_EQUAL(dynamic_array_element(char, array, 5U), ' ');
-	ASSERT_EQUAL(dynamic_array_element(char, array, 6U), 'S');
-	ASSERT_EQUAL(dynamic_array_element(char, array, 7U), 'i');
-	ASSERT_EQUAL(dynamic_array_element(char, array, 8U), 'r');
-	ASSERT_EQUAL(dynamic_array_element(char, array, 9U), '\0');
+	ASSERT_SIZE_EQUAL(dynamic_array_size(array), 10U);
+	ASSERT_STRING_EQUAL(&dynamic_array_element(char, array, 0U), "Hello Sir");
+
+	dynamic_array_assign(char, array, buffer, sizeof_array(buffer));
+	ASSERT_SIZE_EQUAL(dynamic_array_size(array), 12U);
+	ASSERT_STRING_EQUAL(&dynamic_array_element(char, array, 0U), "Hello World");
 
 	dynamic_array_delete(array);
 	unit_test_pool_deinit();
@@ -317,8 +290,8 @@ TEST(dynamic_integer_array, "Dynamic integer array")
 	unit_test_pool_init();
 	array = dynamic_array_create_with_interface(int, initial_size, *dynamic_array_unit_test_interface());
 
-	dynamic_array_append_elements(int, array, integer_array, sizeof_array(integer_array));
-	ASSERT_UINT_EQUAL(dynamic_array_size(array), 10U);
+	dynamic_array_assign(int, array, integer_array, sizeof_array(integer_array));
+	ASSERT_SIZE_EQUAL(dynamic_array_size(array), 10U);
 	ASSERT_EQUAL(dynamic_array_element(int, array, 0U), 0);
 	ASSERT_EQUAL(dynamic_array_element(int, array, 1U), 1);
 	ASSERT_EQUAL(dynamic_array_element(int, array, 2U), 2);
@@ -337,7 +310,7 @@ TEST(dynamic_integer_array, "Dynamic integer array")
 	dynamic_array_remove_element_at_index(int, array, 3U);
 	dynamic_array_remove_element_at_index(int, array, 1U);
 
-	ASSERT_UINT_EQUAL(dynamic_array_size(array), 5U);
+	ASSERT_SIZE_EQUAL(dynamic_array_size(array), 5U);
 	ASSERT_EQUAL(dynamic_array_element(int, array, 0U), 0);
 	ASSERT_EQUAL(dynamic_array_element(int, array, 1U), 2);
 	ASSERT_EQUAL(dynamic_array_element(int, array, 2U), 4);
@@ -348,7 +321,7 @@ TEST(dynamic_integer_array, "Dynamic integer array")
 	dynamic_array_add_element_at_index(int, array, 0U, -2);
 	dynamic_array_append_element(int, array, 10);
 
-	ASSERT_UINT_EQUAL(dynamic_array_size(array), 7U);
+	ASSERT_SIZE_EQUAL(dynamic_array_size(array), 7U);
 	ASSERT_EQUAL(dynamic_array_element(int, array, 0U), -2);
 	ASSERT_EQUAL(dynamic_array_element(int, array, 1U), 0);
 	ASSERT_EQUAL(dynamic_array_element(int, array, 2U), 2);
@@ -365,7 +338,6 @@ TEST(user_defined_type_test, "User-defined type")
 {
 	typedef struct date_type {short year; unsigned char month; unsigned char day;} date_type;
 	typedef struct person_type {const char *first_name; const char *last_name; date_type date_of_birth;} person_type;
-	const size_t initial_size = 0U;
 	dynamic_array_type(person_type) array = {0};
 	const person_type John_Smith = {"John", "Smith", {1990, 1, 1}};
 	const person_type Rebecca_Parker = {"Rebecca", "Parker", {1987, 12, 20}};
@@ -376,58 +348,80 @@ TEST(user_defined_type_test, "User-defined type")
 	};
 
 	unit_test_pool_init();
-	array = dynamic_array_create_with_interface(person_type, initial_size, *dynamic_array_unit_test_interface());
+	array = dynamic_array_create_empty_with_interface(person_type, *dynamic_array_unit_test_interface());
 
 	dynamic_array_append_element(person_type, array, John_Smith);
 	dynamic_array_append_element(person_type, array, Rebecca_Parker);
 
-	ASSERT_UINT_EQUAL(dynamic_array_size(array), 2U);
+	ASSERT_SIZE_EQUAL(dynamic_array_size(array), 2U);
 
-	ASSERT( strcmp(dynamic_array_element(person_type, array, 0U).first_name, "John") == 0 );
-	ASSERT( strcmp(dynamic_array_element(person_type, array, 0U).last_name, "Smith") == 0 );
-	ASSERT_EQUAL( dynamic_array_element(person_type, array, 0U).date_of_birth.year, 1990 );
-	ASSERT_EQUAL( dynamic_array_element(person_type, array, 0U).date_of_birth.month, 1 );
-	ASSERT_EQUAL( dynamic_array_element(person_type, array, 0U).date_of_birth.day, 1 );
+	ASSERT_STRING_EQUAL(dynamic_array_element(person_type, array, 0U).first_name, "John");
+	ASSERT_STRING_EQUAL(dynamic_array_element(person_type, array, 0U).last_name, "Smith");
+	ASSERT_EQUAL(dynamic_array_element(person_type, array, 0U).date_of_birth.year, 1990);
+	ASSERT_EQUAL(dynamic_array_element(person_type, array, 0U).date_of_birth.month, 1);
+	ASSERT_EQUAL(dynamic_array_element(person_type, array, 0U).date_of_birth.day, 1);
 
-	ASSERT( strcmp(dynamic_array_element(person_type, array, 1U).first_name, "Rebecca") == 0 );
-	ASSERT( strcmp(dynamic_array_element(person_type, array, 1U).last_name, "Parker") == 0 );
-	ASSERT_EQUAL( dynamic_array_element(person_type, array, 1U).date_of_birth.year, 1987 );
-	ASSERT_EQUAL( dynamic_array_element(person_type, array, 1U).date_of_birth.month, 12 );
-	ASSERT_EQUAL( dynamic_array_element(person_type, array, 1U).date_of_birth.day, 20 );
+	ASSERT_STRING_EQUAL(dynamic_array_element(person_type, array, 1U).first_name, "Rebecca");
+	ASSERT_STRING_EQUAL(dynamic_array_element(person_type, array, 1U).last_name, "Parker");
+	ASSERT_EQUAL(dynamic_array_element(person_type, array, 1U).date_of_birth.year, 1987);
+	ASSERT_EQUAL(dynamic_array_element(person_type, array, 1U).date_of_birth.month, 12);
+	ASSERT_EQUAL(dynamic_array_element(person_type, array, 1U).date_of_birth.day, 20);
 
 	dynamic_array_append_elements(person_type, array, people, sizeof_array(people));
 
-	ASSERT_UINT_EQUAL(dynamic_array_size(array), 5U);
+	ASSERT_SIZE_EQUAL(dynamic_array_size(array), 5U);
 
-	ASSERT( strcmp(dynamic_array_element(person_type, array, 0U).first_name, "John") == 0 );
-	ASSERT( strcmp(dynamic_array_element(person_type, array, 0U).last_name, "Smith") == 0 );
-	ASSERT_EQUAL( dynamic_array_element(person_type, array, 0U).date_of_birth.year, 1990 );
-	ASSERT_EQUAL( dynamic_array_element(person_type, array, 0U).date_of_birth.month, 1 );
-	ASSERT_EQUAL( dynamic_array_element(person_type, array, 0U).date_of_birth.day, 1 );
+	ASSERT_STRING_EQUAL(dynamic_array_element(person_type, array, 0U).first_name, "John");
+	ASSERT_STRING_EQUAL(dynamic_array_element(person_type, array, 0U).last_name, "Smith");
+	ASSERT_EQUAL(dynamic_array_element(person_type, array, 0U).date_of_birth.year, 1990);
+	ASSERT_EQUAL(dynamic_array_element(person_type, array, 0U).date_of_birth.month, 1);
+	ASSERT_EQUAL(dynamic_array_element(person_type, array, 0U).date_of_birth.day, 1);
 
-	ASSERT( strcmp(dynamic_array_element(person_type, array, 1U).first_name, "Rebecca") == 0 );
-	ASSERT( strcmp(dynamic_array_element(person_type, array, 1U).last_name, "Parker") == 0 );
-	ASSERT_EQUAL( dynamic_array_element(person_type, array, 1U).date_of_birth.year, 1987 );
-	ASSERT_EQUAL( dynamic_array_element(person_type, array, 1U).date_of_birth.month, 12 );
-	ASSERT_EQUAL( dynamic_array_element(person_type, array, 1U).date_of_birth.day, 20 );
+	ASSERT_STRING_EQUAL(dynamic_array_element(person_type, array, 1U).first_name, "Rebecca");
+	ASSERT_STRING_EQUAL(dynamic_array_element(person_type, array, 1U).last_name, "Parker");
+	ASSERT_EQUAL(dynamic_array_element(person_type, array, 1U).date_of_birth.year, 1987);
+	ASSERT_EQUAL(dynamic_array_element(person_type, array, 1U).date_of_birth.month, 12);
+	ASSERT_EQUAL(dynamic_array_element(person_type, array, 1U).date_of_birth.day, 20);
 
-	ASSERT( strcmp(dynamic_array_element(person_type, array, 2U).first_name, "Peter") == 0 );
-	ASSERT( strcmp(dynamic_array_element(person_type, array, 2U).last_name, "Davidson") == 0 );
-	ASSERT_EQUAL( dynamic_array_element(person_type, array, 2U).date_of_birth.year, 2000 );
-	ASSERT_EQUAL( dynamic_array_element(person_type, array, 2U).date_of_birth.month, 4 );
-	ASSERT_EQUAL( dynamic_array_element(person_type, array, 2U).date_of_birth.day, 1 );
+	ASSERT_STRING_EQUAL(dynamic_array_element(person_type, array, 2U).first_name, "Peter");
+	ASSERT_STRING_EQUAL(dynamic_array_element(person_type, array, 2U).last_name, "Davidson");
+	ASSERT_EQUAL(dynamic_array_element(person_type, array, 2U).date_of_birth.year, 2000);
+	ASSERT_EQUAL(dynamic_array_element(person_type, array, 2U).date_of_birth.month, 4);
+	ASSERT_EQUAL(dynamic_array_element(person_type, array, 2U).date_of_birth.day, 1);
 
-	ASSERT( strcmp(dynamic_array_element(person_type, array, 3U).first_name, "Jennifer") == 0 );
-	ASSERT( strcmp(dynamic_array_element(person_type, array, 3U).last_name, "Ford") == 0 );
-	ASSERT_EQUAL( dynamic_array_element(person_type, array, 3U).date_of_birth.year, 2001 );
-	ASSERT_EQUAL( dynamic_array_element(person_type, array, 3U).date_of_birth.month, 1 );
-	ASSERT_EQUAL( dynamic_array_element(person_type, array, 3U).date_of_birth.day, 15 );
+	ASSERT_STRING_EQUAL(dynamic_array_element(person_type, array, 3U).first_name, "Jennifer");
+	ASSERT_STRING_EQUAL(dynamic_array_element(person_type, array, 3U).last_name, "Ford");
+	ASSERT_EQUAL(dynamic_array_element(person_type, array, 3U).date_of_birth.year, 2001);
+	ASSERT_EQUAL(dynamic_array_element(person_type, array, 3U).date_of_birth.month, 1);
+	ASSERT_EQUAL(dynamic_array_element(person_type, array, 3U).date_of_birth.day, 15);
 
-	ASSERT( strcmp(dynamic_array_element(person_type, array, 4U).first_name, "Daniel") == 0 );
-	ASSERT( strcmp(dynamic_array_element(person_type, array, 4U).last_name, "Webb") == 0 );
-	ASSERT_EQUAL( dynamic_array_element(person_type, array, 4U).date_of_birth.year, 2005 );
-	ASSERT_EQUAL( dynamic_array_element(person_type, array, 4U).date_of_birth.month, 7 );
-	ASSERT_EQUAL( dynamic_array_element(person_type, array, 4U).date_of_birth.day, 4 );
+	ASSERT_STRING_EQUAL(dynamic_array_element(person_type, array, 4U).first_name, "Daniel");
+	ASSERT_STRING_EQUAL(dynamic_array_element(person_type, array, 4U).last_name, "Webb");
+	ASSERT_EQUAL(dynamic_array_element(person_type, array, 4U).date_of_birth.year, 2005);
+	ASSERT_EQUAL(dynamic_array_element(person_type, array, 4U).date_of_birth.month, 7);
+	ASSERT_EQUAL(dynamic_array_element(person_type, array, 4U).date_of_birth.day, 4);
+
+	dynamic_array_assign(person_type, array, people, sizeof_array(people));
+
+	ASSERT_SIZE_EQUAL(dynamic_array_size(array), 3U);
+
+	ASSERT_STRING_EQUAL(dynamic_array_element(person_type, array, 0U).first_name, "Peter");
+	ASSERT_STRING_EQUAL(dynamic_array_element(person_type, array, 0U).last_name, "Davidson");
+	ASSERT_EQUAL(dynamic_array_element(person_type, array, 0U).date_of_birth.year, 2000);
+	ASSERT_EQUAL(dynamic_array_element(person_type, array, 0U).date_of_birth.month, 4);
+	ASSERT_EQUAL(dynamic_array_element(person_type, array, 0U).date_of_birth.day, 1);
+
+	ASSERT_STRING_EQUAL(dynamic_array_element(person_type, array, 1U).first_name, "Jennifer");
+	ASSERT_STRING_EQUAL(dynamic_array_element(person_type, array, 1U).last_name, "Ford");
+	ASSERT_EQUAL(dynamic_array_element(person_type, array, 1U).date_of_birth.year, 2001);
+	ASSERT_EQUAL(dynamic_array_element(person_type, array, 1U).date_of_birth.month, 1);
+	ASSERT_EQUAL(dynamic_array_element(person_type, array, 1U).date_of_birth.day, 15);
+
+	ASSERT_STRING_EQUAL(dynamic_array_element(person_type, array, 2U).first_name, "Daniel");
+	ASSERT_STRING_EQUAL(dynamic_array_element(person_type, array, 2U).last_name, "Webb");
+	ASSERT_EQUAL(dynamic_array_element(person_type, array, 2U).date_of_birth.year, 2005);
+	ASSERT_EQUAL(dynamic_array_element(person_type, array, 2U).date_of_birth.month, 7);
+	ASSERT_EQUAL(dynamic_array_element(person_type, array, 2U).date_of_birth.day, 4);
 
 	dynamic_array_delete(array);
 	unit_test_pool_deinit();

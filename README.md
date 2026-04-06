@@ -16,10 +16,12 @@ This repository contains a collection of portable C application programming inte
 - **Safer integer arithmetic**  
   Safer integer arithmetic C API for runtime integer operation error debugging and reporting.  
   Safer integer types for emulation of built-in integers and for debugging and reporting integer operation and conversion errors (requires C++)
-- **Conversions**
+- **Conversions**  
   API for conversions between integers and strings.
 - **Simple tokenizer**  
   A tokenizer library for splitting text into simple tokens.
+- **Input/Output (IO)**  
+  Input/output APIs which hide operating system (OS) details.
 - **Terminal text color**  
   A library for configuring the color of text on the terminal.
 - **Unit testing**  
