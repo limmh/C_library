@@ -1,6 +1,6 @@
 # terminal_text_color
 
-A simple C library for setting terminal text color.
+A simple C API for setting terminal text color.
 
 ## Overview
 

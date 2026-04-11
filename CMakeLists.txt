@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(C_programming)
+project(C_library)
 
 set(LIBRARY_C_STANDARD "90")
 

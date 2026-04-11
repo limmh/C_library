@@ -1,6 +1,6 @@
 # unit_testing
 
-A minimal, portable unit testing library mainly for C code.
+A minimal and portable unit testing API mainly for C code.
 
 ## Overview
 
@@ -9,7 +9,8 @@ This header provides a lightweight, macro-driven unit testing framework for C, s
 ## Features
 
 - Define tests using macros (`TEST`) and run tests easily.
-- Assertion macros for integer comparisons.
+- Assertion macros for integer comparisons, including macros for fixed-width integers.
+- Assertion macros for C-style string equality and inequality comparisons.
 - Prints failed assertions with file or line info and value details.
 - Collects and prints test statistics.
 - Output can be redirected to any `FILE*`.
@@ -50,7 +51,7 @@ int main(void) {
 ## Compatibility
 
 - Works on C89 and later, as well as C++.
-- No dependencies except the standard library.
+- Depends only on the standard library and the APIs in this repository.
 
 ## License
 

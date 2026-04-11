@@ -1,6 +1,6 @@
 # Safer Integer API
 
-A portable C library for safer integer arithmetic with explicit error codes, clipping and convenient macros for all C standards.
+A portable C API for safer integer arithmetic with explicit error codes, clipping and convenient macros for all C standards.
 
 ## Overview
 
@@ -41,7 +41,7 @@ Here are some of their features and limitations.
 - **IntegerLib**: supports only built-in types and uses errno and error handler for error reporting.
 - **stdckdint.h**: C23's standard checked arithmetic API, no support for checked division and not available in C standards before C23.
 
-The Safer Integer API is an alternative safer integer C library which is portable for all available C standards.
+The Safer Integer API is an alternative C API which is portable for all available C standards.
 It uses value semantics like some of existing safer integer libraries and avoids pointer semantics completely.
 The functions of the API are pure functions as they do not have any external side effects. They do not modify errno and do not make use of external handlers.
 The integer operations will not abort on error, but the error is returned as an error code in a custom data structure.
@@ -59,6 +59,7 @@ The Safer Integer API offers:
 - **Support for fixed width integer types**, such as `int8_t`, `int16_t`, `int32_t`, `int64_t` and their unsigned variants.
 - **Comparison** between signed integers and unsigned integers.
 - **Safe bitwise operations** for unsigned integers.
+- **Math functions** for integers.
 - **Error reporting** via enums and result structs.
 - **Comprehensive error codes**: Explicitly distinguishes between overflow, underflow, division by zero and other error conditions.
 - **Value semantics**: Results are returned as structs, not via pointer output.
@@ -397,4 +398,4 @@ Notes:
 
 ## License
 
-This library is distributed under the MIT License. See the LICENSE file at the top level of the repository.
+The files are distributed under the MIT License. See the LICENSE file at the top level of the repository.

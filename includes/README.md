@@ -19,6 +19,7 @@ Provides a portable boolean type for both C and C++.
 - In C99/C++: defines `Boolean_type` as built-in `bool`, `Boolean_true` as `true`, and `Boolean_false` as `false`.  
 - In C89: defines `Boolean_type` as `unsigned char`, with `Boolean_true` and `Boolean_false` macros.
 - Ensures consistent boolean logic across compilers and standards.
+- Note: Similar to bool, true and false in stdbool.h since C99, the same macros are also backported to C89.
 
 ### `constexpr_int.h`
 

@@ -451,7 +451,7 @@ int main(void) {
 - **C Standard**: C89 or later
 - **Endianness**: Independent (no assumptions about byte order).
 - **Platform**: Portable to all platforms with C89+ support (x86, ARM, MIPS, etc.).
-- **Dependencies**: Standard C library and header files in this repository.
+- **Dependencies**: Standard C library and APIs in this repository.
 
 ---
 

@@ -1,10 +1,10 @@
 #!/bin/bash
 
 if [ ! -d "builds" ]; then
-	mkdir builds
+	mkdir build
 fi
 
-cmake -S . -B builds
-cd builds
+cmake -S . -B build
+cd build
 make all
 cd ..

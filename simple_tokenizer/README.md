@@ -4,7 +4,7 @@ A simple, extensible tokenizer for ASCII and UTF-8 text in C.
 
 ## Overview
 
-This library provides a tokenizer utility for classifying and extracting tokens (letters, digits, punctuation, spaces, control characters, UTF-8 characters, etc.) from strings.
+This module provides a tokenizer utility for classifying and extracting tokens (letters, digits, punctuation, spaces, control characters, UTF-8 characters, etc.) from strings.
 It also includes utilities for decoding UTF-8 characters with error detection.
 
 ## Features

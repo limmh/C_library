@@ -19,11 +19,11 @@ This repository contains a collection of portable C application programming inte
 - **Conversions**  
   API for conversions between integers and strings.
 - **Simple tokenizer**  
-  A tokenizer library for splitting text into simple tokens.
+  A tokenizer module for splitting text into simple tokens.
 - **Input/Output (IO)**  
   Input/output APIs which hide operating system (OS) details.
 - **Terminal text color**  
-  A library for configuring the color of text on the terminal.
+  API for configuring the color of text on the terminal.
 - **Unit testing**  
   A lightweight and simple unit testing library for C or C++ code.  
   Suitable for testing pure functions and black box interfaces.
@@ -40,4 +40,4 @@ This repository contains a collection of portable C application programming inte
 2. Make sure a recent version of CMake is installed.
 3. In the local repository folder, create a new folder, e.g. build.
 4. Use CMake to generate the build files for your target platform in the new folder you created.
-5. Run the generated build to compile all libraries and programs.
+5. Run the generated build to compile all library modules and programs.
