@@ -41,33 +41,33 @@ stringref_to_const_stringref(stringref_type stringref)
 }
 
 INLINE_OR_STATIC
-Boolean_type
+bool
 stringref_is_valid(stringref_type stringref)
 {
 	return (stringref.string != NULL);
 }
 
 INLINE_OR_STATIC
-Boolean_type
+bool
 const_stringref_is_valid(const_stringref_type const_stringref)
 {
 	return (const_stringref.string != NULL);
 }
 
 INLINE_OR_STATIC
-Boolean_type
+bool
 stringref_string_is_empty(stringref_type stringref)
 {
 	return (stringref.string != NULL && stringref.length > 0U) ?
-		(stringref.string[0] == '\0') : Boolean_true;
+		(stringref.string[0] == '\0') : true;
 }
 
 INLINE_OR_STATIC
-Boolean_type
+bool
 const_stringref_string_is_empty(const_stringref_type const_stringref)
 {
 	return (const_stringref.string != NULL && const_stringref.length > 0U) ?
-		(const_stringref.string[0] == '\0') : Boolean_true;
+		(const_stringref.string[0] == '\0') : true;
 }
 
 INLINE_OR_STATIC
@@ -122,14 +122,14 @@ stringref_string_length(stringref_type stringref)
 }
 
 INLINE_OR_STATIC
-Boolean_type
+bool
 const_stringref_string_is_null_terminated(const_stringref_type stringref)
 {
 	return const_stringref_string_length(stringref) < stringref.length;
 }
 
 INLINE_OR_STATIC
-Boolean_type
+bool
 stringref_string_is_null_terminated(stringref_type stringref)
 {
 	return stringref_string_length(stringref) < stringref.length;
@@ -160,15 +160,15 @@ stringref_to_string(stringref_type stringref, char *buffer, size_t buffer_size)
 }
 
 INLINE_OR_STATIC
-Boolean_type
+bool
 const_stringref_strings_are_equal(const_stringref_type strref1, const_stringref_type strref2)
 {
-	Boolean_type result = Boolean_false;
+	bool result = false;
 	if (const_stringref_is_valid(strref1)) {
 		const size_t length1 = const_stringref_string_length(strref1);
 		if (const_stringref_is_valid(strref2)) {
 			const size_t length2 = const_stringref_string_length(strref2);
-			result = (length1 == length2) ? (memcmp(strref1.string, strref2.string, length1) == 0) : Boolean_false;
+			result = (length1 == length2) ? (memcmp(strref1.string, strref2.string, length1) == 0) : false;
 		} else {
 			result = (length1 == 0U);
 		}
@@ -177,20 +177,20 @@ const_stringref_strings_are_equal(const_stringref_type strref1, const_stringref_
 			const size_t length2 = const_stringref_string_length(strref2);
 			result = (length2 == 0U);
 		} else {
-			result = Boolean_true;
+			result = true;
 		}
 	}
 	return result;
 }
 
 INLINE_OR_STATIC
-Boolean_type
+bool
 const_stringref_contents_are_equal(const_stringref_type strref1, const_stringref_type strref2)
 {
-	Boolean_type result = Boolean_false;
+	bool result = false;
 	if (const_stringref_is_valid(strref1)) {
 		if (const_stringref_is_valid(strref2)) {
-			result = (strref1.length == strref2.length) ? (memcmp(strref1.string, strref2.string, strref1.length) == 0) : Boolean_false;
+			result = (strref1.length == strref2.length) ? (memcmp(strref1.string, strref2.string, strref1.length) == 0) : false;
 		} else {
 			result = (strref1.length == 0U);
 		}
@@ -198,7 +198,7 @@ const_stringref_contents_are_equal(const_stringref_type strref1, const_stringref
 		if (const_stringref_is_valid(strref2)) {
 			result = (strref2.length == 0U);
 		} else {
-			result = Boolean_true;
+			result = true;
 		}
 	}
 	return result;

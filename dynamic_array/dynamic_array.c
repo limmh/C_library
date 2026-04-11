@@ -44,14 +44,14 @@ void dynamic_array_handle_exception(void (*exception_handler)(dynamic_array_erro
 }
 
 INLINE_OR_STATIC
-Boolean_type dynamic_array_addition_overflow_detected(size_t a, size_t b)
+bool dynamic_array_addition_overflow_detected(size_t a, size_t b)
 {
 	const size_result_type result = safer_size_add(a, b);
 	return (result.error != integer_operation_error_none);
 }
 
 INLINE_OR_STATIC
-Boolean_type dynamic_array_multiplication_overflow_detected(size_t a, size_t b)
+bool dynamic_array_multiplication_overflow_detected(size_t a, size_t b)
 {
 	const size_result_type result = safer_size_multiply(a, b);
 	return (result.error != integer_operation_error_none);
@@ -152,7 +152,7 @@ dynamic_array_create_(
 	dynamic_array_internal_type array = {0U};
 	dynamic_array_type_ dyn_array = {0U};
 #ifndef DYNAMIC_ARRAY_NO_RUNTIME_CHECKS
-	Boolean_type multiplication_overflow_detected = Boolean_false;
+	bool multiplication_overflow_detected = false;
 	dynamic_array_debug_info_type debug_info = {0};
 	debug_info.file_name = file_name;
 	debug_info.library_file_name = __FILE__;
@@ -404,7 +404,7 @@ void *dynamic_array_element_ptr_(
 	unsigned char *ptr = NULL;
 	const dynamic_array_internal_type *array = (const dynamic_array_internal_type*) dynamic_array;
 #ifndef DYNAMIC_ARRAY_NO_RUNTIME_CHECKS
-	Boolean_type multiplication_overflow_detected = Boolean_false;
+	bool multiplication_overflow_detected = false;
 	dynamic_array_debug_info_type debug_info = {0};
 	debug_info.file_name = file_name;
 	debug_info.library_file_name = __FILE__;
@@ -476,7 +476,7 @@ void dynamic_array_add_elements_at_index_(
 	size_t new_number_of_elements = 0U; 
 	dynamic_array_internal_type *array = (dynamic_array_internal_type*) dynamic_array;
 #ifndef DYNAMIC_ARRAY_NO_RUNTIME_CHECKS
-	Boolean_type addition_overflow_detected = Boolean_false;
+	bool addition_overflow_detected = false;
 	dynamic_array_debug_info_type debug_info = {0};
 	debug_info.file_name = file_name;
 	debug_info.library_file_name = __FILE__;
@@ -555,7 +555,7 @@ void dynamic_array_add_elements_at_index_(
 		size_t old_byte_count = 0U, new_byte_count = 0U;
 		size_t new_capacity = array->capacity;
 #ifndef DYNAMIC_ARRAY_NO_RUNTIME_CHECKS
-		Boolean_type multiplication_overflow_detected = Boolean_false;
+		bool multiplication_overflow_detected = false;
 #endif
 		while (new_capacity < new_number_of_elements) {
 			new_capacity += new_capacity;
@@ -741,7 +741,7 @@ void dynamic_array_resize_(
 			void *ptr = NULL;
 			size_t new_capacity = array->capacity;
 #ifndef DYNAMIC_ARRAY_NO_RUNTIME_CHECKS
-			Boolean_type multiplication_overflow_detected = Boolean_false;
+			bool multiplication_overflow_detected = false;
 #endif
 			while (new_capacity < new_number_of_elements) {
 				new_capacity += new_capacity;

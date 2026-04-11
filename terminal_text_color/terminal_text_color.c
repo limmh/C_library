@@ -97,13 +97,13 @@ terminal_text_color_code_to_Windows_console_text_color_code(terminal_color_code_
 
 static void Windows_terminal_text_color_set(terminal_color_code_type text_color_code)
 {
-	static Boolean_type is_first_time = Boolean_true;
+	static bool is_first_time = true;
 	static HANDLE hConsole = INVALID_HANDLE_VALUE;
 	static WORD default_attributes = 0U;
 
 	if (is_first_time) {
 		CONSOLE_SCREEN_BUFFER_INFO consoleInfo = {0};
-		is_first_time = Boolean_false;
+		is_first_time = false;
 		hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 		GetConsoleScreenBufferInfo(hConsole, &consoleInfo);
 		default_attributes = consoleInfo.wAttributes;

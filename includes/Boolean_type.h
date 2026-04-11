@@ -39,6 +39,18 @@ typedef unsigned char Boolean_type;
 #define Boolean_true (!Boolean_false)
 #define INTEGER_TO_BOOLEAN(integer) ((integer) != 0)
 
+#ifndef bool
+#define bool Boolean_type
+#endif
+
+#ifndef false
+#define false Boolean_false
+#endif
+
+#ifndef true
+#define true Boolean_true
+#endif
+
 #endif
 
 #endif

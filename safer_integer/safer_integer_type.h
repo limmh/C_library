@@ -4198,7 +4198,7 @@ typedef safer_integer::integer_type<uint64_t> safer_uint64_type;
 
 #pragma message("Defining safer integer types as aliases to built-in integer types.")
 
-typedef Boolean_type safer_bool_type;
+typedef bool safer_bool_type;
 typedef char safer_char_type;
 typedef signed char safer_schar_type;
 typedef unsigned char safer_uchar_type;
@@ -4223,8 +4223,8 @@ typedef uint32_t safer_uint32_type;
 typedef int64_t safer_int64_type;
 typedef uint64_t safer_uint64_type;
 
-#define SAFER_BOOL_MIN Boolean_false
-#define SAFER_BOOL_MAX Boolean_true
+#define SAFER_BOOL_MIN false
+#define SAFER_BOOL_MAX true
 #define SAFER_CHAR_MIN CHAR_MIN
 #define SAFER_CHAR_MAX CHAR_MAX
 #define SAFER_SCHAR_MIN SCHAR_MIN

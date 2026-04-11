@@ -18,11 +18,11 @@
 #define TRY try
 #define CATCH(EXCEPTION) catch(EXCEPTION)
 #else
-#define TRY if (Boolean_true)
+#define TRY if (true)
 #define CATCH(EXCEPTION) else
 #endif
 
-STATIC_ASSERT(sizeof(Boolean_type) == 1U, "Test environment assumption failure: sizeof(Boolean_type) == 1");
+STATIC_ASSERT(sizeof(bool) == 1U, "Test environment assumption failure: sizeof(bool) == 1");
 STATIC_ASSERT(sizeof(char) == 1U, "Test environment assumption failure: sizeof(char) == 1");
 STATIC_ASSERT(sizeof(char) == sizeof(signed char), "Test environment assumption failure: sizeof(char) == sizeof(signed char)");
 STATIC_ASSERT(sizeof(char) == sizeof(unsigned char), "Test environment assumption failure: sizeof(char) == sizeof(unsigned char)");
@@ -51,63 +51,63 @@ STATIC_ASSERT(LONG_MIN >= LLONG_MIN, "Test environment assumption failure: LONG_
 STATIC_ASSERT(LONG_MAX <= LLONG_MAX, "Test environment assumption failure: LONG_MAX <= LLONG_MAX");
 
 static FILE *output_file = NULL;
-static const Boolean_type safer_integer_type_exception_thrown = Boolean_true;
+static const bool safer_integer_type_exception_thrown = true;
 
 /* Property tests */
 TEST(safer_integer_type_trait_tests, "Type trait tests")
 {
 #ifdef __cplusplus
-	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<bool>::value, Boolean_true);
-	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<char>::value, Boolean_true);
-	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<signed char>::value, Boolean_true);
-	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<unsigned char>::value, Boolean_true);
-	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<short>::value, Boolean_true);
-	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<unsigned short>::value, Boolean_true);
-	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<int>::value, Boolean_true);
-	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<unsigned int>::value, Boolean_true);
-	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<long>::value, Boolean_true);
-	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<unsigned long>::value, Boolean_true);
-	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<long long>::value, Boolean_true);
-	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<unsigned long long>::value, Boolean_true);
-	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<ptrdiff_t>::value, Boolean_true);
-	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<size_t>::value, Boolean_true);
-	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<int8_t>::value, Boolean_true);
-	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<uint8_t>::value, Boolean_true);
-	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<int16_t>::value, Boolean_true);
-	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<uint16_t>::value, Boolean_true);
-	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<int32_t>::value, Boolean_true);
-	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<uint32_t>::value, Boolean_true);
-	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<int64_t>::value, Boolean_true);
-	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<uint64_t>::value, Boolean_true);
-	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<float>::value, Boolean_false);
-	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<double>::value, Boolean_false);
-	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<long double>::value, Boolean_false);
+	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<bool>::value, true);
+	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<char>::value, true);
+	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<signed char>::value, true);
+	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<unsigned char>::value, true);
+	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<short>::value, true);
+	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<unsigned short>::value, true);
+	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<int>::value, true);
+	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<unsigned int>::value, true);
+	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<long>::value, true);
+	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<unsigned long>::value, true);
+	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<long long>::value, true);
+	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<unsigned long long>::value, true);
+	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<ptrdiff_t>::value, true);
+	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<size_t>::value, true);
+	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<int8_t>::value, true);
+	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<uint8_t>::value, true);
+	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<int16_t>::value, true);
+	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<uint16_t>::value, true);
+	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<int32_t>::value, true);
+	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<uint32_t>::value, true);
+	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<int64_t>::value, true);
+	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<uint64_t>::value, true);
+	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<float>::value, false);
+	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<double>::value, false);
+	ASSERT_EQUAL(safer_integer::is_builtin_integer_type<long double>::value, false);
 
-	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<bool>::value, Boolean_false);
-	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<char>::value, Boolean_false);
-	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<signed char>::value, Boolean_false);
-	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<unsigned char>::value, Boolean_false);
-	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<short>::value, Boolean_false);
-	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<unsigned short>::value, Boolean_false);
-	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<int>::value, Boolean_false);
-	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<unsigned int>::value, Boolean_false);
-	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<long>::value, Boolean_false);
-	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<unsigned long>::value, Boolean_false);
-	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<long long>::value, Boolean_false);
-	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<unsigned long long>::value, Boolean_false);
-	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<ptrdiff_t>::value, Boolean_false);
-	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<size_t>::value, Boolean_false);
-	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<int8_t>::value, Boolean_false);
-	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<uint8_t>::value, Boolean_false);
-	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<int16_t>::value, Boolean_false);
-	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<uint16_t>::value, Boolean_false);
-	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<int32_t>::value, Boolean_false);
-	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<uint32_t>::value, Boolean_false);
-	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<int64_t>::value, Boolean_false);
-	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<uint64_t>::value, Boolean_false);
-	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<float>::value, Boolean_true);
-	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<double>::value, Boolean_true);
-	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<long double>::value, Boolean_true);
+	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<bool>::value, false);
+	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<char>::value, false);
+	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<signed char>::value, false);
+	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<unsigned char>::value, false);
+	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<short>::value, false);
+	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<unsigned short>::value, false);
+	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<int>::value, false);
+	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<unsigned int>::value, false);
+	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<long>::value, false);
+	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<unsigned long>::value, false);
+	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<long long>::value, false);
+	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<unsigned long long>::value, false);
+	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<ptrdiff_t>::value, false);
+	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<size_t>::value, false);
+	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<int8_t>::value, false);
+	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<uint8_t>::value, false);
+	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<int16_t>::value, false);
+	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<uint16_t>::value, false);
+	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<int32_t>::value, false);
+	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<uint32_t>::value, false);
+	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<int64_t>::value, false);
+	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<uint64_t>::value, false);
+	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<float>::value, true);
+	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<double>::value, true);
+	ASSERT_EQUAL(safer_integer::is_builtin_floating_point_type<long double>::value, true);
 #else
 	fprintf(output_file, "The tests are only for C++.\n");
 #endif
@@ -147,8 +147,8 @@ TEST(safer_integer_type_signedness_tests, "Safer integer type signedness tests")
 
 TEST(safer_integer_type_min_max_tests, "Safer integer type min/max tests")
 {
-	ASSERT_EQUAL(SAFER_BOOL_MIN, Boolean_false);
-	ASSERT_EQUAL(SAFER_BOOL_MAX, Boolean_true);
+	ASSERT_EQUAL(SAFER_BOOL_MIN, false);
+	ASSERT_EQUAL(SAFER_BOOL_MAX, true);
 	ASSERT_EQUAL(SAFER_CHAR_MIN, CHAR_MIN);
 	ASSERT_EQUAL(SAFER_CHAR_MAX, CHAR_MAX);
 	ASSERT_EQUAL(SAFER_SCHAR_MIN, SCHAR_MIN);
@@ -331,78 +331,78 @@ TEST(safer_integer_type_uninitialized_variable_tests, "Safer integer type uninit
 TEST(safer_bool_type_conversion_tests, "Safer bool type conversion tests")
 {
 	TRY {
-		safer_bool_type var = Boolean_false;
-		ASSERT_EQUAL(var, Boolean_false);
-		var = Boolean_true;
-		ASSERT_EQUAL(var, Boolean_true);
+		safer_bool_type var = false;
+		ASSERT_EQUAL(var, false);
+		var = true;
+		ASSERT_EQUAL(var, true);
 		var = INTEGER_TO_BOOLEAN(0);
-		ASSERT_EQUAL(var, Boolean_false);
+		ASSERT_EQUAL(var, false);
 		var = INTEGER_TO_BOOLEAN(1);
-		ASSERT_EQUAL(var, Boolean_true);
+		ASSERT_EQUAL(var, true);
 		var = INTEGER_TO_BOOLEAN(-1);
-		ASSERT_EQUAL(var, Boolean_true);
+		ASSERT_EQUAL(var, true);
 		var = INTEGER_TO_BOOLEAN(SCHAR_MIN);
-		ASSERT_EQUAL(var, Boolean_true);
+		ASSERT_EQUAL(var, true);
 		var = INTEGER_TO_BOOLEAN(SCHAR_MAX);
-		ASSERT_EQUAL(var, Boolean_true);
+		ASSERT_EQUAL(var, true);
 		var = INTEGER_TO_BOOLEAN(UCHAR_MAX);
-		ASSERT_EQUAL(var, Boolean_true);
+		ASSERT_EQUAL(var, true);
 		var = INTEGER_TO_BOOLEAN(SHRT_MIN);
-		ASSERT_EQUAL(var, Boolean_true);
+		ASSERT_EQUAL(var, true);
 		var = INTEGER_TO_BOOLEAN(SHRT_MAX);
-		ASSERT_EQUAL(var, Boolean_true);
+		ASSERT_EQUAL(var, true);
 		var = INTEGER_TO_BOOLEAN(USHRT_MAX);
-		ASSERT_EQUAL(var, Boolean_true);
+		ASSERT_EQUAL(var, true);
 		var = INTEGER_TO_BOOLEAN(INT_MIN);
-		ASSERT_EQUAL(var, Boolean_true);
+		ASSERT_EQUAL(var, true);
 		var = INTEGER_TO_BOOLEAN(INT_MAX);
-		ASSERT_EQUAL(var, Boolean_true);
+		ASSERT_EQUAL(var, true);
 		var = INTEGER_TO_BOOLEAN(UINT_MAX);
-		ASSERT_EQUAL(var, Boolean_true);
+		ASSERT_EQUAL(var, true);
 		var = INTEGER_TO_BOOLEAN(LONG_MIN);
-		ASSERT_EQUAL(var, Boolean_true);
+		ASSERT_EQUAL(var, true);
 		var = INTEGER_TO_BOOLEAN(LONG_MAX);
-		ASSERT_EQUAL(var, Boolean_true);
+		ASSERT_EQUAL(var, true);
 		var = INTEGER_TO_BOOLEAN(ULONG_MAX);
-		ASSERT_EQUAL(var, Boolean_true);
+		ASSERT_EQUAL(var, true);
 		var = INTEGER_TO_BOOLEAN(LLONG_MIN);
-		ASSERT_EQUAL(var, Boolean_true);
+		ASSERT_EQUAL(var, true);
 		var = INTEGER_TO_BOOLEAN(LLONG_MAX);
-		ASSERT_EQUAL(var, Boolean_true);
+		ASSERT_EQUAL(var, true);
 		var = INTEGER_TO_BOOLEAN(ULLONG_MAX);
-		ASSERT_EQUAL(var, Boolean_true);
+		ASSERT_EQUAL(var, true);
 		var = INTEGER_TO_BOOLEAN(PTRDIFF_MIN);
-		ASSERT_EQUAL(var, Boolean_true);
+		ASSERT_EQUAL(var, true);
 		var = INTEGER_TO_BOOLEAN(PTRDIFF_MAX);
-		ASSERT_EQUAL(var, Boolean_true);
+		ASSERT_EQUAL(var, true);
 		var = INTEGER_TO_BOOLEAN(SIZE_MAX);
-		ASSERT_EQUAL(var, Boolean_true);
+		ASSERT_EQUAL(var, true);
 		var = INTEGER_TO_BOOLEAN(INT8_MIN);
-		ASSERT_EQUAL(var, Boolean_true);
+		ASSERT_EQUAL(var, true);
 		var = INTEGER_TO_BOOLEAN(INT8_MAX);
-		ASSERT_EQUAL(var, Boolean_true);
+		ASSERT_EQUAL(var, true);
 		var = INTEGER_TO_BOOLEAN(UINT8_MAX);
-		ASSERT_EQUAL(var, Boolean_true);
+		ASSERT_EQUAL(var, true);
 		var = INTEGER_TO_BOOLEAN(INT16_MIN);
-		ASSERT_EQUAL(var, Boolean_true);
+		ASSERT_EQUAL(var, true);
 		var = INTEGER_TO_BOOLEAN(INT16_MAX);
-		ASSERT_EQUAL(var, Boolean_true);
+		ASSERT_EQUAL(var, true);
 		var = INTEGER_TO_BOOLEAN(UINT16_MAX);
-		ASSERT_EQUAL(var, Boolean_true);
+		ASSERT_EQUAL(var, true);
 		var = INTEGER_TO_BOOLEAN(INT32_MIN);
-		ASSERT_EQUAL(var, Boolean_true);
+		ASSERT_EQUAL(var, true);
 		var = INTEGER_TO_BOOLEAN(INT32_MAX);
-		ASSERT_EQUAL(var, Boolean_true);
+		ASSERT_EQUAL(var, true);
 		var = INTEGER_TO_BOOLEAN(UINT32_MAX);
-		ASSERT_EQUAL(var, Boolean_true);
+		ASSERT_EQUAL(var, true);
 		var = INTEGER_TO_BOOLEAN(INT64_MIN);
-		ASSERT_EQUAL(var, Boolean_true);
+		ASSERT_EQUAL(var, true);
 		var = INTEGER_TO_BOOLEAN(INT64_MAX);
-		ASSERT_EQUAL(var, Boolean_true);
+		ASSERT_EQUAL(var, true);
 		var = INTEGER_TO_BOOLEAN(UINT64_MAX);
-		ASSERT_EQUAL(var, Boolean_true);
+		ASSERT_EQUAL(var, true);
 	} CATCH (std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 }
 
@@ -540,16 +540,16 @@ TEST(safer_char_type_conversion_tests, "safer_char_type conversion tests")
 		}
 		var = 1;
 		ASSERT_EQUAL(var, 1);
-		var = Boolean_false;
+		var = false;
 		ASSERT_EQUAL(var, 0);
-		var = Boolean_true;
+		var = true;
 		ASSERT_EQUAL(var, 1);
 		var = CHAR_MIN;
 		ASSERT_EQUAL(var, CHAR_MIN);
 		var = CHAR_MAX;
 		ASSERT_EQUAL(var, CHAR_MAX);
 	} CATCH (std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 }
 
@@ -682,16 +682,16 @@ TEST(safer_schar_type_conversion_tests, "Safer schar type conversion tests")
 		ASSERT_EQUAL(var, -1);
 		var = 1;
 		ASSERT_EQUAL(var, 1);
-		var = Boolean_false;
+		var = false;
 		ASSERT_EQUAL(var, 0);
-		var = Boolean_true;
+		var = true;
 		ASSERT_EQUAL(var, 1);
 		var = SCHAR_MIN;
 		ASSERT_EQUAL(var, SCHAR_MIN);
 		var = SCHAR_MAX;
 		ASSERT_EQUAL(var, SCHAR_MAX);
 	} CATCH (std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 }
 
@@ -831,16 +831,16 @@ TEST(safer_uchar_type_conversion_tests, "safer_uchar_type conversion tests")
 		ASSERT_EQUAL(var, 0);
 		var = 1;
 		ASSERT_EQUAL(var, 1);
-		var = Boolean_false;
+		var = false;
 		ASSERT_EQUAL(var, 0);
-		var = Boolean_true;
+		var = true;
 		ASSERT_EQUAL(var, 1);
 		var = (signed char) SCHAR_MAX;
 		ASSERT_EQUAL(var, SCHAR_MAX);
 		var = UCHAR_MAX;
 		ASSERT_EQUAL(var, UCHAR_MAX);
 	} CATCH (std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 }
 
@@ -946,16 +946,16 @@ TEST(safer_short_type_conversion_tests, "safer_short_type conversion tests")
 		ASSERT_EQUAL(var, -1);
 		var = 1;
 		ASSERT_EQUAL(var, 1);
-		var = Boolean_false;
+		var = false;
 		ASSERT_EQUAL(var, 0);
-		var = Boolean_true;
+		var = true;
 		ASSERT_EQUAL(var, 1);
 		var = SHRT_MIN;
 		ASSERT_EQUAL(var, SHRT_MIN);
 		var = SHRT_MAX;
 		ASSERT_EQUAL(var, SHRT_MAX);
 	} CATCH (std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 }
 
@@ -1077,16 +1077,16 @@ TEST(safer_ushort_type_conversion_tests, "safer_ushort_type conversion tests")
 		ASSERT_EQUAL(var, 0);
 		var = 1;
 		ASSERT_EQUAL(var, 1);
-		var = Boolean_false;
+		var = false;
 		ASSERT_EQUAL(var, 0);
-		var = Boolean_true;
+		var = true;
 		ASSERT_EQUAL(var, 1);
 		var = (short) SHRT_MAX;
 		ASSERT_EQUAL(var, SHRT_MAX);
 		var = USHRT_MAX;
 		ASSERT_EQUAL(var, USHRT_MAX);
 	} CATCH (std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 }
 
@@ -1169,9 +1169,9 @@ TEST(safer_int_type_conversion_tests, "safer_int_type conversion tests")
 		ASSERT_EQUAL(var, -1);
 		var = 1;
 		ASSERT_EQUAL(var, 1);
-		var = Boolean_false;
+		var = false;
 		ASSERT_EQUAL(var, 0);
-		var = Boolean_true;
+		var = true;
 		ASSERT_EQUAL(var, 1);
 		var = (char) CHAR_MIN;
 		ASSERT_EQUAL(var, CHAR_MIN);
@@ -1194,7 +1194,7 @@ TEST(safer_int_type_conversion_tests, "safer_int_type conversion tests")
 		var = INT_MAX;
 		ASSERT_EQUAL(var, INT_MAX);
 	} CATCH (std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 }
 
@@ -1303,9 +1303,9 @@ TEST(safer_uint_type_conversion_tests, "safer_uint_type conversion tests")
 		ASSERT_UINT_EQUAL(var, 0U);
 		var = 1;
 		ASSERT_UINT_EQUAL(var, 1U);
-		var = Boolean_false;
+		var = false;
 		ASSERT_EQUAL(var, 0U);
-		var = Boolean_true;
+		var = true;
 		ASSERT_EQUAL(var, 1U);
 		var = (char) CHAR_MAX;
 		ASSERT_UINT_EQUAL(var, CHAR_MAX);
@@ -1322,7 +1322,7 @@ TEST(safer_uint_type_conversion_tests, "safer_uint_type conversion tests")
 		var = UINT_MAX;
 		ASSERT_UINT_EQUAL(var, UINT_MAX);
 	} CATCH (std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 }
 
@@ -1347,9 +1347,9 @@ TEST(safer_long_type_conversion_tests, "safer_long_type conversion tests")
 		ASSERT_LONG_EQUAL(var, -1L);
 		var = 1;
 		ASSERT_LONG_EQUAL(var, 1L);
-		var = Boolean_false;
+		var = false;
 		ASSERT_LONG_EQUAL(var, 0L);
-		var = Boolean_true;
+		var = true;
 		ASSERT_LONG_EQUAL(var, 1L);
 		var = SCHAR_MIN;
 		ASSERT_LONG_EQUAL(var, SCHAR_MIN);
@@ -1376,7 +1376,7 @@ TEST(safer_long_type_conversion_tests, "safer_long_type conversion tests")
 		var = LONG_MAX;
 		ASSERT_LONG_EQUAL(var, LONG_MAX);
 	} CATCH (std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 }
 
@@ -1444,9 +1444,9 @@ TEST(safer_ulong_type_conversion_tests, "safer_ulong_type conversion tests")
 		ASSERT_ULONG_EQUAL(var, 0UL);
 		var = 1;
 		ASSERT_ULONG_EQUAL(var, 1UL);
-		var = Boolean_false;
+		var = false;
 		ASSERT_ULONG_EQUAL(var, 0UL);
-		var = Boolean_true;
+		var = true;
 		ASSERT_ULONG_EQUAL(var, 1UL);
 		var = (char) CHAR_MAX;
 		ASSERT_ULONG_EQUAL(var, CHAR_MAX);
@@ -1467,7 +1467,7 @@ TEST(safer_ulong_type_conversion_tests, "safer_ulong_type conversion tests")
 		var = ULONG_MAX;
 		ASSERT_ULONG_EQUAL(var, ULONG_MAX);
 	} CATCH (std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 }
 
@@ -2318,7 +2318,7 @@ TEST(safer_integer_type_addition_tests, "safer integer type addition tests")
 		llresult = (safer_llong_type) uvar + 1;
 		ASSERT_LLONG_EQUAL(llresult, 4294967296LL);
 	} CATCH (std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 }
 
@@ -2701,7 +2701,7 @@ TEST(safer_integer_type_subtraction_tests, "safer integer type subtraction tests
 		llresult = 0 - (safer_llong_type) uvar;
 		ASSERT_LLONG_EQUAL(llresult, -4294967295LL);
 	} CATCH (std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 }
 
@@ -3124,7 +3124,7 @@ TEST(safer_integer_type_multiplication_tests, "safer integer type multiplication
 		llresult = (safer_llong_type) uvar * 2;
 		ASSERT_LLONG_EQUAL(llresult, 8589934590LL);
 	} CATCH (std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 }
 
@@ -3872,7 +3872,7 @@ TEST(safer_integer_type_division_tests, "safer integer type division tests")
 		uresult /= 2U;
 		ASSERT_UINT_EQUAL(uresult, 1073741823U);
 	} CATCH (std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 }
 
@@ -4620,7 +4620,7 @@ TEST(safer_integer_type_remainder_tests, "safer integer type remainder tests")
 		uresult %= 2U;
 		ASSERT_UINT_EQUAL(uresult, 1U);
 	} CATCH (std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 }
 
@@ -4631,7 +4631,7 @@ TEST(safer_integer_type_comparison_error_tests, "safer_integer_type comparison e
 	TRY {
 		const safer_int_type var1 = -1;
 		const safer_uint_type var2 = UINT_MAX;
-		const Boolean_type result = (var1 == var2);
+		const bool result = (var1 == var2);
 		fprintf(output_file, "Line %d: (%d == %u) == %s\n", LINE, (int) var1, (unsigned int) var2, (result ? "true" : "false"));
 	} CATCH(std::exception&) {
 		ASSERT(safer_integer_type_exception_thrown);
@@ -4640,7 +4640,7 @@ TEST(safer_integer_type_comparison_error_tests, "safer_integer_type comparison e
 	TRY {
 		const safer_int_type var1 = -1;
 		const unsigned int var2 = UINT_MAX;
-		const Boolean_type result = (var1 == var2);
+		const bool result = (var1 == var2);
 		fprintf(output_file, "Line %d: (%d == %u) == %s\n", LINE, (int) var1, var2, (result ? "true" : "false"));
 	} CATCH(std::exception&) {
 		ASSERT(safer_integer_type_exception_thrown);
@@ -4649,7 +4649,7 @@ TEST(safer_integer_type_comparison_error_tests, "safer_integer_type comparison e
 	TRY {
 		const int var1 = -1;
 		const safer_uint_type var2 = UINT_MAX;
-		const Boolean_type result = (var1 == var2);
+		const bool result = (var1 == var2);
 		fprintf(output_file, "Line %d: (%d == %u) == %s\n", LINE, var1, (unsigned int) var2, (result ? "true" : "false"));
 	} CATCH(std::exception&) {
 		ASSERT(safer_integer_type_exception_thrown);
@@ -4659,7 +4659,7 @@ TEST(safer_integer_type_comparison_error_tests, "safer_integer_type comparison e
 	TRY {
 		const safer_int_type var1 = -1;
 		const safer_uint_type var2 = UINT_MAX;
-		const Boolean_type result = (var1 != var2);
+		const bool result = (var1 != var2);
 		fprintf(output_file, "Line %d: (%d != %u) == %s\n", LINE, (int) var1, (unsigned int) var2, (result ? "true" : "false"));
 	} CATCH(std::exception&) {
 		ASSERT(safer_integer_type_exception_thrown);
@@ -4668,7 +4668,7 @@ TEST(safer_integer_type_comparison_error_tests, "safer_integer_type comparison e
 	TRY {
 		const safer_int_type var1 = -1;
 		const unsigned int var2 = UINT_MAX;
-		const Boolean_type result = (var1 != var2);
+		const bool result = (var1 != var2);
 		fprintf(output_file, "Line %d: (%d != %u) == %s\n", LINE, (int) var1, var2, (result ? "true" : "false"));
 	} CATCH(std::exception&) {
 		ASSERT(safer_integer_type_exception_thrown);
@@ -4677,7 +4677,7 @@ TEST(safer_integer_type_comparison_error_tests, "safer_integer_type comparison e
 	TRY {
 		const int var1 = -1;
 		const safer_uint_type var2 = UINT_MAX;
-		const Boolean_type result = (var1 != var2);
+		const bool result = (var1 != var2);
 		fprintf(output_file, "Line %d: (%d != %u) == %s\n", LINE, var1, (unsigned int) var2, (result ? "true" : "false"));
 	} CATCH(std::exception&) {
 		ASSERT(safer_integer_type_exception_thrown);
@@ -4687,7 +4687,7 @@ TEST(safer_integer_type_comparison_error_tests, "safer_integer_type comparison e
 	TRY {
 		const safer_int_type var1 = -1;
 		const safer_uint_type var2 = 1U;
-		const Boolean_type result = (var1 < var2);
+		const bool result = (var1 < var2);
 		fprintf(output_file, "Line %d: (%d < %u) == %s\n", LINE, (int) var1, (unsigned int) var2, (result ? "true" : "false"));
 	} CATCH(std::exception&) {
 		ASSERT(safer_integer_type_exception_thrown);
@@ -4696,7 +4696,7 @@ TEST(safer_integer_type_comparison_error_tests, "safer_integer_type comparison e
 	TRY {
 		const safer_int_type var1 = -1;
 		const unsigned int var2 = 1U;
-		const Boolean_type result = (var1 < var2);
+		const bool result = (var1 < var2);
 		fprintf(output_file, "Line %d: (%d < %u) == %s\n", LINE, (int) var1, var2, (result ? "true" : "false"));
 	} CATCH(std::exception&) {
 		ASSERT(safer_integer_type_exception_thrown);
@@ -4705,7 +4705,7 @@ TEST(safer_integer_type_comparison_error_tests, "safer_integer_type comparison e
 	TRY {
 		const int var1 = -1;
 		const safer_uint_type var2 = 1U;
-		const Boolean_type result = (var1 < var2);
+		const bool result = (var1 < var2);
 		fprintf(output_file, "Line %d: (%d < %u) == %s\n", LINE, var1, (unsigned int) var2, (result ? "true" : "false"));
 	} CATCH(std::exception&) {
 		ASSERT(safer_integer_type_exception_thrown);
@@ -4715,7 +4715,7 @@ TEST(safer_integer_type_comparison_error_tests, "safer_integer_type comparison e
 	TRY {
 		const safer_int_type var1 = -1;
 		const safer_uint_type var2 = 1U;
-		const Boolean_type result = (var1 <= var2);
+		const bool result = (var1 <= var2);
 		fprintf(output_file, "Line %d: (%d <= %u) == %s\n", LINE, (int) var1, (unsigned int) var2, (result ? "true" : "false"));
 	} CATCH(std::exception&) {
 		ASSERT(safer_integer_type_exception_thrown);
@@ -4724,7 +4724,7 @@ TEST(safer_integer_type_comparison_error_tests, "safer_integer_type comparison e
 	TRY {
 		const safer_int_type var1 = -1;
 		const unsigned int var2 = 1U;
-		const Boolean_type result = (var1 <= var2);
+		const bool result = (var1 <= var2);
 		fprintf(output_file, "Line %d: (%d <= %u) == %s\n", LINE, (int) var1, var2, (result ? "true" : "false"));
 	} CATCH(std::exception&) {
 		ASSERT(safer_integer_type_exception_thrown);
@@ -4733,7 +4733,7 @@ TEST(safer_integer_type_comparison_error_tests, "safer_integer_type comparison e
 	TRY {
 		const int var1 = -1;
 		const safer_uint_type var2 = 1U;
-		const Boolean_type result = (var1 <= var2);
+		const bool result = (var1 <= var2);
 		fprintf(output_file, "Line %d: (%d <= %u) == %s\n", LINE, var1, (unsigned int) var2, (result ? "true" : "false"));
 	} CATCH(std::exception&) {
 		ASSERT(safer_integer_type_exception_thrown);
@@ -4743,7 +4743,7 @@ TEST(safer_integer_type_comparison_error_tests, "safer_integer_type comparison e
 	TRY {
 		const safer_uint_type var1 = 1U;
 		const safer_int_type var2 = -1;
-		const Boolean_type result = (var1 > var2);
+		const bool result = (var1 > var2);
 		fprintf(output_file, "Line %d: (%u > %d) == %s\n", LINE, (unsigned int) var1, (int) var2, (result ? "true" : "false"));
 	} CATCH(std::exception&) {
 		ASSERT(safer_integer_type_exception_thrown);
@@ -4752,7 +4752,7 @@ TEST(safer_integer_type_comparison_error_tests, "safer_integer_type comparison e
 	TRY {
 		const safer_uint_type var1 = 1U;
 		const int var2 = -1;
-		const Boolean_type result = (var1 > var2);
+		const bool result = (var1 > var2);
 		fprintf(output_file, "Line %d: (%u > %d) == %s\n", LINE, (unsigned int) var1, var2, (result ? "true" : "false"));
 	} CATCH(std::exception&) {
 		ASSERT(safer_integer_type_exception_thrown);
@@ -4761,7 +4761,7 @@ TEST(safer_integer_type_comparison_error_tests, "safer_integer_type comparison e
 	TRY {
 		const unsigned int var1 = 1U;
 		const safer_int_type var2 = -1;
-		const Boolean_type result = (var1 > var2);
+		const bool result = (var1 > var2);
 		fprintf(output_file, "Line %d: (%u > %d) == %s\n", LINE, var1, (int) var2, (result ? "true" : "false"));
 	} CATCH(std::exception&) {
 		ASSERT(safer_integer_type_exception_thrown);
@@ -4771,7 +4771,7 @@ TEST(safer_integer_type_comparison_error_tests, "safer_integer_type comparison e
 	TRY {
 		const safer_uint_type var1 = 1U;
 		const safer_int_type var2 = -1;
-		const Boolean_type result = (var1 >= var2);
+		const bool result = (var1 >= var2);
 		fprintf(output_file, "Line %d: (%u >= %d) == %s\n", LINE, (unsigned int) var1, (int) var2, (result ? "true" : "false"));
 	} CATCH(std::exception&) {
 		ASSERT(safer_integer_type_exception_thrown);
@@ -4780,7 +4780,7 @@ TEST(safer_integer_type_comparison_error_tests, "safer_integer_type comparison e
 	TRY {
 		const safer_uint_type var1 = 1U;
 		const int var2 = -1;
-		const Boolean_type result = (var1 >= var2);
+		const bool result = (var1 >= var2);
 		fprintf(output_file, "Line %d: (%u >= %d) == %s\n", LINE, (unsigned int) var1, var2, (result ? "true" : "false"));
 	} CATCH(std::exception&) {
 		ASSERT(safer_integer_type_exception_thrown);
@@ -4789,7 +4789,7 @@ TEST(safer_integer_type_comparison_error_tests, "safer_integer_type comparison e
 	TRY {
 		const unsigned int var1 = 1U;
 		const safer_int_type var2 = -1;
-		const Boolean_type result = (var1 >= var2);
+		const bool result = (var1 >= var2);
 		fprintf(output_file, "Line %d: (%u >= %d) == %s\n", LINE, var1, (int) var2, (result ? "true" : "false"));
 	} CATCH(std::exception&) {
 		ASSERT(safer_integer_type_exception_thrown);
@@ -4804,7 +4804,7 @@ TEST(safer_integer_type_comparison_tests, "safer_integer_type comparison tests")
 		const safer_int_type var2 = -1;
 		ASSERT(var1 == var2);
 	} CATCH(std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
@@ -4812,7 +4812,7 @@ TEST(safer_integer_type_comparison_tests, "safer_integer_type comparison tests")
 		const int var2 = 0;
 		ASSERT(var1 == var2);
 	} CATCH(std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
@@ -4820,7 +4820,7 @@ TEST(safer_integer_type_comparison_tests, "safer_integer_type comparison tests")
 		const safer_int_type var2 = 1;
 		ASSERT(var1 == var2);
 	} CATCH(std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	/* inequality comparison */
@@ -4829,7 +4829,7 @@ TEST(safer_integer_type_comparison_tests, "safer_integer_type comparison tests")
 		const safer_int_type var2 = 1;
 		ASSERT(var1 != var2);
 	} CATCH(std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
@@ -4837,7 +4837,7 @@ TEST(safer_integer_type_comparison_tests, "safer_integer_type comparison tests")
 		const int var2 = 1;
 		ASSERT(var1 != var2);
 	} CATCH(std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
@@ -4845,7 +4845,7 @@ TEST(safer_integer_type_comparison_tests, "safer_integer_type comparison tests")
 		const safer_int_type var2 = 1;
 		ASSERT(var1 != var2);
 	} CATCH(std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	/* less than comparison */
@@ -4854,7 +4854,7 @@ TEST(safer_integer_type_comparison_tests, "safer_integer_type comparison tests")
 		const safer_int_type var2 = 1;
 		ASSERT(var1 < var2);
 	} CATCH(std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
@@ -4862,7 +4862,7 @@ TEST(safer_integer_type_comparison_tests, "safer_integer_type comparison tests")
 		const int var2 = 1;
 		ASSERT(var1 < var2);
 	} CATCH(std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
@@ -4870,7 +4870,7 @@ TEST(safer_integer_type_comparison_tests, "safer_integer_type comparison tests")
 		const safer_int_type var2 = 1;
 		ASSERT(var1 < var2);
 	} CATCH(std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	/* greater than or equal to comparison */
@@ -4879,7 +4879,7 @@ TEST(safer_integer_type_comparison_tests, "safer_integer_type comparison tests")
 		const safer_int_type var2 = 1;
 		ASSERT(var1 <= var2);
 	} CATCH(std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
@@ -4887,7 +4887,7 @@ TEST(safer_integer_type_comparison_tests, "safer_integer_type comparison tests")
 		const int var2 = 1;
 		ASSERT(var1 <= var2);
 	} CATCH(std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
@@ -4895,7 +4895,7 @@ TEST(safer_integer_type_comparison_tests, "safer_integer_type comparison tests")
 		const safer_int_type var2 = 1;
 		ASSERT(var1 <= var2);
 	} CATCH(std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	/* greater than comparison */
@@ -4904,7 +4904,7 @@ TEST(safer_integer_type_comparison_tests, "safer_integer_type comparison tests")
 		const safer_int_type var2 = -1;
 		ASSERT(var1 > var2);
 	} CATCH(std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
@@ -4912,7 +4912,7 @@ TEST(safer_integer_type_comparison_tests, "safer_integer_type comparison tests")
 		const int var2 = -1;
 		ASSERT(var1 > var2);
 	} CATCH(std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
@@ -4920,7 +4920,7 @@ TEST(safer_integer_type_comparison_tests, "safer_integer_type comparison tests")
 		const safer_int_type var2 = -1;
 		ASSERT(var1 > var2);
 	} CATCH(std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	/* greater than comparison */
@@ -4929,7 +4929,7 @@ TEST(safer_integer_type_comparison_tests, "safer_integer_type comparison tests")
 		const safer_int_type var2 = -1;
 		ASSERT(var1 >= var2);
 	} CATCH(std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
@@ -4937,7 +4937,7 @@ TEST(safer_integer_type_comparison_tests, "safer_integer_type comparison tests")
 		const int var2 = -1;
 		ASSERT(var1 >= var2);
 	} CATCH(std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
@@ -4945,7 +4945,7 @@ TEST(safer_integer_type_comparison_tests, "safer_integer_type comparison tests")
 		const safer_int_type var2 = -1;
 		ASSERT(var1 >= var2);
 	} CATCH(std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 }
 
@@ -5012,7 +5012,7 @@ TEST(safer_integer_type_bitwise_and_tests, "safer integer type bitwise AND tests
 		result = var1 & var2;
 		ASSERT_EQUAL(result, INT_MAX);
 	} CATCH(std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
@@ -5037,7 +5037,7 @@ TEST(safer_integer_type_bitwise_and_tests, "safer integer type bitwise AND tests
 		result = var1 & var2;
 		ASSERT_UINT_EQUAL(result, UINT_MAX);
 	} CATCH(std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
@@ -5050,7 +5050,7 @@ TEST(safer_integer_type_bitwise_and_tests, "safer integer type bitwise AND tests
 		result = var1 & var2;
 		ASSERT_EQUAL(result, SHRT_MAX);
 	} CATCH(std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
@@ -5063,7 +5063,7 @@ TEST(safer_integer_type_bitwise_and_tests, "safer integer type bitwise AND tests
 		result = var1 & var2;
 		ASSERT_EQUAL(result, USHRT_MAX);
 	} CATCH(std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 }
 
@@ -5121,7 +5121,7 @@ TEST(safer_integer_type_bitwise_or_tests, "safer integer type bitwise OR tests")
 		result = var1 | var2;
 		ASSERT_EQUAL(result, INT_MAX);
 	} CATCH(std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
@@ -5146,7 +5146,7 @@ TEST(safer_integer_type_bitwise_or_tests, "safer integer type bitwise OR tests")
 		result = var1 | var2;
 		ASSERT_UINT_EQUAL(result, UINT_MAX);
 	} CATCH(std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
@@ -5159,7 +5159,7 @@ TEST(safer_integer_type_bitwise_or_tests, "safer integer type bitwise OR tests")
 		result = var1 | var2;
 		ASSERT_EQUAL(result, INT_MAX);
 	} CATCH(std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
@@ -5172,7 +5172,7 @@ TEST(safer_integer_type_bitwise_or_tests, "safer integer type bitwise OR tests")
 		result = var1 | var2;
 		ASSERT_EQUAL(result, INT_MAX);
 	} CATCH(std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 }
 
@@ -5230,7 +5230,7 @@ TEST(safer_integer_type_bitwise_xor_tests, "safer integer type bitwise XOR tests
 		result = var1 ^ var2;
 		ASSERT_EQUAL(result, 0);
 	} CATCH(std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
@@ -5255,7 +5255,7 @@ TEST(safer_integer_type_bitwise_xor_tests, "safer integer type bitwise XOR tests
 		result = var1 ^ var2;
 		ASSERT_UINT_EQUAL(result, 0U);
 	} CATCH(std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
@@ -5268,7 +5268,7 @@ TEST(safer_integer_type_bitwise_xor_tests, "safer integer type bitwise XOR tests
 		result = var1 ^ var2;
 		ASSERT_EQUAL(result, 0x7FFF8000);
 	} CATCH(std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
@@ -5281,7 +5281,7 @@ TEST(safer_integer_type_bitwise_xor_tests, "safer integer type bitwise XOR tests
 		result = var1 ^ var2;
 		ASSERT_EQUAL(result, 0x7FFF0000);
 	} CATCH(std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 }
 
@@ -5314,7 +5314,7 @@ TEST(safer_integer_type_bitwise_not_tests, "safer integer type bitwise NOT tests
 		result = ~var;
 		ASSERT_EQUAL(result, INT_MIN);
 	} CATCH(std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
@@ -5325,7 +5325,7 @@ TEST(safer_integer_type_bitwise_not_tests, "safer integer type bitwise NOT tests
 		result = ~var;
 		ASSERT_UINT_EQUAL(result, 0U);
 	} CATCH(std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 }
 
@@ -5485,7 +5485,7 @@ TEST(safer_integer_type_bitwise_shift_tests, "safer integer type bitwise shift t
 		result = var >> 30;
 		ASSERT_EQUAL(result, 1);
 	} CATCH(std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
@@ -5513,204 +5513,204 @@ TEST(safer_integer_type_bitwise_shift_tests, "safer integer type bitwise shift t
 		result >>= 1U;
 		ASSERT_UINT_EQUAL(result, 0U);
 	} CATCH(std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 }
 
 TEST(safer_integer_type_logical_not_tests, "safer integer type logical NOT tests")
 {
 	TRY {
-		safer_bool_type var = Boolean_false;
-		ASSERT_EQUAL(!var, Boolean_true);
-		var = Boolean_true;
-		ASSERT_EQUAL(!var, Boolean_false);
+		safer_bool_type var = false;
+		ASSERT_EQUAL(!var, true);
+		var = true;
+		ASSERT_EQUAL(!var, false);
 	} CATCH (std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
 		safer_char_type var = 0;
-		ASSERT_EQUAL(!var, Boolean_true);
+		ASSERT_EQUAL(!var, true);
 		var = -1;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 		var = 1;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 #if (CHAR_MIN != 0)
 		var = SAFER_CHAR_MIN;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 #endif
 		var = SAFER_CHAR_MAX;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 	} CATCH (std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
 		safer_schar_type var = 0;
-		ASSERT_EQUAL(!var, Boolean_true);
+		ASSERT_EQUAL(!var, true);
 		var = -1;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 		var = 1;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 		var = SAFER_SCHAR_MIN;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 		var = SAFER_SCHAR_MAX;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 	} CATCH (std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
 		safer_uchar_type var = 0U;
-		ASSERT_EQUAL(!var, Boolean_true);
+		ASSERT_EQUAL(!var, true);
 		var = 1U;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 		var = SAFER_UCHAR_MIN;
-		ASSERT_EQUAL(!var, Boolean_true);
+		ASSERT_EQUAL(!var, true);
 		var = SAFER_UCHAR_MAX;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 	} CATCH (std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
 		safer_short_type var = 0;
-		ASSERT_EQUAL(!var, Boolean_true);
+		ASSERT_EQUAL(!var, true);
 		var = -1;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 		var = 1;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 		var = SAFER_SHORT_MIN;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 		var = SAFER_SHORT_MAX;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 	} CATCH (std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
 		safer_ushort_type var = 0U;
-		ASSERT_EQUAL(!var, Boolean_true);
+		ASSERT_EQUAL(!var, true);
 		var = 1U;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 		var = SAFER_USHORT_MIN;
-		ASSERT_EQUAL(!var, Boolean_true);
+		ASSERT_EQUAL(!var, true);
 		var = SAFER_USHORT_MAX;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 	} CATCH (std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
 		safer_int_type var = 0;
-		ASSERT_EQUAL(!var, Boolean_true);
+		ASSERT_EQUAL(!var, true);
 		var = -1;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 		var = 1;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 		var = SAFER_INT_MIN;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 		var = SAFER_INT_MAX;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 	} CATCH (std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
 		safer_uint_type var = 0U;
-		ASSERT_EQUAL(!var, Boolean_true);
+		ASSERT_EQUAL(!var, true);
 		var = 1U;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 		var = SAFER_UINT_MIN;
-		ASSERT_EQUAL(!var, Boolean_true);
+		ASSERT_EQUAL(!var, true);
 		var = SAFER_INT_MAX;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 	} CATCH (std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
 		safer_long_type var = 0L;
-		ASSERT_EQUAL(!var, Boolean_true);
+		ASSERT_EQUAL(!var, true);
 		var = -1L;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 		var = 1L;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 		var = SAFER_LONG_MIN;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 		var = SAFER_LONG_MAX;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 	} CATCH (std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
 		safer_ulong_type var = 0UL;
-		ASSERT_EQUAL(!var, Boolean_true);
+		ASSERT_EQUAL(!var, true);
 		var = 1UL;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 		var = SAFER_ULONG_MIN;
-		ASSERT_EQUAL(!var, Boolean_true);
+		ASSERT_EQUAL(!var, true);
 		var = SAFER_ULONG_MAX;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 	} CATCH (std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
 		safer_llong_type var = 0LL;
-		ASSERT_EQUAL(!var, Boolean_true);
+		ASSERT_EQUAL(!var, true);
 		var = -1LL;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 		var = 1LL;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 		var = SAFER_LLONG_MIN;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 		var = SAFER_LLONG_MAX;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 	} CATCH (std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
 		safer_ullong_type var = 0ULL;
-		ASSERT_EQUAL(!var, Boolean_true);
+		ASSERT_EQUAL(!var, true);
 		var = 1ULL;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 		var = SAFER_ULLONG_MIN;
-		ASSERT_EQUAL(!var, Boolean_true);
+		ASSERT_EQUAL(!var, true);
 		var = SAFER_ULLONG_MAX;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 	} CATCH (std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
 		safer_ptrdiff_type var = 0;
-		ASSERT_EQUAL(!var, Boolean_true);
+		ASSERT_EQUAL(!var, true);
 		var = -1;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 		var = 1;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 		var = SAFER_PTRDIFF_MIN;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 		var = SAFER_PTRDIFF_MAX;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 	} CATCH (std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
 		safer_size_type var = 0U;
-		ASSERT_EQUAL(!var, Boolean_true);
+		ASSERT_EQUAL(!var, true);
 		var = 1U;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 		var = SAFER_SIZE_MIN;
-		ASSERT_EQUAL(!var, Boolean_true);
+		ASSERT_EQUAL(!var, true);
 		var = SAFER_SIZE_MAX;
-		ASSERT_EQUAL(!var, Boolean_false);
+		ASSERT_EQUAL(!var, false);
 	} CATCH (std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 }
 
@@ -5794,7 +5794,7 @@ TEST(safer_integer_type_tests_for_conversion_from_integer_to_floating_point, "Co
 		long double long_double_result = (long double) int_var;
 		ASSERT(long_double_result == 42.0L);
 	} CATCH (std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
@@ -5806,7 +5806,7 @@ TEST(safer_integer_type_tests_for_conversion_from_integer_to_floating_point, "Co
 		long double long_double_result = (long double) uint_var;
 		ASSERT(long_double_result == 42.0L);
 	} CATCH (std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 }
 
@@ -5819,7 +5819,7 @@ TEST(safer_integer_type_tests_for_conversion_from_floating_point_to_integer, "Co
 		safer_uint_type uint_result = (safer_uint_type) float_var;
 		ASSERT_UINT_EQUAL(uint_result, 42U);
 	} CATCH (std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
@@ -5829,7 +5829,7 @@ TEST(safer_integer_type_tests_for_conversion_from_floating_point_to_integer, "Co
 		safer_uint_type uint_result = (safer_uint_type) double_var;
 		ASSERT_UINT_EQUAL(uint_result, 42U);
 	} CATCH (std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 
 	TRY {
@@ -5839,7 +5839,7 @@ TEST(safer_integer_type_tests_for_conversion_from_floating_point_to_integer, "Co
 		safer_uint_type uint_result = (safer_uint_type) long_double_var;
 		ASSERT_UINT_EQUAL(uint_result, 42U);
 	} CATCH (std::exception&) {
-		ASSERT(Boolean_false);
+		ASSERT(false);
 	}
 }
 

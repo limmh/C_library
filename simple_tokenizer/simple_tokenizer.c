@@ -144,7 +144,7 @@ size_t simple_tokenizer_tokenize(const char *string, size_t string_length, simpl
 	for (index = 0U; index < string_length; ++index) {
 		const char byte = string[index];
 		simple_tokenizer_token_type_enum new_token_type = simple_tokenizer_token_unknown;
-		Boolean_type add_token = Boolean_false;
+		bool add_token = false;
 		size_t new_token_length = 1U;
 		byte_token_type_enum byte_token_type = get_byte_token_type(byte);
 
@@ -208,28 +208,28 @@ size_t simple_tokenizer_tokenize(const char *string, size_t string_length, simpl
 			if (new_token_type == token_type) {
 				token_length += new_token_length;
 			} else {
-				add_token = Boolean_true;
+				add_token = true;
 			}
 			break;
 		case simple_tokenizer_token_punctuation:
 		case simple_tokenizer_token_control_character:
 		case simple_tokenizer_token_extended_ascii_character: /* fall through intended */
 			assert(1U == token_length);
-			add_token = Boolean_true;
+			add_token = true;
 			break;
 		case simple_tokenizer_token_utf8_character:
 			assert(token_length > 1U and token_length <= 4U);
-			add_token = Boolean_true;
+			add_token = true;
 			break;
 		case simple_tokenizer_token_newline:
 			if (new_token_type == token_type) {
 				if (token_length == 1U and *p_first_char == '\r' and byte == '\n') {
 					token_length += new_token_length;
 				} else {
-					add_token = Boolean_true;
+					add_token = true;
 				}
 			} else {
-				add_token = Boolean_true;
+				add_token = true;
 			}
 		default:
 			break;

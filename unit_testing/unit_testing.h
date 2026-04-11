@@ -26,7 +26,7 @@ typedef struct testing_library_data_type
 {
 	size_t number_of_false_assertions;
 	size_t number_of_true_assertions;
-	Boolean_type should_print_true_assertions;
+	bool should_print_true_assertions;
 } testing_library_data_type;
 
 typedef struct testing_library_test_type
@@ -61,7 +61,7 @@ FILE *testing_library_get_file(void);
 void testing_library_set_test_status_passed_text(const char *text);
 void testing_library_set_test_status_failed_text(const char *text);
 void testing_library_set_test_without_assertion_warning_text(const char *text);
-void testing_library_assert(int line_number, Boolean_type condition, const char *message, testing_library_data_type *pdata);
+void testing_library_assert(int line_number, bool condition, const char *message, testing_library_data_type *pdata);
 void testing_library_run_test(size_t sequence_number, testing_library_test_type *ptest, testing_library_data_type *pdata);
 void testing_library_run_tests(testing_library_test_type * const *ptests, size_t number_of_tests, testing_library_data_type *pdata);
 testing_library_test_result_type testing_library_evaluate_test_result(const testing_library_test_type *ptest);
@@ -73,8 +73,8 @@ void testing_library_print_LHS_and_RHS_as_unsigned_integers(unsigned int LHS, un
 void testing_library_print_LHS_and_RHS_as_signed_long_integers(long LHS, long RHS);
 void testing_library_print_LHS_and_RHS_as_unsigned_long_integers(unsigned long LHS, unsigned long RHS);
 void testing_library_print_LHS_and_RHS_as_strings(const char *LHS, const char *RHS);
-Boolean_type testing_library_strings_are_equal(const char *LHS, const char *RHS);
-Boolean_type testing_library_strings_are_not_equal(const char *LHS, const char *RHS);
+bool testing_library_strings_are_equal(const char *LHS, const char *RHS);
+bool testing_library_strings_are_not_equal(const char *LHS, const char *RHS);
 
 #ifndef UNIT_TESTING_LIBRARY_BUILD_LIBRARY
 
@@ -86,9 +86,9 @@ static testing_library_data_type testing_library_data = {
 #if UNIT_TESTING_LIBRARY_USE_C99_DESIGNATED_INITIALIZERS
 	.number_of_false_assertions = 0U,
 	.number_of_true_assertions = 0U,
-	.should_print_true_assertions = Boolean_false
+	.should_print_true_assertions = false
 #else
-	0U, 0U, Boolean_false
+	0U, 0U, false
 #endif
 };
 
@@ -131,23 +131,23 @@ static testing_library_data_type testing_library_data = {
 	do { \
 		DATA_TYPE const lhs = (DATA_TYPE) (LHS); \
 		DATA_TYPE const rhs = (DATA_TYPE) (RHS); \
-		const Boolean_type result = (lhs OPERATOR rhs); \
+		const bool result = (lhs OPERATOR rhs); \
 		testing_library_assert(__LINE__, result, STRINGIFY(LHS OPERATOR RHS), &testing_library_data); \
 		if (!result) { \
 			(void) PRINT_FUNCTION(lhs, rhs); \
 		} \
-	} while (Boolean_false)
+	} while (false)
 
 #define COMPARE_USING_FUNCTION(DATA_TYPE, COMPARISON_FUNCTION, LHS, RHS, PRINT_FUNCTION) \
 	do { \
 		DATA_TYPE const lhs = (DATA_TYPE) (LHS); \
 		DATA_TYPE const rhs = (DATA_TYPE) (RHS); \
-		const Boolean_type result = (Boolean_type) COMPARISON_FUNCTION(lhs, rhs); \
+		const bool result = (bool) COMPARISON_FUNCTION(lhs, rhs); \
 		testing_library_assert(__LINE__, result, STRINGIFY(COMPARISON_FUNCTION(LHS, RHS)), &testing_library_data); \
 		if (!result) { \
 			(void) PRINT_FUNCTION(lhs, rhs); \
 		} \
-	} while (Boolean_false)
+	} while (false)
 
 #define SET_OUTPUT_FILE(FILE_POINTER) testing_library_set_file(FILE_POINTER)
 
@@ -155,8 +155,8 @@ static testing_library_data_type testing_library_data = {
 #define SET_TEST_FAILURE_STATUS_TEXT(TEXT) testing_library_set_test_status_failed_text(TEXT)
 #define SET_NO_ASSERTION_WARNING_TEXT(TEXT) testing_library_set_test_without_assertion_warning_text(TEXT)
 
-#define SHOULD_PRINT_TRUE_ASSERTIONS() testing_library_data.should_print_true_assertions = Boolean_true
-#define SHOULD_NOT_PRINT_TRUE_ASSERTIONS() testing_library_data.should_print_true_assertions = Boolean_false
+#define SHOULD_PRINT_TRUE_ASSERTIONS() testing_library_data.should_print_true_assertions = true
+#define SHOULD_NOT_PRINT_TRUE_ASSERTIONS() testing_library_data.should_print_true_assertions = false
 
 #define DEFINE_LIST_OF_TESTS(TEST_LIST) testing_library_test_type * const TEST_LIST[] = 
 
@@ -170,7 +170,7 @@ static testing_library_data_type testing_library_data = {
 		const testing_library_test_statistics_type stats = testing_library_determine_test_statistics( \
 			(const testing_library_test_type * const *)&list_of_tests[0], SIZEOF_ARRAY(list_of_tests)); \
 		testing_library_print_test_statistics(&stats); \
-	} while (Boolean_false)
+	} while (false)
 
 /* for comparison of signed integers */
 #define COMPARE_INT(LHS, OPERATOR, RHS) \

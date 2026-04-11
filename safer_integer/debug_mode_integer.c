@@ -133,7 +133,7 @@ int debug_mode_int_add(int a, int b, integer_result_mode_type result_mode, const
 		}
 		break;
 	default:
-		assert(Boolean_false);
+		assert(false);
 		break;
 	}
 	if (error != integer_operation_error_none) {
@@ -189,7 +189,7 @@ int debug_mode_int_minus(int a, int b, integer_result_mode_type result_mode, con
 		}
 		break;
 	default:
-		assert(Boolean_false);
+		assert(false);
 		break;
 	}
 	if (error != integer_operation_error_none) {
@@ -245,7 +245,7 @@ int debug_mode_int_multiply(int a, int b, integer_result_mode_type result_mode, 
 		}
 		break;
 	default:
-		assert(Boolean_false);
+		assert(false);
 		break;
 	}
 	if (error != integer_operation_error_none) {
@@ -299,7 +299,7 @@ int debug_mode_int_divide(int a, int b, integer_result_mode_type result_mode, co
 		}
 		break;
 	default:
-		assert(Boolean_false);
+		assert(false);
 		break;
 	}
 	if (error != integer_operation_error_none) {
@@ -340,7 +340,7 @@ int debug_mode_int_remainder(int a, int b, integer_result_mode_type result_mode,
 	case integer_operation_error_division_of_minimum_signed_integer_by_minus_one:
 		break;
 	default:
-		assert(Boolean_false);
+		assert(false);
 		break;
 	}
 	if (error != integer_operation_error_none) {
@@ -427,7 +427,7 @@ unsigned int debug_mode_uint_add(unsigned int a, unsigned int b, integer_result_
 		result = (result_mode == integer_result_mode_saturation) ? MAXIMUM : (a INTEGER_OPERATOR b);
 		break;
 	default:
-		assert(Boolean_false);
+		assert(false);
 		break;
 	}
 	if (error != integer_operation_error_none) {
@@ -467,7 +467,7 @@ unsigned int debug_mode_uint_minus(unsigned int a, unsigned int b, integer_resul
 		result = (result_mode == integer_result_mode_saturation) ? MINIMUM : (a INTEGER_OPERATOR b);
 		break;
 	default:
-		assert(Boolean_false);
+		assert(false);
 		break;
 	}
 	if (error != integer_operation_error_none) {
@@ -506,7 +506,7 @@ unsigned int debug_mode_uint_multiply(unsigned int a, unsigned int b, integer_re
 		result = (result_mode == integer_result_mode_saturation) ? MAXIMUM : (a INTEGER_OPERATOR b);
 		break;
 	default:
-		assert(Boolean_false);
+		assert(false);
 		break;
 	}
 	if (error != integer_operation_error_none) {
@@ -550,7 +550,7 @@ unsigned int debug_mode_uint_divide(unsigned int a, unsigned int b, integer_resu
 		}
 		break;
 	default:
-		assert(Boolean_false);
+		assert(false);
 		break;
 	}
 	if (error != integer_operation_error_none) {
@@ -589,7 +589,7 @@ unsigned int debug_mode_uint_remainder(unsigned int a, unsigned int b, integer_r
 	case integer_operation_error_division_of_unsigned_integer_by_zero:
 		break;
 	default:
-		assert(Boolean_false);
+		assert(false);
 		break;
 	}
 	if (error != integer_operation_error_none) {
@@ -692,7 +692,7 @@ long debug_mode_long_add(long a, long b, integer_result_mode_type result_mode, c
 		}
 		break;
 	default:
-		assert(Boolean_false);
+		assert(false);
 		break;
 	}
 	if (error != integer_operation_error_none) {
@@ -748,7 +748,7 @@ long debug_mode_long_minus(long a, long b, integer_result_mode_type result_mode,
 		}
 		break;
 	default:
-		assert(Boolean_false);
+		assert(false);
 		break;
 	}
 	if (error != integer_operation_error_none) {
@@ -804,7 +804,7 @@ long debug_mode_long_multiply(long a, long b, integer_result_mode_type result_mo
 		}
 		break;
 	default:
-		assert(Boolean_false);
+		assert(false);
 		break;
 	}
 	if (error != integer_operation_error_none) {
@@ -858,7 +858,7 @@ long debug_mode_long_divide(long a, long b, integer_result_mode_type result_mode
 		}
 		break;
 	default:
-		assert(Boolean_false);
+		assert(false);
 		break;
 	}
 	if (error != integer_operation_error_none) {
@@ -899,7 +899,7 @@ long debug_mode_long_remainder(long a, long b, integer_result_mode_type result_m
 	case integer_operation_error_division_of_minimum_signed_integer_by_minus_one:
 		break;
 	default:
-		assert(Boolean_false);
+		assert(false);
 		break;
 	}
 	if (error != integer_operation_error_none) {
@@ -986,7 +986,7 @@ unsigned long debug_mode_ulong_add(unsigned long a, unsigned long b, integer_res
 		result = (result_mode == integer_result_mode_saturation) ? MAXIMUM : (a INTEGER_OPERATOR b);
 		break;
 	default:
-		assert(Boolean_false);
+		assert(false);
 		break;
 	}
 	if (error != integer_operation_error_none) {
@@ -1026,7 +1026,7 @@ unsigned long debug_mode_ulong_minus(unsigned long a, unsigned long b, integer_r
 		result = (result_mode == integer_result_mode_saturation) ? MINIMUM : (a INTEGER_OPERATOR b);
 		break;
 	default:
-		assert(Boolean_false);
+		assert(false);
 		break;
 	}
 	if (error != integer_operation_error_none) {
@@ -1065,7 +1065,7 @@ unsigned long debug_mode_ulong_multiply(unsigned long a, unsigned long b, intege
 		result = (result_mode == integer_result_mode_saturation) ? MAXIMUM : (a INTEGER_OPERATOR b);
 		break;
 	default:
-		assert(Boolean_false);
+		assert(false);
 		break;
 	}
 	if (error != integer_operation_error_none) {
@@ -1109,7 +1109,7 @@ unsigned long debug_mode_ulong_divide(unsigned long a, unsigned long b, integer_
 		}
 		break;
 	default:
-		assert(Boolean_false);
+		assert(false);
 		break;
 	}
 	if (error != integer_operation_error_none) {
@@ -1148,7 +1148,7 @@ unsigned long debug_mode_ulong_remainder(unsigned long a, unsigned long b, integ
 	case integer_operation_error_division_of_unsigned_integer_by_zero:
 		break;
 	default:
-		assert(Boolean_false);
+		assert(false);
 		break;
 	}
 	if (error != integer_operation_error_none) {
@@ -1252,7 +1252,7 @@ long long debug_mode_llong_add(long long a, long long b, integer_result_mode_typ
 		}
 		break;
 	default:
-		assert(Boolean_false);
+		assert(false);
 		break;
 	}
 	if (error != integer_operation_error_none) {
@@ -1308,7 +1308,7 @@ long long debug_mode_llong_minus(long long a, long long b, integer_result_mode_t
 		}
 		break;
 	default:
-		assert(Boolean_false);
+		assert(false);
 		break;
 	}
 	if (error != integer_operation_error_none) {
@@ -1364,7 +1364,7 @@ long long debug_mode_llong_multiply(long long a, long long b, integer_result_mod
 		}
 		break;
 	default:
-		assert(Boolean_false);
+		assert(false);
 		break;
 	}
 	if (error != integer_operation_error_none) {
@@ -1418,7 +1418,7 @@ long long debug_mode_llong_divide(long long a, long long b, integer_result_mode_
 		}
 		break;
 	default:
-		assert(Boolean_false);
+		assert(false);
 		break;
 	}
 	if (error != integer_operation_error_none) {
@@ -1459,7 +1459,7 @@ long long debug_mode_llong_remainder(long long a, long long b, integer_result_mo
 	case integer_operation_error_division_of_minimum_signed_integer_by_minus_one:
 		break;
 	default:
-		assert(Boolean_false);
+		assert(false);
 		break;
 	}
 	if (error != integer_operation_error_none) {
@@ -1547,7 +1547,7 @@ unsigned long long debug_mode_ullong_add(unsigned long long a, unsigned long lon
 		result = (result_mode == integer_result_mode_saturation) ? MAXIMUM : (a INTEGER_OPERATOR b);
 		break;
 	default:
-		assert(Boolean_false);
+		assert(false);
 		break;
 	}
 	if (error != integer_operation_error_none) {
@@ -1587,7 +1587,7 @@ unsigned long long debug_mode_ullong_minus(unsigned long long a, unsigned long l
 		result = (result_mode == integer_result_mode_saturation) ? MINIMUM : (a INTEGER_OPERATOR b);
 		break;
 	default:
-		assert(Boolean_false);
+		assert(false);
 		break;
 	}
 	if (error != integer_operation_error_none) {
@@ -1627,7 +1627,7 @@ unsigned long long debug_mode_ullong_multiply(unsigned long long a, unsigned lon
 		result = (result_mode == integer_result_mode_saturation) ? MAXIMUM : (a INTEGER_OPERATOR b);
 		break;
 	default:
-		assert(Boolean_false);
+		assert(false);
 		break;
 	}
 	if (error != integer_operation_error_none) {
@@ -1671,7 +1671,7 @@ unsigned long long debug_mode_ullong_divide(unsigned long long a, unsigned long 
 		}
 		break;
 	default:
-		assert(Boolean_false);
+		assert(false);
 		break;
 	}
 	if (error != integer_operation_error_none) {
@@ -1710,7 +1710,7 @@ unsigned long long debug_mode_ullong_remainder(unsigned long long a, unsigned lo
 	case integer_operation_error_division_of_unsigned_integer_by_zero:
 		break;
 	default:
-		assert(Boolean_false);
+		assert(false);
 		break;
 	}
 	if (error != integer_operation_error_none) {

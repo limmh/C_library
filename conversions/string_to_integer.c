@@ -6,44 +6,44 @@
 #include <assert.h>
 #include <iso646.h>
 
-INLINE_OR_STATIC Boolean_type character_is_decimal_digit(char ch)
+INLINE_OR_STATIC bool character_is_decimal_digit(char ch)
 {
 	return (ch >= '0' and ch <= '9');
 }
 
-INLINE_OR_STATIC Boolean_type character_is_uppercase_alphabet(char ch)
+INLINE_OR_STATIC bool character_is_uppercase_alphabet(char ch)
 {
 	return (ch >= 'A' and ch <= 'Z');
 }
 
-INLINE_OR_STATIC Boolean_type character_is_lowercase_alphabet(char ch)
+INLINE_OR_STATIC bool character_is_lowercase_alphabet(char ch)
 {
 	return (ch >= 'a' and ch <= 'z');
 }
 
-INLINE_OR_STATIC Boolean_type character_is_whitespace(char ch)
+INLINE_OR_STATIC bool character_is_whitespace(char ch)
 {
 	return (ch == ' ' or ch == '\t' or ch == '\r' or ch == '\n');
 }
 
-INLINE_OR_STATIC Boolean_type character_is_hexadecimal_digit(char ch)
+INLINE_OR_STATIC bool character_is_hexadecimal_digit(char ch)
 {
 	return character_is_decimal_digit(ch) or (ch >= 'A' and ch <= 'F') or (ch >= 'a' and ch <= 'f');
 }
 
-INLINE_OR_STATIC Boolean_type character_is_binary_digit(char ch)
+INLINE_OR_STATIC bool character_is_binary_digit(char ch)
 {
 	return (ch == '0' or ch == '1');
 }
 
-INLINE_OR_STATIC Boolean_type character_is_valid_digit(char ch)
+INLINE_OR_STATIC bool character_is_valid_digit(char ch)
 {
 	return character_is_decimal_digit(ch) or character_is_uppercase_alphabet(ch) or character_is_lowercase_alphabet(ch);
 }
 
-INLINE_OR_STATIC Boolean_type digit_is_supported_by_base(char ch, int base)
+INLINE_OR_STATIC bool digit_is_supported_by_base(char ch, int base)
 {
-	Boolean_type result = Boolean_false;
+	bool result = false;
 	assert(base >= 2 and base <= 36);
 	if (character_is_decimal_digit(ch)) {
 		const int value = ch - '0';
@@ -68,7 +68,7 @@ INLINE_OR_STATIC int32_t digit_to_integer(char ch)
 	} else if (character_is_lowercase_alphabet(ch)) {
 		integer = ch - 'a' + 10;
 	} else {
-		assert(Boolean_false);
+		assert(false);
 	}
 	return integer;
 }
@@ -121,8 +121,8 @@ typedef struct int_string_info_type {
 	size_t end_index; /* digit end index */
 	int base;
 	string_to_int_error_type error;
-	Boolean_type contains_valid_integer;
-	Boolean_type integer_is_negative;
+	bool contains_valid_integer;
+	bool integer_is_negative;
 } int_string_info_type;
 
 static int_string_info_type string_to_int_get_string_info(const char *string, size_t length, int base)
@@ -130,16 +130,16 @@ static int_string_info_type string_to_int_get_string_info(const char *string, si
 	int_string_info_type info = {0};
 	size_t index = 0U;
 	string_parsing_state_type state = string_parsing_state_start;
-	Boolean_type should_terminate_early = Boolean_false;
-	Boolean_type is_leading_zero = Boolean_true;
+	bool should_terminate_early = false;
+	bool is_leading_zero = true;
 	info.string = string;
 	info.length = length;
 	info.base = base;
 	info.start_index = 0U;
 	info.end_index = info.start_index;
 	info.error = string_to_int_error_none;
-	info.contains_valid_integer = Boolean_false;
-	info.integer_is_negative = Boolean_false;
+	info.contains_valid_integer = false;
+	info.integer_is_negative = false;
 
 	if (string == NULL) {
 		info.error = string_to_int_error_null_string;
@@ -182,7 +182,7 @@ static int_string_info_type string_to_int_get_string_info(const char *string, si
 			} else if (digit_is_supported_by_base(ch, base)) {
 				state = string_parsing_state_digits;
 				is_leading_zero = ch == '0';
-				info.contains_valid_integer = Boolean_true;
+				info.contains_valid_integer = true;
 				info.end_index = info.start_index = index;
 			} else {
 				state = string_parsing_state_digit_not_supported_by_base;
@@ -191,7 +191,7 @@ static int_string_info_type string_to_int_get_string_info(const char *string, si
 			break;
 		case string_parsing_state_sign:
 			if (ch == '\0') {
-				should_terminate_early = Boolean_true;
+				should_terminate_early = true;
 				info.error = string_to_int_error_incomplete_string;
 			} else if (ch == '0' and index + 1U < length) {
 				state = string_parsing_state_prefix;
@@ -204,9 +204,9 @@ static int_string_info_type string_to_int_get_string_info(const char *string, si
 			} else if (digit_is_supported_by_base(ch, base)) {
 				state = string_parsing_state_digits;
 				if (is_leading_zero and ch != '0') {
-					is_leading_zero = Boolean_false;
+					is_leading_zero = false;
 				}
-				info.contains_valid_integer = Boolean_true;
+				info.contains_valid_integer = true;
 				info.end_index = info.start_index = index;
 			} else {
 				state = string_parsing_state_digit_not_supported_by_base;
@@ -216,13 +216,13 @@ static int_string_info_type string_to_int_get_string_info(const char *string, si
 		case string_parsing_state_prefix:
 			assert(index > 0U);
 			if (ch == '\0') {
-				should_terminate_early = Boolean_true;
+				should_terminate_early = true;
 				info.error = string_to_int_error_incomplete_string;
 			} else if (base == 2) {
 				if (character_is_binary_digit(ch)) {
 					state = string_parsing_state_digits;
 					is_leading_zero = ch == '0';
-					info.contains_valid_integer = Boolean_true;
+					info.contains_valid_integer = true;
 					info.end_index = info.start_index = index;
 				} else if (ch == 'B' or ch == 'b') {
 					state = string_parsing_state_digits;
@@ -237,7 +237,7 @@ static int_string_info_type string_to_int_get_string_info(const char *string, si
 				if (character_is_hexadecimal_digit(ch)) {
 					state = string_parsing_state_digits;
 					is_leading_zero = ch == '0';
-					info.contains_valid_integer = Boolean_true;
+					info.contains_valid_integer = true;
 					info.end_index = info.start_index = index;
 				} else if (ch == 'X' or ch == 'x') {
 					state = string_parsing_state_digits;
@@ -254,7 +254,7 @@ static int_string_info_type string_to_int_get_string_info(const char *string, si
 			} else if (digit_is_supported_by_base(ch, base)) {
 				state = string_parsing_state_digits;
 				is_leading_zero = ch == '0';
-				info.contains_valid_integer = Boolean_true;
+				info.contains_valid_integer = true;
 				info.end_index = info.start_index = index;
 			} else {
 				state = string_parsing_state_digit_not_supported_by_base;
@@ -263,7 +263,7 @@ static int_string_info_type string_to_int_get_string_info(const char *string, si
 			break;
 		case string_parsing_state_digits:
 			if (ch == '\0') {
-				should_terminate_early = Boolean_true;
+				should_terminate_early = true;
 			} else if (character_is_whitespace(ch)) {
 				state = string_parsing_state_trailing_whitespaces;
 			} else if (not character_is_valid_digit(ch)) {
@@ -283,7 +283,7 @@ static int_string_info_type string_to_int_get_string_info(const char *string, si
 			break;
 		case string_parsing_state_trailing_whitespaces:
 			if (ch == '\0') {
-				should_terminate_early = Boolean_true;
+				should_terminate_early = true;
 			} else if (not character_is_whitespace(ch)) {
 				state = string_parsing_state_trailing_invalid_character;
 				info.error = string_to_int_error_invalid_trailing_character;

@@ -134,7 +134,7 @@ integer_operation_error_type safer_int_division_check(int dividend, int divisor)
 /* Safer signed integer operations */
 int_result_type safer_int_add(int a, int b)
 {
-	Boolean_type integer_operation_error_is_valid = Boolean_true;
+	bool integer_operation_error_is_valid = true;
 	int_result_type result = {0, 0, integer_operation_error_none};
 	result.error = safer_int_addition_check(a, b);
 	switch (result.error) {
@@ -148,7 +148,7 @@ int_result_type safer_int_add(int a, int b)
 		result.value = INT_MAX;
 		break;
 	default:
-		integer_operation_error_is_valid = Boolean_false;
+		integer_operation_error_is_valid = false;
 		break;
 	}
 	assert(result.remainder == 0);
@@ -158,7 +158,7 @@ int_result_type safer_int_add(int a, int b)
 
 int_result_type safer_int_minus(int a, int b)
 {
-	Boolean_type integer_operation_error_is_valid = Boolean_true;
+	bool integer_operation_error_is_valid = true;
 	int_result_type result = {0, 0, integer_operation_error_none};
 	result.error = safer_int_subtraction_check(a, b);
 	switch (result.error) {
@@ -172,7 +172,7 @@ int_result_type safer_int_minus(int a, int b)
 		result.value = INT_MAX;
 		break;
 	default:
-		integer_operation_error_is_valid = Boolean_false;
+		integer_operation_error_is_valid = false;
 		break;
 	}
 	assert(result.remainder == 0);
@@ -182,7 +182,7 @@ int_result_type safer_int_minus(int a, int b)
 
 int_result_type safer_int_multiply(int a, int b)
 {
-	Boolean_type integer_operation_error_is_valid = Boolean_true;
+	bool integer_operation_error_is_valid = true;
 	int_result_type result = {0, 0, integer_operation_error_none};
 	result.error = safer_int_multiplication_check(a, b);
 	switch (result.error) {
@@ -196,7 +196,7 @@ int_result_type safer_int_multiply(int a, int b)
 		result.value = INT_MAX;
 		break;
 	default:
-		integer_operation_error_is_valid = Boolean_false;
+		integer_operation_error_is_valid = false;
 		break;
 	}
 	assert(result.remainder == 0);
@@ -206,7 +206,7 @@ int_result_type safer_int_multiply(int a, int b)
 
 int_result_type safer_int_divide(int dividend, int divisor)
 {
-	Boolean_type integer_operation_error_is_valid = Boolean_true;
+	bool integer_operation_error_is_valid = true;
 	int_result_type result = {0, 0, integer_operation_error_none};
 	result.error = safer_int_division_check(dividend, divisor);
 	switch (result.error) {
@@ -220,7 +220,7 @@ int_result_type safer_int_divide(int dividend, int divisor)
 		result.value = INT_MAX; /* clipped to the nearest value */
 		break;
 	default:
-		integer_operation_error_is_valid = Boolean_false;
+		integer_operation_error_is_valid = false;
 		break;
 	}
 	assert(integer_operation_error_is_valid);
@@ -314,7 +314,7 @@ integer_operation_error_type safer_long_division_check(long dividend, long divis
 /* Safer signed long integer operations */
 long_result_type safer_long_add(long a, long b)
 {
-	Boolean_type integer_operation_error_is_valid = Boolean_true;
+	bool integer_operation_error_is_valid = true;
 	long_result_type result = {0L, 0L, integer_operation_error_none};
 	result.error = safer_long_addition_check(a, b);
 	switch (result.error) {
@@ -328,7 +328,7 @@ long_result_type safer_long_add(long a, long b)
 		result.value = LONG_MAX;
 		break;
 	default:
-		integer_operation_error_is_valid = Boolean_false;
+		integer_operation_error_is_valid = false;
 		break;
 	}
 	assert(result.remainder == 0L);
@@ -338,7 +338,7 @@ long_result_type safer_long_add(long a, long b)
 
 long_result_type safer_long_minus(long a, long b)
 {
-	Boolean_type integer_operation_error_is_valid = Boolean_true;
+	bool integer_operation_error_is_valid = true;
 	long_result_type result = {0L, 0L, integer_operation_error_none};
 	result.error = safer_long_subtraction_check(a, b);
 	switch (result.error) {
@@ -352,7 +352,7 @@ long_result_type safer_long_minus(long a, long b)
 		result.value = LONG_MAX;
 		break;
 	default:
-		integer_operation_error_is_valid = Boolean_false;
+		integer_operation_error_is_valid = false;
 		break;
 	}
 	assert(result.remainder == 0L);
@@ -362,7 +362,7 @@ long_result_type safer_long_minus(long a, long b)
 
 long_result_type safer_long_multiply(long a, long b)
 {
-	Boolean_type integer_operation_error_is_valid = Boolean_true;
+	bool integer_operation_error_is_valid = true;
 	long_result_type result = {0L, 0L, integer_operation_error_none};
 	result.error = safer_long_multiplication_check(a, b);
 	switch (result.error) {
@@ -376,7 +376,7 @@ long_result_type safer_long_multiply(long a, long b)
 		result.value = LONG_MAX;
 		break;
 	default:
-		integer_operation_error_is_valid = Boolean_false;
+		integer_operation_error_is_valid = false;
 		break;
 	}
 	assert(result.remainder == 0L);
@@ -386,7 +386,7 @@ long_result_type safer_long_multiply(long a, long b)
 
 long_result_type safer_long_divide(long dividend, long divisor)
 {
-	Boolean_type integer_operation_error_is_valid = Boolean_true;
+	bool integer_operation_error_is_valid = true;
 	long_result_type result = {0L, 0L, integer_operation_error_none};
 	result.error = safer_long_division_check(dividend, divisor);
 	switch (result.error) {
@@ -400,7 +400,7 @@ long_result_type safer_long_divide(long dividend, long divisor)
 		result.value = LONG_MAX; /* clipped to the nearest value */
 		break;
 	default:
-		integer_operation_error_is_valid = Boolean_false;
+		integer_operation_error_is_valid = false;
 		break;
 	}
 	assert(integer_operation_error_is_valid);
@@ -497,7 +497,7 @@ integer_operation_error_type safer_llong_division_check(long long dividend, long
 /* Safer signed long long integer operations */
 llong_result_type safer_llong_add(long long a, long long b)
 {
-	Boolean_type integer_operation_error_is_valid = Boolean_true;
+	bool integer_operation_error_is_valid = true;
 	llong_result_type result = {0LL, 0LL, integer_operation_error_none};
 	result.error = safer_llong_addition_check(a, b);
 	switch (result.error) {
@@ -511,7 +511,7 @@ llong_result_type safer_llong_add(long long a, long long b)
 		result.value = LLONG_MAX;
 		break;
 	default:
-		integer_operation_error_is_valid = Boolean_false;
+		integer_operation_error_is_valid = false;
 		break;
 	}
 	assert(result.remainder == 0LL);
@@ -521,7 +521,7 @@ llong_result_type safer_llong_add(long long a, long long b)
 
 llong_result_type safer_llong_minus(long long a, long long b)
 {
-	Boolean_type integer_operation_error_is_valid = Boolean_true;
+	bool integer_operation_error_is_valid = true;
 	llong_result_type result = {0LL, 0LL, integer_operation_error_none};
 	result.error = safer_llong_subtraction_check(a, b);
 	switch (result.error) {
@@ -535,7 +535,7 @@ llong_result_type safer_llong_minus(long long a, long long b)
 		result.value = LLONG_MAX;
 		break;
 	default:
-		integer_operation_error_is_valid = Boolean_false;
+		integer_operation_error_is_valid = false;
 		break;
 	}
 	assert(result.remainder == 0LL);
@@ -545,7 +545,7 @@ llong_result_type safer_llong_minus(long long a, long long b)
 
 llong_result_type safer_llong_multiply(long long a, long long b)
 {
-	Boolean_type integer_operation_error_is_valid = Boolean_true;
+	bool integer_operation_error_is_valid = true;
 	llong_result_type result = {0LL, 0LL, integer_operation_error_none};
 	result.error = safer_llong_multiplication_check(a, b);
 	switch (result.error) {
@@ -559,7 +559,7 @@ llong_result_type safer_llong_multiply(long long a, long long b)
 		result.value = LLONG_MAX;
 		break;
 	default:
-		integer_operation_error_is_valid = Boolean_false;
+		integer_operation_error_is_valid = false;
 		break;
 	}
 	assert(result.remainder == 0LL);
@@ -569,7 +569,7 @@ llong_result_type safer_llong_multiply(long long a, long long b)
 
 llong_result_type safer_llong_divide(long long dividend, long long divisor)
 {
-	Boolean_type integer_operation_error_is_valid = Boolean_true;
+	bool integer_operation_error_is_valid = true;
 	llong_result_type result = {0LL, 0LL, integer_operation_error_none};
 	result.error = safer_llong_division_check(dividend, divisor);
 	switch (result.error) {
@@ -583,7 +583,7 @@ llong_result_type safer_llong_divide(long long dividend, long long divisor)
 		result.value = LLONG_MAX; /* clipped to the nearest value */
 		break;
 	default:
-		integer_operation_error_is_valid = Boolean_false;
+		integer_operation_error_is_valid = false;
 		break;
 	}
 	assert(integer_operation_error_is_valid);
@@ -629,7 +629,7 @@ integer_operation_error_type safer_uint_division_check(unsigned int dividend, un
 
 uint_result_type safer_uint_add(unsigned int a, unsigned int b)
 {
-	Boolean_type integer_operation_error_is_valid = Boolean_true;
+	bool integer_operation_error_is_valid = true;
 	uint_result_type result = {0U, 0U, integer_operation_error_none};
 	result.error = safer_uint_addition_check(a, b);
 	switch (result.error) {
@@ -640,7 +640,7 @@ uint_result_type safer_uint_add(unsigned int a, unsigned int b)
 		result.value = UINT_MAX;
 		break;
 	default:
-		integer_operation_error_is_valid = Boolean_false;
+		integer_operation_error_is_valid = false;
 		break;
 	}
 	assert(result.remainder == 0U);
@@ -650,7 +650,7 @@ uint_result_type safer_uint_add(unsigned int a, unsigned int b)
 
 uint_result_type safer_uint_minus(unsigned int a , unsigned int b)
 {
-	Boolean_type integer_operation_error_is_valid = Boolean_true;
+	bool integer_operation_error_is_valid = true;
 	uint_result_type result = {0U, 0U, integer_operation_error_none};
 	result.error = safer_uint_subtraction_check(a, b);
 	switch (result.error) {
@@ -661,7 +661,7 @@ uint_result_type safer_uint_minus(unsigned int a , unsigned int b)
 		result.value = 0U;
 		break;
 	default:
-		integer_operation_error_is_valid = Boolean_false;
+		integer_operation_error_is_valid = false;
 		break;
 	}
 	assert(result.remainder == 0U);
@@ -671,7 +671,7 @@ uint_result_type safer_uint_minus(unsigned int a , unsigned int b)
 
 uint_result_type safer_uint_multiply(unsigned int a, unsigned int b)
 {
-	Boolean_type integer_operation_error_is_valid = Boolean_true;
+	bool integer_operation_error_is_valid = true;
 	const unsigned int maximum_value = UINT_MAX;
 	uint_result_type result = {0U, 0U, integer_operation_error_none};
 	result.error = safer_uint_multiplication_check(a, b);
@@ -683,7 +683,7 @@ uint_result_type safer_uint_multiply(unsigned int a, unsigned int b)
 		result.value = maximum_value;
 		break;
 	default:
-		integer_operation_error_is_valid = Boolean_false;
+		integer_operation_error_is_valid = false;
 		break;
 	}
 	assert(result.remainder == 0U);
@@ -693,7 +693,7 @@ uint_result_type safer_uint_multiply(unsigned int a, unsigned int b)
 
 uint_result_type safer_uint_divide(unsigned int dividend, unsigned int divisor)
 {
-	Boolean_type integer_operation_error_is_valid = Boolean_true;
+	bool integer_operation_error_is_valid = true;
 	uint_result_type result = {0U, 0U, integer_operation_error_none};
 	result.error = safer_uint_division_check(dividend, divisor);
 	switch (result.error) {
@@ -704,7 +704,7 @@ uint_result_type safer_uint_divide(unsigned int dividend, unsigned int divisor)
 	case integer_operation_error_division_of_unsigned_integer_by_zero:
 		break;
 	default:
-		integer_operation_error_is_valid = Boolean_false;
+		integer_operation_error_is_valid = false;
 		break;
 	}
 	assert(integer_operation_error_is_valid);
@@ -749,7 +749,7 @@ integer_operation_error_type safer_ulong_division_check(unsigned long dividend, 
 
 ulong_result_type safer_ulong_add(unsigned long a, unsigned long b)
 {
-	Boolean_type integer_operation_error_is_valid = Boolean_true;
+	bool integer_operation_error_is_valid = true;
 	ulong_result_type result = {0UL, 0UL, integer_operation_error_none};
 	result.error = safer_ulong_addition_check(a, b);
 	switch (result.error) {
@@ -760,7 +760,7 @@ ulong_result_type safer_ulong_add(unsigned long a, unsigned long b)
 		result.value = ULONG_MAX;
 		break;
 	default:
-		integer_operation_error_is_valid = Boolean_false;
+		integer_operation_error_is_valid = false;
 		break;
 	}
 	assert(result.remainder == 0UL);
@@ -770,7 +770,7 @@ ulong_result_type safer_ulong_add(unsigned long a, unsigned long b)
 
 ulong_result_type safer_ulong_minus(unsigned long a , unsigned long b)
 {
-	Boolean_type integer_operation_error_is_valid = Boolean_true;
+	bool integer_operation_error_is_valid = true;
 	ulong_result_type result = {0UL, 0UL, integer_operation_error_none};
 	result.error = safer_ulong_subtraction_check(a, b);
 	switch (result.error) {
@@ -781,7 +781,7 @@ ulong_result_type safer_ulong_minus(unsigned long a , unsigned long b)
 		result.value = 0UL;
 		break;
 	default:
-		integer_operation_error_is_valid = Boolean_false;
+		integer_operation_error_is_valid = false;
 		break;
 	}
 	assert(result.remainder == 0UL);
@@ -791,7 +791,7 @@ ulong_result_type safer_ulong_minus(unsigned long a , unsigned long b)
 
 ulong_result_type safer_ulong_multiply(unsigned long a, unsigned long b)
 {
-	Boolean_type integer_operation_error_is_valid = Boolean_true;
+	bool integer_operation_error_is_valid = true;
 	const unsigned long maximum_value = ULONG_MAX;
 	ulong_result_type result = {0UL, 0UL, integer_operation_error_none};
 	result.error = safer_ulong_multiplication_check(a, b);
@@ -803,7 +803,7 @@ ulong_result_type safer_ulong_multiply(unsigned long a, unsigned long b)
 		result.value = maximum_value;
 		break;
 	default:
-		integer_operation_error_is_valid = Boolean_false;
+		integer_operation_error_is_valid = false;
 		break;
 	}
 	assert(result.remainder == 0UL);
@@ -813,7 +813,7 @@ ulong_result_type safer_ulong_multiply(unsigned long a, unsigned long b)
 
 ulong_result_type safer_ulong_divide(unsigned long dividend, unsigned long divisor)
 {
-	Boolean_type integer_operation_error_is_valid = Boolean_true;
+	bool integer_operation_error_is_valid = true;
 	ulong_result_type result = {0UL, 0UL, integer_operation_error_none};
 	result.error = safer_ulong_division_check(dividend, divisor);
 	switch (result.error) {
@@ -824,7 +824,7 @@ ulong_result_type safer_ulong_divide(unsigned long dividend, unsigned long divis
 	case integer_operation_error_division_of_unsigned_integer_by_zero:
 		break;
 	default:
-		integer_operation_error_is_valid = Boolean_false;
+		integer_operation_error_is_valid = false;
 		break;
 	}
 	assert(integer_operation_error_is_valid);
@@ -870,7 +870,7 @@ integer_operation_error_type safer_ullong_division_check(unsigned long long divi
 
 ullong_result_type safer_ullong_add(unsigned long long a, unsigned long long b)
 {
-	Boolean_type integer_operation_error_is_valid = Boolean_true;
+	bool integer_operation_error_is_valid = true;
 	ullong_result_type result = {0ULL, 0ULL, integer_operation_error_none};
 	result.error = safer_ullong_addition_check(a, b);
 	switch (result.error) {
@@ -881,7 +881,7 @@ ullong_result_type safer_ullong_add(unsigned long long a, unsigned long long b)
 		result.value = ULLONG_MAX;
 		break;
 	default:
-		integer_operation_error_is_valid = Boolean_false;
+		integer_operation_error_is_valid = false;
 		break;
 	}
 	assert(result.remainder == 0ULL);
@@ -891,7 +891,7 @@ ullong_result_type safer_ullong_add(unsigned long long a, unsigned long long b)
 
 ullong_result_type safer_ullong_minus(unsigned long long a , unsigned long long b)
 {
-	Boolean_type integer_operation_error_is_valid = Boolean_true;
+	bool integer_operation_error_is_valid = true;
 	ullong_result_type result = {0ULL, 0ULL, integer_operation_error_none};
 	result.error = safer_ullong_subtraction_check(a, b);
 	switch (result.error) {
@@ -902,7 +902,7 @@ ullong_result_type safer_ullong_minus(unsigned long long a , unsigned long long 
 		result.value = 0ULL;
 		break;
 	default:
-		integer_operation_error_is_valid = Boolean_false;
+		integer_operation_error_is_valid = false;
 		break;
 	}
 	assert(result.remainder == 0ULL);
@@ -912,7 +912,7 @@ ullong_result_type safer_ullong_minus(unsigned long long a , unsigned long long 
 
 ullong_result_type safer_ullong_multiply(unsigned long long a, unsigned long long b)
 {
-	Boolean_type integer_operation_error_is_valid = Boolean_true;
+	bool integer_operation_error_is_valid = true;
 	const unsigned long long maximum_value = ULLONG_MAX;
 	ullong_result_type result = {0ULL, 0ULL, integer_operation_error_none};
 	result.error = safer_ullong_multiplication_check(a, b);
@@ -924,7 +924,7 @@ ullong_result_type safer_ullong_multiply(unsigned long long a, unsigned long lon
 		result.value = maximum_value;
 		break;
 	default:
-		integer_operation_error_is_valid = Boolean_false;
+		integer_operation_error_is_valid = false;
 		break;
 	}
 	assert(result.remainder == 0ULL);
@@ -934,7 +934,7 @@ ullong_result_type safer_ullong_multiply(unsigned long long a, unsigned long lon
 
 ullong_result_type safer_ullong_divide(unsigned long long dividend, unsigned long long divisor)
 {
-	Boolean_type integer_operation_error_is_valid = Boolean_true;
+	bool integer_operation_error_is_valid = true;
 	ullong_result_type result = {0ULL, 0ULL, integer_operation_error_none};
 	result.error = safer_ullong_division_check(dividend, divisor);
 	switch (result.error) {
@@ -945,7 +945,7 @@ ullong_result_type safer_ullong_divide(unsigned long long dividend, unsigned lon
 	case integer_operation_error_division_of_unsigned_integer_by_zero:
 		break;
 	default:
-		integer_operation_error_is_valid = Boolean_false;
+		integer_operation_error_is_valid = false;
 		break;
 	}
 	assert(integer_operation_error_is_valid);

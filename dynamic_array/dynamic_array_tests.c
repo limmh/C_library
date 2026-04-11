@@ -74,7 +74,7 @@ TEST(allocation_and_reallocation_failure, "Allocation and reallocation failure")
 	const size_t largest_memory_size = static_pool_largest_chunk_size();
 	dynamic_array_type(char) array = {0};
 	dynamic_array_debug_info_type debug_info = {0};
-	Boolean_type exception_has_occurred = Boolean_false;
+	bool exception_has_occurred = false;
 
 	unit_test_pool_init();
 	s_error_code = 0;
@@ -82,7 +82,7 @@ TEST(allocation_and_reallocation_failure, "Allocation and reallocation failure")
 	if (setjmp(s_execution_context) == 0) {
 		array = dynamic_array_create_with_interface(char, largest_memory_size + 1U, *dynamic_array_unit_test_interface());
 	} else {
-		exception_has_occurred = Boolean_true;
+		exception_has_occurred = true;
 	}
 	ASSERT(exception_has_occurred);
 	ASSERT_EQUAL(s_error_code, (int) dynamic_array_error_memory_allocation_failure);
@@ -94,7 +94,7 @@ TEST(allocation_and_reallocation_failure, "Allocation and reallocation failure")
 	if (setjmp(s_execution_context) == 0) {
 		dynamic_array_resize(array, largest_memory_size + 1U);
 	} else {
-		exception_has_occurred = Boolean_true;
+		exception_has_occurred = true;
 	}
 	ASSERT(exception_has_occurred);
 	ASSERT_EQUAL(s_error_code, (int) dynamic_array_error_memory_reallocation_failure);
@@ -107,7 +107,7 @@ TEST(out_of_bounds_access_to_char_dynamic_array_with_no_element, "A character dy
 {
 	const size_t initial_size = 0U;
 	dynamic_array_type(char) array = {0};
-	Boolean_type exception_has_occurred = Boolean_false;
+	bool exception_has_occurred = false;
 
 	unit_test_pool_init();
 	s_error_code = 0;
@@ -118,17 +118,17 @@ TEST(out_of_bounds_access_to_char_dynamic_array_with_no_element, "A character dy
 	if (setjmp(s_execution_context) == 0) {
 		dynamic_array_element(char, array, 0U) = 1;
 	} else {
-		exception_has_occurred = Boolean_true;
+		exception_has_occurred = true;
 	}
 	ASSERT(exception_has_occurred);
 	ASSERT_EQUAL(s_error_code, (int) dynamic_array_error_index_out_of_range);
 
 	s_error_code = 0;
-	exception_has_occurred = Boolean_false;
+	exception_has_occurred = false;
 	if (setjmp(s_execution_context) == 0) {
 		dynamic_array_element(char, array, 30U) = 1;
 	} else {
-		exception_has_occurred = Boolean_true;
+		exception_has_occurred = true;
 	}
 	ASSERT(exception_has_occurred);
 	ASSERT_EQUAL(s_error_code, (int) dynamic_array_error_index_out_of_range);

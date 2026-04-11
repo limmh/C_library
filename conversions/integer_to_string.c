@@ -29,9 +29,9 @@ static const char uppercase_characters[] = {
 STATIC_ASSERT(sizeof_array(lowercase_characters) == sizeof_array(uppercase_characters), "The two arrays must have the same size.");
 
 typedef struct int_to_string_settings_type {
-	Boolean_type use_uppercase; /* Boolean_false: lowercase, Boolean_true: uppercase */
-	Boolean_type add_prefix;    /* Boolean_false: no prefix for octal or hexadecimal, Boolean_true: add a prefix for octal or hexadecimal */
-	Boolean_type add_plus_sign; /* Boolean_false: no plus sign for positive integers, Boolean_true: add a plus sign for positive integers */
+	bool use_uppercase; /* false: lowercase, true: uppercase */
+	bool add_prefix;    /* false: no prefix for octal or hexadecimal, true: add a prefix for octal or hexadecimal */
+	bool add_plus_sign; /* false: no plus sign for positive integers, true: add a plus sign for positive integers */
 } int_to_string_settings_type;
 
 static int_to_string_settings_type
@@ -39,7 +39,7 @@ int_to_string_options_to_settings(int_to_string_option_type options)
 {
 	STATIC_ASSERT(sizeof(uint32_t) >= sizeof(int_to_string_option_type), "The size of uint32_t shall be at least the size of enum type.");
 	const uint32_t bit_pattern = (uint32_t) options;
-	int_to_string_settings_type settings = {Boolean_false};
+	int_to_string_settings_type settings = {false};
 	settings.use_uppercase = (bit_pattern & 0x1U) == (uint32_t) int_to_string_option_uppercase;
 	settings.add_prefix = (bit_pattern & 0x2U) == (uint32_t) int_to_string_option_add_prefix;
 	settings.add_plus_sign = (bit_pattern & 0x4U) == (uint32_t) int_to_string_option_add_plus_sign;
@@ -52,7 +52,7 @@ i32string_type i32_to_i32string(int32_t value, int base, int_to_string_option_ty
 	size_t index = 0U, length = 0U;
 	i32string_type string = {{0}};
 	const char *characters = NULL;
-	int_to_string_settings_type settings = {Boolean_false};
+	int_to_string_settings_type settings = {false};
 
 	assert(base >= 2 and base <= 36);
 	if (base < 2) {
@@ -131,7 +131,7 @@ u32string_type u32_to_u32string(uint32_t value, int base, int_to_string_option_t
 	size_t index = 0U, length = 0U;
 	u32string_type string = {{0}};
 	const char *characters = NULL;
-	int_to_string_settings_type settings = {Boolean_false};
+	int_to_string_settings_type settings = {false};
 
 	assert(base >= 2 and base <= 36);
 	if (base < 2) {
@@ -184,7 +184,7 @@ i64string_type i64_to_i64string(int64_t value, int base, int_to_string_option_ty
 	size_t index = 0U, length = 0U;
 	i64string_type string = {{0}};
 	const char *characters = NULL;
-	int_to_string_settings_type settings = {Boolean_false};
+	int_to_string_settings_type settings = {false};
 
 	assert(base >= 2 and base <= 36);
 	if (base < 2) {
@@ -263,7 +263,7 @@ u64string_type u64_to_u64string(uint64_t value, int base, int_to_string_option_t
 	size_t index = 0U, length = 0U;
 	u64string_type string = {{0}};
 	const char *characters = NULL;
-	int_to_string_settings_type settings = {Boolean_false};
+	int_to_string_settings_type settings = {false};
 
 	assert(base >= 2 and base <= 36);
 	if (base < 2) {

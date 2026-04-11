@@ -66,7 +66,7 @@ keyboard_input_result_type keyboard_input_from_terminal(void)
 
 #else
 
-	const Boolean_type echo_mode = keyboard_input_terminal_echo_mode();
+	const bool echo_mode = keyboard_input_terminal_echo_mode();
 	result.input.keycode[0] = (unsigned char) (echo_mode ? getche() : getch());
 	if (result.input.keycode[0] == 0 or result.input.keycode[0] == 0xE0) {
 		/* Extended keys always have a second byte already in the buffer. A bare character has no following byte. */
@@ -118,7 +118,7 @@ keyboard_input_result_type keyboard_input_from_terminal_nonblocking(void)
 }
 
 
-int keyboard_input_set_terminal_echo_mode(Boolean_type echo_mode)
+int keyboard_input_set_terminal_echo_mode(bool echo_mode)
 {
 	int error = 0;
 #if !(defined(_WIN32) || defined(WIN32))
@@ -158,9 +158,9 @@ int keyboard_input_set_terminal_echo_mode(Boolean_type echo_mode)
 	return error;
 }
 
-Boolean_type keyboard_input_terminal_echo_mode(void)
+bool keyboard_input_terminal_echo_mode(void)
 {
-	Boolean_type echo_mode = Boolean_false;
+	bool echo_mode = false;
 #if !(defined(_WIN32) || defined(WIN32))
 	struct termios terminal_settings = {0};
 	int status = tcgetattr(STDIN_FILENO, &terminal_settings);
@@ -180,7 +180,7 @@ Boolean_type keyboard_input_terminal_echo_mode(void)
 	return echo_mode;
 }
 
-Boolean_type keyboard_input_is_extended_key_(const keyboard_input_type *p_input)
+bool keyboard_input_is_extended_key_(const keyboard_input_type *p_input)
 {
 	assert(p_input != NULL);
 #if !(defined(_WIN32) || defined(WIN32))

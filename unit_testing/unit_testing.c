@@ -59,7 +59,7 @@ static const char *test_without_assertion_warning_text(void)
 	return (test_without_assertion_warning != NULL) ? test_without_assertion_warning : TEST_WITHOUT_ASSERTION_WARNING;
 }
 
-void testing_library_assert(int line_number, Boolean_type condition, const char *message, testing_library_data_type *pdata)
+void testing_library_assert(int line_number, bool condition, const char *message, testing_library_data_type *pdata)
 {
 	FILE *file = testing_library_get_file();
 	assert(message != NULL);
@@ -238,12 +238,12 @@ void testing_library_print_test_statistics(const testing_library_test_statistics
 	if (pstat != NULL) {
 		const size_t number_of_unique_tests = pstat->number_of_passed_tests + pstat->number_of_failed_tests
 							+ pstat->number_of_tests_without_assertion;
-		const Boolean_type all_tests_pass = (pstat->number_of_passed_tests == number_of_unique_tests);
-		const Boolean_type at_least_a_test_fails = (pstat->number_of_failed_tests > 0U);
-		const Boolean_type at_least_a_test_has_no_assertion = (pstat->number_of_tests_without_assertion > 0U);
+		const bool all_tests_pass = (pstat->number_of_passed_tests == number_of_unique_tests);
+		const bool at_least_a_test_fails = (pstat->number_of_failed_tests > 0U);
+		const bool at_least_a_test_has_no_assertion = (pstat->number_of_tests_without_assertion > 0U);
 		const size_t number_of_assertions = pstat->number_of_true_assertions + pstat->number_of_false_assertions;
-		const Boolean_type all_assertions_are_true = (pstat->number_of_true_assertions == number_of_assertions);
-		const Boolean_type at_least_an_assertion_is_false = (pstat->number_of_false_assertions > 0U);
+		const bool all_assertions_are_true = (pstat->number_of_true_assertions == number_of_assertions);
+		const bool at_least_an_assertion_is_false = (pstat->number_of_false_assertions > 0U);
 		FILE *file = testing_library_get_file();
 
 		fprintf(file, "Number of unique tests: %lu\n", (unsigned long) number_of_unique_tests);
@@ -333,12 +333,12 @@ void testing_library_print_LHS_and_RHS_as_strings(const char *LHS, const char *R
 	fprintf(file, "left string == %s, right string == %s\n", LHS, RHS);
 }
 
-Boolean_type testing_library_strings_are_equal(const char *LHS, const char *RHS)
+bool testing_library_strings_are_equal(const char *LHS, const char *RHS)
 {
 	return strcmp(LHS, RHS) == 0;
 }
 
-Boolean_type testing_library_strings_are_not_equal(const char *LHS, const char *RHS)
+bool testing_library_strings_are_not_equal(const char *LHS, const char *RHS)
 {
 	return strcmp(LHS, RHS) != 0;
 }

@@ -10,12 +10,12 @@ int main(void)
 	int error = 0;
 	const int Esc_key = 0x1B;
 	unsigned long count = 0U;
-	Boolean_type echo_mode = Boolean_false;
+	bool echo_mode = false;
 
 	printf("Press Esc to exit.\n");
 
 	echo_mode = keyboard_input_terminal_echo_mode();
-	error = keyboard_input_set_terminal_echo_mode(Boolean_false);
+	error = keyboard_input_set_terminal_echo_mode(false);
 	if (error != 0) {
 		printf("An error occurred: %s\n", strerror(error));
 	}

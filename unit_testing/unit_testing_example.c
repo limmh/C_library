@@ -3,17 +3,17 @@
 
 #include <iso646.h>
 
-static Boolean_type is_leap_year(int year)
+static bool is_leap_year(int year)
 {
-	Boolean_type result = Boolean_false;
+	bool result = false;
 	if (year % 400 == 0) {
-		result = Boolean_true;
+		result = true;
 	} else if (year % 100 == 0) {
-		result = Boolean_false;
+		result = false;
 	} else if (year % 4 == 0) {
-		result = Boolean_true;
+		result = true;
 	} else {
-		result = Boolean_false;
+		result = false;
 	}
 	return result;
 }
