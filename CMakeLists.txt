@@ -32,6 +32,7 @@ add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/reference_type_emulation")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/fat_pointer")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/conversions")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/io")
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/timer")
 
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/programs")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/tests")
