@@ -4,8 +4,7 @@
 /*
 Emulates reference types in C
 
-Unlike C++, C does not support reference types natively.
-Both C and C++ support pointer types.
+Unlike C++, C does not support reference types natively. Both C and C++ support pointer types.
 
 Example of a pointer (valid for both C and C++):
 int a = 0, b = 0;
@@ -106,28 +105,37 @@ Notes:
 #endif
 
 #ifdef __cplusplus
+/** @brief Macro to define a reference */
 #define REF(reference) (&(reference))
+/** @brief Macro to reference an object or variable */
 #define REF_OF(object) (object)
+/** @brief Macro to dereference a reference */
 #define DEREF(reference) (reference)
 #else
+/** @brief Macro to define a reference */
 #define REF(reference) (* const (reference))
+/** @brief Macro to reference an object or variable */
 #define REF_OF(object) (&(object))
+/** @brief Macro to dereference a reference */
 #define DEREF(reference) (*(reference))
 #endif
 
 #ifndef ref
+/** @brief The same as REF */
 #define ref(reference) REF(reference)
 #else
 #pragma message("The ref macro has already been defined in another file. It will not be redefined.")
 #endif
 
 #ifndef ref_of
+/** @brief The same as REF_OF */
 #define ref_of(object) REF_OF(object)
 #else
 #pragma message("The ref_of macro has already been defined in another file. It will not be redefined.")
 #endif
 
 #ifndef deref
+/** @brief The same as DEREF */
 #define deref(reference) DEREF(reference)
 #else
 #pragma message("The deref macro has already been defined in another file. It will not be redefined.")

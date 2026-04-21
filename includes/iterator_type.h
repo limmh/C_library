@@ -19,43 +19,48 @@ int main(void)
 		printf("%d\n", iterator_deref(it));
 	}
 	iterator_reset(it);
-	begin = iterator_reverse_begin(iterator_increment(begin, array_size - 1));
-	end = iterator_reverse_end(begin, array_size);
 	printf("Printing the numbers in reverse order\n");
 	foreach_iterator_in_reverse(it, begin, end) {
 		printf("%d\n", iterator_deref(it));
 	}
 	return 0;
 }
-
 */
 
-#define iterator_type(type_name) type_name *
+/** @brief Macro to define an iterator type */
+#define iterator_type(element_type) element_type *
 
+/** @brief Macro to initialize an iterator */
 #define iterator_init() NULL
 
+/** @brief Macro to dereference an iterator */
 #define iterator_deref(iterator) (*(iterator))
 
+/** @brief Macro that returns an incremented iterator */
 #define iterator_increment(iterator, offset) ((iterator) + (offset))
 
+/** @brief Macro that returns a decremented iterator */
 #define iterator_decrement(iterator, offset) ((iterator) - (offset))
 
+/** @brief Macro that indicates the iterator is the starting iterator */
 #define iterator_begin(first_iterator) (first_iterator)
 
+/** @brief Macro that indicates the iterator is one past the end */
 #define iterator_end(iterator, offset) iterator_increment(iterator, offset)
 
-#define iterator_reverse_begin(last_iterator) (last_iterator)
-
-#define iterator_reverse_end(iterator, offset) iterator_decrement(iterator, offset)
-
+/** @brief Macro that resets an iterator */
 #define iterator_reset(iterator) ((iterator) = iterator_init())
 
+/** @brief foreach macro */
 #define foreach_iterator(iterator, first_iterator, one_past_last_iterator) \
-	assert(first_iterator <= one_past_last_iterator); \
-	for ((iterator) = (first_iterator); (iterator) != (one_past_last_iterator); (iterator) = iterator_increment(iterator, 1))
+	for ((iterator) = (assert((first_iterator) <= (one_past_last_iterator)), (first_iterator)); \
+		(iterator) != (one_past_last_iterator); \
+		(iterator) = iterator_increment(iterator, 1))
 
-#define foreach_iterator_in_reverse(iterator, last_iterator, one_before_first_iterator) \
-	assert(last_iterator >= one_before_first_iterator); \
-	for ((iterator) = (last_iterator); (iterator) != (one_before_first_iterator); (iterator) = iterator_decrement(iterator, 1))
+/** @brief foreach macro in reverse */
+#define foreach_iterator_in_reverse(iterator, first_iterator, one_past_last_iterator) \
+	for ((iterator) = (assert((first_iterator) <= (one_past_last_iterator)), iterator_decrement(one_past_last_iterator, 1)); \
+		(iterator) >= first_iterator; \
+		(iterator) = iterator_decrement(iterator, 1))
 
 #endif

@@ -22,6 +22,7 @@ extern "C" {
 #endif
 #endif
 
+/** @brief Overall test data */
 typedef struct testing_library_data_type
 {
 	size_t number_of_false_assertions;
@@ -29,6 +30,7 @@ typedef struct testing_library_data_type
 	bool should_print_true_assertions;
 } testing_library_data_type;
 
+/** @brief Individual test case data */
 typedef struct testing_library_test_type
 {
 	void(*func_ptr)(void);
@@ -40,6 +42,7 @@ typedef struct testing_library_test_type
 	size_t number_of_true_assertions;
 } testing_library_test_type;
 
+/** @brief Test result */
 typedef enum testing_library_test_result_type
 {
 	test_result_test_passes = 0,
@@ -47,6 +50,7 @@ typedef enum testing_library_test_result_type
 	test_result_test_has_no_assertion = 2
 } testing_library_test_result_type;
 
+/** @brief Test statistics */
 typedef struct testing_library_test_statistics_type {
 	size_t number_of_duplicate_tests;
 	size_t number_of_failed_tests;
@@ -56,24 +60,137 @@ typedef struct testing_library_test_statistics_type {
 	size_t number_of_true_assertions;
 } testing_library_test_statistics_type;
 
+/**
+ * @brief Sets the file pointer
+ * @param [in] pfile File pointer
+ */
 void testing_library_set_file(FILE *pfile);
+
+/**
+ * @brief Gets the file pointer
+ * @return FILE * file pointer
+ */
 FILE *testing_library_get_file(void);
+
+/**
+ * @brief Sets the text for passed status
+ * @param [in] text Null-terminated string
+ */
 void testing_library_set_test_status_passed_text(const char *text);
+
+/**
+ * @brief Sets the text for failed status
+ * @param [in] text Null-terminated string
+ */
 void testing_library_set_test_status_failed_text(const char *text);
+
+/**
+ * @brief Sets the text for no-assertion warning status
+ * @param [in] text Null-terminated string
+ */
 void testing_library_set_test_without_assertion_warning_text(const char *text);
+
+/**
+ * @brief Asserts a condition and prints a message if the condition is false
+ * @param [in] line_number The line at which the condition is defined
+ * @param [in] condition Condition to check (true or false)
+ * @param [in] message Null-terminated message string to be displayed when condition is false
+ * @param [in, out] pdata A pointer to test data
+ */
 void testing_library_assert(int line_number, bool condition, const char *message, testing_library_data_type *pdata);
+
+/**
+ * @brief Runs a test
+ * @param [in] sequence_number Sequence number of test
+ * @param [in, out] ptest A pointer to test
+ * @param [in, out] pdata A pointer to test data
+ */
 void testing_library_run_test(size_t sequence_number, testing_library_test_type *ptest, testing_library_data_type *pdata);
+
+/**
+ * @brief Runs tests
+ * @param [in, out] ptests A pointer to tests (tests: array of pointers to tests)
+ * @param [in] number_of_tests Number of tests to run
+ * @param [in, out] pdata A pointer to test data
+ */
 void testing_library_run_tests(testing_library_test_type * const *ptests, size_t number_of_tests, testing_library_data_type *pdata);
+
+/**
+ * @brief Evaluates test result
+ * @param [in] ptest A pointer to test
+ * @return testing_library_test_result_type Test result
+ */
 testing_library_test_result_type testing_library_evaluate_test_result(const testing_library_test_type *ptest);
-testing_library_test_statistics_type testing_library_determine_test_statistics(const testing_library_test_type * const *ptest, size_t number_of_tests);
+
+/**
+ * @brief Determines test statistics
+ * @param [in] ptests A pointer to tests
+ * @param [in] number_of_tests Number of tests
+ * @return testing_library_test_statistics_type Test statistics
+ */
+testing_library_test_statistics_type testing_library_determine_test_statistics(const testing_library_test_type * const *ptests, size_t number_of_tests);
+
+/**
+ * @brief Prints test statistics
+ * @param pstat A pointer to test statistics instance
+ */
 void testing_library_print_test_statistics(const testing_library_test_statistics_type *pstat);
+
+/**
+ * @brief Prints the file name
+ * @param [in] file_name Null-terminate file name or file path
+ */
 void testing_library_print_file_name(const char *file_name);
+
+/**
+ * @brief Prints the values of two signed integers
+ * @param LHS Integer on the left side of a comparison
+ * @param RHS Integer on the right side of a comparison
+ */
 void testing_library_print_LHS_and_RHS_as_signed_integers(int LHS, int RHS);
+
+/**
+ * @brief Prints the values of two unsigned integers
+ * @param LHS Integer on the left side of a comparison
+ * @param RHS Integer on the right side of a comparison
+ */
 void testing_library_print_LHS_and_RHS_as_unsigned_integers(unsigned int LHS, unsigned int RHS);
+
+/**
+ * @brief Prints the values of two signed long integers
+ * @param LHS Integer on the left side of a comparison
+ * @param RHS Integer on the right side of a comparison
+ */
 void testing_library_print_LHS_and_RHS_as_signed_long_integers(long LHS, long RHS);
+
+/**
+ * @brief Prints the values of two unsigned long integers
+ * @param LHS Integer on the left side of a comparison
+ * @param RHS Integer on the right side of a comparison
+ */
 void testing_library_print_LHS_and_RHS_as_unsigned_long_integers(unsigned long LHS, unsigned long RHS);
+
+/**
+ * @brief Prints the values of two strings
+ * @param LHS Null-terminated string on the left side of a comparison
+ * @param RHS Null-terminated string on the right side of a comparison
+ */
 void testing_library_print_LHS_and_RHS_as_strings(const char *LHS, const char *RHS);
+
+/**
+ * @brief Compares whether two strings are equal or identical
+ * @param LHS Null-terminated string on the left side of a comparison
+ * @param RHS Null-terminated string on the right side of a comparison
+ * @return bool true if both strings are the same, otherwise false
+ */
 bool testing_library_strings_are_equal(const char *LHS, const char *RHS);
+
+/**
+ * @brief Compares whether two strings are not equal
+ * @param LHS Null-terminated string on the left side of a comparison
+ * @param RHS Null-terminated string on the right side of a comparison
+ * @return bool true if both strings are not the same, otherwise false
+ */
 bool testing_library_strings_are_not_equal(const char *LHS, const char *RHS);
 
 #ifndef UNIT_TESTING_LIBRARY_BUILD_LIBRARY

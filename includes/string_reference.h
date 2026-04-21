@@ -16,20 +16,25 @@ String reference: a data structure that can reference part of a string or the wh
 The life time of the underlying string must be longer than the reference itself
 */
 
-/* string content is mutable */
+/** @brief String content is mutable */
 typedef struct stringref_type
 {
 	char *string;
 	size_t length;
 } stringref_type;
 
-/* string content is not mutable */
+/** @brief String content is not mutable */
 typedef struct const_stringref_type
 {
 	const char *string;
 	size_t length;
 } const_stringref_type;
 
+/**
+ * @brief Converts mutable string reference to constant string reference
+ * @param [in] stringref Mutable string reference
+ * @return const_stringref_type Constant string reference
+ */
 INLINE_OR_STATIC
 const_stringref_type
 stringref_to_const_stringref(stringref_type stringref)
@@ -40,6 +45,11 @@ stringref_to_const_stringref(stringref_type stringref)
 	return const_stringref;
 }
 
+/**
+ * @brief Checks whether a mutable string reference is valid
+ * @param [in] stringref Mutable string reference
+ * @return bool true if valid, otherwise false
+ */
 INLINE_OR_STATIC
 bool
 stringref_is_valid(stringref_type stringref)
@@ -47,6 +57,11 @@ stringref_is_valid(stringref_type stringref)
 	return (stringref.string != NULL);
 }
 
+/**
+ * @brief Checks whether a constant string reference is valid
+ * @param [in] const_stringref Constant string reference
+ * @return bool true if valid, otherwise false
+ */
 INLINE_OR_STATIC
 bool
 const_stringref_is_valid(const_stringref_type const_stringref)
@@ -54,6 +69,11 @@ const_stringref_is_valid(const_stringref_type const_stringref)
 	return (const_stringref.string != NULL);
 }
 
+/**
+ * @brief Checks whether a mutable string reference refers to an empty string
+ * @param [in] stringref Mutable string reference
+ * @return bool true if the referenced string is empty, otherwise false
+ */
 INLINE_OR_STATIC
 bool
 stringref_string_is_empty(stringref_type stringref)
@@ -62,6 +82,11 @@ stringref_string_is_empty(stringref_type stringref)
 		(stringref.string[0] == '\0') : true;
 }
 
+/**
+ * @brief Checks whether a constant string reference refers to an empty string
+ * @param [in] const_stringref Constant string reference
+ * @return bool true if the reference string is empty, otherwise false
+ */
 INLINE_OR_STATIC
 bool
 const_stringref_string_is_empty(const_stringref_type const_stringref)
@@ -70,6 +95,12 @@ const_stringref_string_is_empty(const_stringref_type const_stringref)
 		(const_stringref.string[0] == '\0') : true;
 }
 
+/**
+ * @brief Creates a string reference from a mutable string or substring
+ * @param [in] string String or substring
+ * @param [in] length Number of bytes
+ * @return stringref_type New instance of mutable string reference
+ */
 INLINE_OR_STATIC
 stringref_type
 string_to_stringref(char *string, size_t length)
@@ -80,6 +111,12 @@ string_to_stringref(char *string, size_t length)
 	return stringref;
 }
 
+/**
+ * @brief Creates a constant string reference from a mutable or read-only string or substring
+ * @param [in] string String or substring
+ * @param [in] length Number of bytes
+ * @return const_stringref_type New instance of constant string reference
+ */
 INLINE_OR_STATIC
 const_stringref_type
 string_to_const_stringref(const char *string, size_t length)
@@ -90,12 +127,16 @@ string_to_const_stringref(const char *string, size_t length)
 	return stringref;
 }
 
-/*
-ASCII string: The number of characters before the first '\0' found in the string being referenced.
-              If no '\0' is found, the result is the same as the length.
-UTF-8 string: The number of bytes before the first '\0' found in the string being referenced.
-              If no '\0' is found, the result is the same as the length.
-*/
+/**
+ * @brief Determines the number of bytes before the first terminating null character
+ * @param stringref Constant string reference
+ * @return size_t Number of bytes before the first null character
+ *
+ * - ASCII string: The number of characters before the first '\0' found in the string being referenced.
+ *                 If no '\0' is found, the result is the same as the length.
+ * - UTF-8 string: The number of bytes before the first '\0' found in the string being referenced.
+ *                 If no '\0' is found, the result is the same as the length.
+ */
 INLINE_OR_STATIC
 size_t
 const_stringref_string_length(const_stringref_type stringref)
@@ -113,6 +154,11 @@ const_stringref_string_length(const_stringref_type stringref)
 	return length;
 }
 
+/**
+ * @brief Determines the number of bytes before the first terminating null character
+ * @param stringref Mutable string reference
+ * @return size_t Number of bytes before the first null character
+ */
 INLINE_OR_STATIC
 size_t
 stringref_string_length(stringref_type stringref)
@@ -121,6 +167,11 @@ stringref_string_length(stringref_type stringref)
 	return const_stringref_string_length(const_stringref);
 }
 
+/**
+ * @brief Checks whether the referenced string is null-terminated
+ * @param [in] stringref Constant string reference
+ * @return bool true if null-terminated, otherwise false
+ */
 INLINE_OR_STATIC
 bool
 const_stringref_string_is_null_terminated(const_stringref_type stringref)
@@ -128,6 +179,11 @@ const_stringref_string_is_null_terminated(const_stringref_type stringref)
 	return const_stringref_string_length(stringref) < stringref.length;
 }
 
+/**
+ * @brief Checks whether the referenced string is null-terminated
+ * @param [in] stringref Mutable string reference
+ * @return bool true if null-terminated, otherwise false
+ */
 INLINE_OR_STATIC
 bool
 stringref_string_is_null_terminated(stringref_type stringref)
@@ -135,6 +191,12 @@ stringref_string_is_null_terminated(stringref_type stringref)
 	return stringref_string_length(stringref) < stringref.length;
 }
 
+/**
+ * @brief Copies the referenced string to a buffer, limited by the size of the buffer
+ * @param [in] stringref Constant string reference
+ * @param [out] buffer Destination buffer to store the reference string
+ * @param [in] buffer_size Number of bytes of the destination buffer
+ */
 INLINE_OR_STATIC
 void
 const_stringref_to_string(const_stringref_type stringref, char *buffer, size_t buffer_size)
@@ -151,6 +213,12 @@ const_stringref_to_string(const_stringref_type stringref, char *buffer, size_t b
 	}
 }
 
+/**
+ * @brief Copies the referenced string to a buffer, limited by the size of the buffer
+ * @param [in] stringref Mutable string reference
+ * @param [out] buffer Destination buffer to store the reference string
+ * @param [in] buffer_size Number of bytes of the destination buffer
+ */
 INLINE_OR_STATIC
 void
 stringref_to_string(stringref_type stringref, char *buffer, size_t buffer_size)
@@ -159,6 +227,12 @@ stringref_to_string(stringref_type stringref, char *buffer, size_t buffer_size)
 	const_stringref_to_string(const_stringref, buffer, buffer_size);
 }
 
+/**
+ * @brief Checks whether two referenced strings are identical up to their first null characters
+ * @param [in] strref1 Constant string reference 1
+ * @param [in] strref2 Constant string reference 2
+ * @return bool
+ */
 INLINE_OR_STATIC
 bool
 const_stringref_strings_are_equal(const_stringref_type strref1, const_stringref_type strref2)
@@ -183,6 +257,12 @@ const_stringref_strings_are_equal(const_stringref_type strref1, const_stringref_
 	return result;
 }
 
+/**
+ * @brief Checks whether two referenced strings are of the same length and are identical bitwise
+ * @param [in] strref1 Constant string reference 1
+ * @param [in] strref2 Constant string reference 2
+ * @return bool
+ */
 INLINE_OR_STATIC
 bool
 const_stringref_contents_are_equal(const_stringref_type strref1, const_stringref_type strref2)
@@ -204,6 +284,10 @@ const_stringref_contents_are_equal(const_stringref_type strref1, const_stringref
 	return result;
 }
 
+/**
+ * @brief Reverses a mutable referenced string
+ * @param [in, out] stringref Mutable string reference
+ */
 INLINE_OR_STATIC
 void
 stringref_reverse_string(stringref_type stringref)

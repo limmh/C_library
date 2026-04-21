@@ -11,18 +11,22 @@ In C++, using sizeof_array(array) or SIZEOF_ARRAY(array) will result in a compil
 
 #ifndef __cplusplus
 
+/** @brief Macro to determine the size of a one-dimensional array */
 #define SIZEOF_ARRAY(ARRAY) ( sizeof(ARRAY) / sizeof((ARRAY)[0]) )
+/** @brief Macro to determine the size of a one-dimensional array */
 #define sizeof_array(array) SIZEOF_ARRAY(array)
 
 #else
 
 #include <cstddef>
 
+/** @brief C++ function template to determine the size of a one-dimensional array */
 template <typename T, std::size_t size>
 inline std::size_t sizeof_array(const T (&)[size]) {
 	return size;
 }
 
+/** @brief Macro to determine the size of a one-dimensional array */
 #define SIZEOF_ARRAY(array) sizeof_array(array)
 
 #endif

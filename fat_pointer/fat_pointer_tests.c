@@ -98,7 +98,7 @@ TEST(fat_pointer_referencing_a_char_buffer, "Fat pointer referencing a char buff
 	ASSERT_EQUAL(buffer[4], '\0');
 	ASSERT_SIZE_EQUAL(strlen(buffer), 4U);
 
-	fat_pointer_resize(char, cfatptr, 0U);
+	fat_pointer_resize(cfatptr, 0U);
 	ASSERT_SIZE_EQUAL(fat_pointer_capacity(cfatptr), 13U);
 	ASSERT_SIZE_EQUAL(fat_pointer_length(cfatptr), 0U);
 	ASSERT_SIZE_EQUAL(fat_pointer_element_size(cfatptr), sizeof(char));

@@ -21,6 +21,8 @@ Note:
 Make sure the second argument is really a constant expression.
 */
 
+/** @brief Defines a constant signed integer expression */
+
 #if defined(__cplusplus)
 
 #if __cplusplus >= 201103L

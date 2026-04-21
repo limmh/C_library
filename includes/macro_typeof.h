@@ -18,6 +18,8 @@ Notes:
 - If your compiler does not support the __typeof__ operator, then the TYPEOF macro will not work.
 */
 
+/** @brief Macro to get the type of an expression */
+
 #if defined(__cplusplus)
 
 #if __cplusplus >= 201103L

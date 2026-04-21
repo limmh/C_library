@@ -457,15 +457,15 @@ fat_pointer_remove_elements_starting_from_index_(
 		unsigned char *ptr = NULL;
 		size_t offset = 0U, total_bytes_to_zero = 0U;
 		const size_t capacity = fatptr_->capacity;
-		const size_t number_of_elements_from_index_to_last_index = fatptr_->size - index;
-		const size_t number_of_elements_to_remove = (number_of_elements < number_of_elements_from_index_to_last_index) ?
-			number_of_elements : number_of_elements_from_index_to_last_index;
-		const size_t number_of_elements_to_move = number_of_elements_from_index_to_last_index - number_of_elements_to_remove;
+		const size_t number_of_elements_after_index = fatptr_->size - index;
+		const size_t number_of_elements_to_remove = (number_of_elements < number_of_elements_after_index) ?
+			number_of_elements : number_of_elements_after_index;
+		const size_t number_of_elements_to_move = number_of_elements_after_index - number_of_elements_to_remove;
 
-		if (number_of_elements > number_of_elements_from_index_to_last_index) {
+		if (number_of_elements > number_of_elements_after_index) {
 			debug_info.error = fat_pointer_error_too_many_elements_to_remove;
 			debug_info.info_1 = number_of_elements;
-			debug_info.info_2 = number_of_elements_from_index_to_last_index;
+			debug_info.info_2 = number_of_elements_after_index;
 			fat_pointer_report_error(debug_info);
 			fat_pointer_handle_exception(debug_info.error);
 			return debug_info.error;
@@ -504,7 +504,6 @@ fat_pointer_error_type
 fat_pointer_resize_(
 	fat_pointer_type_ *fatptr,
 	size_t new_size,
-	size_t element_size,
 	const char *file_name,
 	int line_number
 )
@@ -522,15 +521,6 @@ fat_pointer_resize_(
 	}
 
 	capacity = fatptr_->capacity;
-
-	if (element_size != fatptr_->element_size) {
-		debug_info.error = fat_pointer_error_element_size_mismatch;
-		debug_info.info_1 = fatptr_->element_size;
-		debug_info.info_2 = element_size;
-		fat_pointer_report_error(debug_info);
-		fat_pointer_handle_exception(debug_info.error);
-		return debug_info.error;
-	}
 
 	if (new_size > fatptr_->capacity) {
 		debug_info.error = fat_pointer_error_no_enough_capacity;

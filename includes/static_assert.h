@@ -4,22 +4,17 @@
 Compile time assertion which is applicable to C89 and C99
 Note:
 - Manually define STATIC_ASSERT_AVAILABLE to 1 in the compiler flags if static_assert is supported by your compiler, but
-  the conditional preprocessor logic below is not applicable for your compiler.
+  the C or C++ version your compiler is not up to date.
 - For pre-C11 standards, the STATIC_ASSERT macro cannot be used inside C structs.
 */
 
-#ifndef STATIC_ASSERT_AVAILABLE
-#if defined(__cplusplus) && (__cplusplus >= 201103L)
-#define STATIC_ASSERT_AVAILABLE 1
-#elif defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L)
-#include <assert.h>
-#define STATIC_ASSERT_AVAILABLE 1
-#else
-#define STATIC_ASSERT_AVAILABLE 0
-#endif
-#endif
+/** @brief STATIC_ASSERT macro for compile-time assertion */
 
-#if STATIC_ASSERT_AVAILABLE
+#if (defined(__cplusplus) && (__cplusplus >= 201103L)) || (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L)) \
+	|| (defined(STATIC_ASSERT_AVAILABLE) && STATIC_ASSERT_AVAILABLE != 0)
+#ifndef __cplusplus
+#include <assert.h>
+#endif
 #define STATIC_ASSERT(condition, message) static_assert(condition, message)
 #pragma message("static_assert is available, STATIC_ASSERT is mapped to static_assert.")
 #else

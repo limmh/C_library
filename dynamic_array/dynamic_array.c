@@ -669,10 +669,10 @@ void dynamic_array_remove_elements_starting_from_index_(
 	if (number_of_elements > 0) {
 		unsigned char *ptr = NULL;
 		size_t offset = 0U, total_bytes_to_zero = 0U;
-		const size_t number_of_elements_from_index_to_last_index = array->number_of_elements - index;
-		const size_t number_of_elements_to_remove = (number_of_elements < number_of_elements_from_index_to_last_index) ?
-			number_of_elements : number_of_elements_from_index_to_last_index;
-		const size_t number_of_elements_to_move = number_of_elements_from_index_to_last_index - number_of_elements_to_remove;
+		const size_t number_of_elements_after_index = array->number_of_elements - index;
+		const size_t number_of_elements_to_remove = (number_of_elements < number_of_elements_after_index) ?
+			number_of_elements : number_of_elements_after_index;
+		const size_t number_of_elements_to_move = number_of_elements_after_index - number_of_elements_to_remove;
 
 		if (output_buffer != NULL) {
 			const size_t total_bytes_to_copy = number_of_elements_to_remove * element_size;

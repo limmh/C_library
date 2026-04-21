@@ -1,6 +1,8 @@
 #ifndef MACRO_ALIGNOF_H
 #define MACRO_ALIGNOF_H
 
+/** @brief Determines the alignment of a data typedef */
+
 #if defined( __cplusplus) && (__cplusplus >= 201103L)
 
 #define ALIGNOF(TYPE) alignof(TYPE)

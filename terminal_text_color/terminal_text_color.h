@@ -5,6 +5,7 @@
 extern "C" {
 #endif
 
+/** @brief Color codes */
 typedef enum terminal_color_code_type
 {
 	terminal_color_code_default = 0,
@@ -18,6 +19,10 @@ typedef enum terminal_color_code_type
 	terminal_color_code_white
 } terminal_color_code_type;
 
+/**
+ * @brief Sets the text color for the terminal
+ * @param text_color_code Text color code
+ */
 void terminal_text_color_set(terminal_color_code_type text_color_code);
 
 #ifdef __cplusplus
