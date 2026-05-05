@@ -1,4 +1,5 @@
 #include "dynamic_array.h"
+#include "dynamic_string.h"
 #include "simple_tokenizer.h"
 #include "safer_fixed_width_integers.h"
 
@@ -241,21 +242,20 @@ simple_tokenizer_tokens_to_expression_tokens(const simple_tokenizer_token_type *
 	return tokens;
 }
 
-static dynamic_array_type(char)
+static dynamic_string_type
 generate_expression_string(const expression_token_type *ptokens, size_t token_count, const char *separator, size_t separator_length)
 {
 	assert(ptokens != NULL);
-	dynamic_array_type(char) expression = dynamic_array_create_empty(char);
+	dynamic_string_type expression = dynamic_string_create("", 0U);
 	for (size_t i = 0U; i < token_count; ++i) {
 		const expression_token_type token = ptokens[i];
-		dynamic_array_append_elements(char, expression, token.value.string, token.value.length);
+		dynamic_string_append(expression, token.value.string, token.value.length);
 		if ((i + 1U) < token_count) {
 			if (separator != NULL and separator_length > 0U) {
-				dynamic_array_append_elements(char, expression, separator, separator_length);
+				dynamic_string_append(expression, separator, separator_length);
 			}
 		}
 	}
-	dynamic_array_push_back(char, expression, '\0');
 	return expression;
 }
 
@@ -545,7 +545,7 @@ evaluate_postfix_expression_tokens(const expression_token_type *ptokens, size_t 
 		.error = evaluation_result_error_none
 	};
 	dynamic_array_type(number_type) numbers = dynamic_array_create_empty(number_type);
-	dynamic_array_type(char) number_string = dynamic_array_create_empty(char);
+	dynamic_string_type number_string = dynamic_string_create("", 0U);
 
 	for (size_t i = 0U; i < token_count; ++i) {
 		const expression_token_type token = ptokens[i];
@@ -553,10 +553,8 @@ evaluate_postfix_expression_tokens(const expression_token_type *ptokens, size_t 
 		case expression_token_integer:
 			{
 				number_type number = {0};
-				dynamic_array_resize(number_string, token.value.length);
-				memcpy(&dynamic_array_element(char, number_string, 0U), token.value.string, token.value.length * sizeof(char));
-				dynamic_array_push_back(char, number_string, '\0');
-				number.value.integer = (int64_t) strtoll(&dynamic_array_element(char, number_string, 0U), NULL, 10);
+				dynamic_string_assign(number_string, token.value.string, token.value.length);
+				number.value.integer = (int64_t) strtoll(dynamic_string_cstring(number_string), NULL, 10);
 				number.type = number_type_integer;
 				dynamic_array_push_back(number_type, numbers, number);
 			}
@@ -564,10 +562,8 @@ evaluate_postfix_expression_tokens(const expression_token_type *ptokens, size_t 
 		case expression_token_decimal_number:
 			{
 				number_type number = {0};
-				dynamic_array_resize(number_string, token.value.length);
-				memcpy(&dynamic_array_element(char, number_string, 0U), token.value.string, token.value.length * sizeof(char));
-				dynamic_array_push_back(char, number_string, '\0');
-				number.value.decimal = strtod(&dynamic_array_element(char, number_string, 0U), NULL);
+				dynamic_string_assign(number_string, token.value.string, token.value.length);
+				number.value.decimal = strtod(dynamic_string_cstring(number_string), NULL);
 				number.type = number_type_decimal_number;
 				dynamic_array_push_back(number_type, numbers, number);
 			}
@@ -724,7 +720,7 @@ evaluate_postfix_expression_tokens(const expression_token_type *ptokens, size_t 
 		result.number  = dynamic_array_element(number_type, numbers, 0U);
 	}
 
-	dynamic_array_delete(number_string);
+	dynamic_string_delete(number_string);
 	dynamic_array_delete(numbers);
 	return result;
 }
@@ -750,23 +746,22 @@ int main(int argc, char **argv)
 		return 0;
 	}
 
-	dynamic_array_type(char)  expression = dynamic_array_create_empty(char);
+	dynamic_string_type expression = dynamic_string_create("", 0U);
 	const char *substring = argv[1];
-	dynamic_array_append_elements(char, expression, substring, strlen(substring));
+	dynamic_string_append(expression, substring, strlen(substring));
 	for (int i = 2U; i < argc; ++i) {
-		dynamic_array_append_element(char, expression, ' ');
+		dynamic_string_append(expression, " ", 1U);
 		substring = argv[i];
-		dynamic_array_append_elements(char, expression, substring, strlen(substring));
+		dynamic_string_append(expression, substring, strlen(substring));
 	}
-	dynamic_array_push_back(char, expression, '\0');
 
 	dynamic_array_type(simple_tokenizer_token_type)  simple_tokens =
 		dynamic_array_create_empty(simple_tokenizer_token_type);
 
 	const size_t number_of_simple_tokens =
 		simple_tokenizer_tokenize(
-			&dynamic_array_element(char, expression, 0U),
-			dynamic_array_length(expression) - 1U,
+			dynamic_string_cstring(expression),
+			dynamic_string_byte_length(expression),
 			NULL, 0U
 		);
 
@@ -774,8 +769,8 @@ int main(int argc, char **argv)
 
 	(void)
 	simple_tokenizer_tokenize(
-		&dynamic_array_element(char, expression, 0U),
-		dynamic_array_length(expression),
+		dynamic_string_cstring(expression),
+		dynamic_string_byte_length(expression),
 		&dynamic_array_element(simple_tokenizer_token_type, simple_tokens, 0U),
 		dynamic_array_length(simple_tokens)
 	);
@@ -787,7 +782,7 @@ int main(int argc, char **argv)
 		);
 
 	FILE *fp = stdout;
-	fprintf(fp, "Expression: %s\n", &dynamic_array_element(char, expression, 0U));
+	fprintf(fp, "Expression: %s\n", dynamic_string_cstring(expression));
 	print_list_of_tokens(
 		fp,
 		&dynamic_array_element(expression_token_type, tokens, 0U),
@@ -800,7 +795,7 @@ int main(int argc, char **argv)
 			dynamic_array_length(tokens)
 		);
 
-	dynamic_array_type(char)  partially_corrected_expression =
+	dynamic_string_type  partially_corrected_expression =
 		generate_expression_string(
 			&dynamic_array_element(expression_token_type, new_tokens, 0U),
 			dynamic_array_length(new_tokens),
@@ -808,7 +803,7 @@ int main(int argc, char **argv)
 		);
 
 	fprintf(fp, "Partially corrected expression: %s\n",
-		&dynamic_array_element(char, partially_corrected_expression, 0U));
+		dynamic_string_cstring(partially_corrected_expression));
 	print_list_of_tokens(
 		fp,
 		&dynamic_array_element(expression_token_type, new_tokens, 0U),
@@ -831,14 +826,14 @@ int main(int argc, char **argv)
 				dynamic_array_length(new_tokens)
 			);
 
-		dynamic_array_type(char) postfix_expression =
+		dynamic_string_type postfix_expression =
 			generate_expression_string(
 				&dynamic_array_element(expression_token_type, postfix_tokens, 0U),
 				dynamic_array_length(postfix_tokens),
 				",", 1U
 			);
 
-		fprintf(fp, "Postfix expression: %s\n", &dynamic_array_element(char, postfix_expression, 0U));
+		fprintf(fp, "Postfix expression: %s\n", dynamic_string_cstring(postfix_expression));
 
 		evaluation_result_type evaluation_result =
 			evaluate_postfix_expression_tokens(
@@ -857,14 +852,14 @@ int main(int argc, char **argv)
 			fprintf(fp, "Error: %s\n", get_evaluation_result_error_text(evaluation_result.error));
 		}
 
-		dynamic_array_delete(postfix_expression);
+		dynamic_string_delete(postfix_expression);
 		dynamic_array_delete(postfix_tokens);
 	}
 
-	dynamic_array_delete(partially_corrected_expression);
+	dynamic_string_delete(partially_corrected_expression);
 	dynamic_array_delete(new_tokens);
 	dynamic_array_delete(tokens);
 	dynamic_array_delete(simple_tokens);
-	dynamic_array_delete(expression);
+	dynamic_string_delete(expression);
 	return 0;
 }

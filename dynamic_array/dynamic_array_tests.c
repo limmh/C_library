@@ -1,4 +1,5 @@
 #include "dynamic_array.h"
+#include "dynamic_string.h"
 #include "Boolean_type.h"
 #include "sizeof_array.h"
 #include "static_pool.h"
@@ -427,6 +428,90 @@ TEST(user_defined_type_test, "User-defined type")
 	unit_test_pool_deinit();
 }
 
+TEST(dynamic_string_test, "Dynamic string")
+{
+	size_t index = 0U;
+	size_t length = 0U;
+	dynamic_string_type string = {0};
+	const char *substring1 = "Good";
+	const char space = ' ';
+	const char *comma_and_space = ", ";
+	const char *substring2 = "morning";
+	const char *substring3 = "day";
+	const char *substring4 = "Lucky";
+	const char *substring5 = "It's a ";
+	const char *name = "Alex";
+
+	unit_test_pool_init();
+
+	string = dynamic_string_create_with_interface(NULL, 0U, *dynamic_array_unit_test_interface());
+	ASSERT_STRING_EQUAL(dynamic_string_cstring(string), "");
+	ASSERT_SIZE_EQUAL(dynamic_string_byte_length(string), 0U);
+
+	dynamic_string_append(string, substring1, strlen(substring1));
+	ASSERT_STRING_EQUAL(dynamic_string_cstring(string), "Good");
+	ASSERT_SIZE_EQUAL(dynamic_string_byte_length(string), 4U);
+
+	dynamic_string_append(string, &space, 1U);
+	ASSERT_STRING_EQUAL(dynamic_string_cstring(string), "Good ");
+	ASSERT_SIZE_EQUAL(dynamic_string_byte_length(string), 5U);
+
+	dynamic_string_append(string, substring2, strlen(substring2));
+	ASSERT_STRING_EQUAL(dynamic_string_cstring(string), "Good morning");
+	ASSERT_SIZE_EQUAL(dynamic_string_byte_length(string), 12U);
+
+	dynamic_string_append(string, comma_and_space, strlen(comma_and_space));
+	ASSERT_STRING_EQUAL(dynamic_string_cstring(string), "Good morning, ");
+	ASSERT_SIZE_EQUAL(dynamic_string_byte_length(string), 14U);
+
+	dynamic_string_append(string, name, strlen(name));
+	ASSERT_STRING_EQUAL(dynamic_string_cstring(string), "Good morning, Alex");
+	ASSERT_SIZE_EQUAL(dynamic_string_byte_length(string), 18U);
+
+	index = 5U;
+	length = 7U;
+	dynamic_string_remove_substring(string, index, length);
+	ASSERT_STRING_EQUAL(dynamic_string_cstring(string), "Good , Alex");
+	ASSERT_SIZE_EQUAL(dynamic_string_byte_length(string), 11U);
+
+	dynamic_string_insert(string, 5U, substring3, strlen(substring3));
+	ASSERT_STRING_EQUAL(dynamic_string_cstring(string), "Good day, Alex");
+	ASSERT_SIZE_EQUAL(dynamic_string_byte_length(string), 14U);
+
+	index = 0U;
+	length = 4U;
+	dynamic_string_remove_substring(string, index, length);
+	ASSERT_STRING_EQUAL(dynamic_string_cstring(string), " day, Alex");
+	ASSERT_SIZE_EQUAL(dynamic_string_byte_length(string), 10U);
+
+	dynamic_string_insert(string, 0U, substring4, strlen(substring4));
+	ASSERT_STRING_EQUAL(dynamic_string_cstring(string), "Lucky day, Alex");
+	ASSERT_SIZE_EQUAL(dynamic_string_byte_length(string), 15U);
+
+	dynamic_string_insert(string, 0U, substring5, strlen(substring5));
+	ASSERT_STRING_EQUAL(dynamic_string_cstring(string), "It's a Lucky day, Alex");
+	ASSERT_SIZE_EQUAL(dynamic_string_byte_length(string), 22U);
+
+	index = 17U;
+	length = 7U;
+	dynamic_string_remove_substring(string, index, length);
+	dynamic_string_char(string, 7) = 'l';
+	dynamic_string_char(string, 16) = '.';
+	ASSERT_STRING_EQUAL(dynamic_string_cstring(string), "It's a lucky day.");
+	ASSERT_SIZE_EQUAL(dynamic_string_byte_length(string), 17U);
+
+	dynamic_string_assign(string, "Hello World", strlen("Hello World"));
+	ASSERT_STRING_EQUAL(dynamic_string_cstring(string), "Hello World");
+	ASSERT_SIZE_EQUAL(dynamic_string_byte_length(string), 11U);
+
+	dynamic_string_clear(string);
+	ASSERT_STRING_EQUAL(dynamic_string_cstring(string), "");
+	ASSERT_SIZE_EQUAL(dynamic_string_byte_length(string), 0U);
+
+	dynamic_string_destroy(string);
+	unit_test_pool_deinit();
+}
+
 int main(void)
 {
 	DEFINE_LIST_OF_TESTS(list_of_tests) {
@@ -443,7 +528,8 @@ int main(void)
 		char_dynamic_array_initialized_from_static_array,
 		string_operations_on_char_dynamic_array,
 		dynamic_integer_array,
-		user_defined_type_test
+		user_defined_type_test,
+		dynamic_string_test
 	};
 	PRINT_FILE_NAME();
 	RUN_TESTS(list_of_tests);

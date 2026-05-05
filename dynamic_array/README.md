@@ -13,7 +13,7 @@ It is designed for safety and correctness, suitable for high security and high r
 - Support for custom allocators.
 - Customizable exception handling and error reporting or logging.
 
-## Usage Example
+## Usage Examples
 
 ```c
 #include "dynamic_array.h"
@@ -28,12 +28,34 @@ int main(void)
 }
 ```
 
+```c
+#include "dynamic_string.h"
+#include <stdio.h>
+#include <string.h>
+
+int main(int argc, char **argv)
+{
+    if (argc >= 2) {
+	const char *separator = ", ";
+        dynamic_string_type str = dynamic_string_create(argv[1], strlen(argv[1]));
+        for (int i = 2; i < argc; ++i) {
+            dynamic_string_append(str, separator, strlen(separator));
+            dynamic_string_append(str, argv[i], strlen(argv[i]));
+        }
+        printf("%s\n", dynamic_string_cstring(str));
+        dynamic_string_delete(str);
+    }
+    return 0;
+}
+```
+
 ## Data Types
 
-- `dynamic_array_type(element_type)`: Opaque array type (use in variable declarations).
+- `dynamic_array_type(element_type)`: Opaque dynamic array type (use in variable declarations).
 - `dynamic_array_allocator_type`: Structure for custom memory allocators.
 - `dynamic_array_error_type`: Enum of error codes (for error reporting and debugging).
 - `dynamic_array_debug_info_type`: Carries file/line/struct size information for diagnostics.
+- `dynamic_string_type`: Opaque dynamic string type
 
 ## Key Macros
 
