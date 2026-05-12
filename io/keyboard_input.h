@@ -88,7 +88,7 @@ bool keyboard_input_terminal_echo_mode(void);
 
 /**
  * @brief Checks if the keyboard input represents an extended key
- * @param p_input A pointer to a keyboard input data instance
+ * @param [in] p_input A pointer to a keyboard input data instance
  * @return bool true if the input represents an extended key (a key with no directly
  * printable ASCII character, such as arrow keys or function keys), otherwise false
  *
@@ -104,7 +104,7 @@ bool keyboard_input_is_extended_key_(const keyboard_input_type *p_input);
 
 /**
  * @brief Checks if the keyboard input represents an extended key
- * @param input An instance of keyboard input (NOT a pointer)
+ * @param [in] input An instance of keyboard input (NOT a pointer)
  * @return bool
  */
 #define keyboard_input_is_extended_key(input) keyboard_input_is_extended_key_(&(input))

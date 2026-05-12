@@ -59,8 +59,8 @@ int main(void)
 
 /** @brief foreach macro in reverse */
 #define foreach_iterator_in_reverse(iterator, first_iterator, one_past_last_iterator) \
-	for ((iterator) = (assert((first_iterator) <= (one_past_last_iterator)), iterator_decrement(one_past_last_iterator, 1)); \
-		(iterator) >= first_iterator; \
-		(iterator) = iterator_decrement(iterator, 1))
+	for ((iterator) = (assert((first_iterator) <= (one_past_last_iterator)), one_past_last_iterator); \
+		((iterator) != (first_iterator)) && ((iterator) = iterator_decrement(iterator, 1)); \
+		)
 
 #endif

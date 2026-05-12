@@ -29,7 +29,7 @@ dynamic_string_create_(
 );
 
 /**
- * @brief Creates a dynamic string from a source string using the default dynamic array interface
+ * @brief Macro to create a dynamic string from a source string using the default dynamic array interface
  * @param [in] string Source string
  * @param [in] length Length of source string in number of bytes
  * @return dynamic_string_type A new instance of dynamic string
@@ -37,7 +37,7 @@ dynamic_string_create_(
 #define dynamic_string_create(string, length) dynamic_string_create_(string, length, dynamic_array_default_interface())
 
 /**
- * @brief Creates a dynamic string from a source string using a custom interface
+ * @brief Macro to create a dynamic string from a source string using a custom interface
  * @param [in] string Source string
  * @param [in] length Length of source string in number of bytes
  * @param [in] interface Dynamic array interface (instance, NOT pointer)
@@ -53,7 +53,7 @@ dynamic_string_create_(
 void dynamic_string_delete_(dynamic_string_type *pdynstring);
 
 /**
- * @brief Destroys or deletes a dynamic string
+ * @brief Macro to destroy or delete a dynamic string
  * @param [in, out] dynstring Dynamic string instance (NOT pointer)
  */
 #define dynamic_string_delete(dynstring) dynamic_string_delete_(&(dynstring))
@@ -69,14 +69,14 @@ void dynamic_string_delete_(dynamic_string_type *pdynstring);
 size_t dynamic_string_byte_length_(const dynamic_string_type *pdynstring);
 
 /**
-* @brief Returns the length of a dynamic string in number of bytes
+* @brief Macro to determine the length of a dynamic string in number of bytes
 * @param [in] dynstring Dynamic string instance (NOT pointer)
 * @return size_t Length in number of bytes
 */
 #define dynamic_string_byte_length(dynstring) dynamic_string_byte_length_(&(dynstring))
 
 /**
- * @brief Checks whether a dynamic string is empty
+ * @brief Macro to check whether a dynamic string is empty
  * @param [in] dynstring Dynamic string instance (NOT pointer)
  * @return bool
  */
@@ -95,7 +95,7 @@ char *dynamic_string_ptr_(
 );
 
 /**
- * @brief Obtains an lvalue of a character of a dynamic string
+ * @brief Macro to obtain an lvalue of a character of a dynamic string
  * @param [in] dynstring Dynamic string instance (NOT pointer)
  * @param [in] index Index of the character
  * @return char An lvalue of the mutable character
@@ -116,7 +116,7 @@ const char *dynamic_string_const_ptr_(
 );
 
 /**
- * @brief Obtains an lvalue to a const character of a dynamic string
+ * @brief Macro to obtain an lvalue to a const character of a dynamic string
  * @param [in] dynstring Dynamic string instance (NOT pointer)
  * @param [in] index Index of the character
  * @return const char An lvalue of the immutable character
@@ -134,7 +134,7 @@ const char *dynamic_string_cstring_(
 );
 
 /**
- * @brief Obtains the underlying C-style string
+ * @brief Macro to obtain the underlying C-style string
  * @param [in] dynstring Dynamic string instance (NOT pointer)
  * @return const char * A pointer to the first character
  */
@@ -153,7 +153,7 @@ void dynamic_string_assign_(
 );
 
 /**
- * @brief Assigns a source string to a target dynamic string
+ * @brief Macro to assign a source string to a target dynamic string
  * @param [in, out] dynstring Dynamic string instance (NOT pointer)
  * @param [in] string Source string
  * @param [in] length Length of source string in number of bytes
@@ -176,7 +176,7 @@ void dynamic_string_insert_(
 );
 
 /**
- * @brief Inserts a source string to a target dynamic string at the specified index
+ * @brief Macro to insert a source string to a target dynamic string at the specified index
  * @param [in, out] dynstring Dynamic string instance (NOT pointer)
  * @param [in] index Index to insert the source string
  * @param [in] string Source string
@@ -198,7 +198,7 @@ void dynamic_string_append_(
 );
 
 /**
- * @brief Appends a source string to a target dynamic string
+ * @brief Macro to append a source string to a target dynamic string
  * @param [in, out] dynstring Dynamic string instance (NOT pointer)
  * @param [in] string Source string
  * @param [in] length Length of source string in number of bytes
@@ -218,7 +218,7 @@ void dynamic_string_remove_substring_(
 );
 
 /**
- * @brief Removes a substring from a target dynamic string
+ * @brief Macro to remove a substring from a target dynamic string
  * @param [in, out] dynstring Dynamic string instance (NOT pointer)
  * @param [in] index Index of the first character to be removed
  * @param [in] length Number of bytes to be removed
@@ -232,7 +232,7 @@ void dynamic_string_remove_substring_(
 void dynamic_string_clear_(dynamic_string_type *pdynstring);
 
 /**
- * @brief Clears a target dynamic string
+ * @brief Macro to clear a target dynamic string
  * @param [in, out] dynstring Dynamic string instance (NOT pointer)
  */
 #define dynamic_string_clear(dynstring) dynamic_string_clear_(&(dynstring))

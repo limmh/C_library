@@ -42,7 +42,7 @@ typedef struct timer_type
  * 
  * The timer begins in stopped state. Call timer_start() to begin timing.
  * 
- * @param duration The duration in time units (milliseconds, ticks, etc.)
+ * @param [in] duration The duration in time units (milliseconds, ticks, etc.)
  * @return Initialized timer in stopped state
  * 
  * Preconditions: None
@@ -60,8 +60,8 @@ timer_type timer_init(uint32_t duration);
  * The timer is reset to stopped state and will have a new duration.
  * Call timer_start() to begin timing again.
  * 
- * @param timer Timer in any state
- * @param new_duration The new duration in time units
+ * @param [in] timer Timer in any state
+ * @param [in] new_duration The new duration in time units
  * @return Initialized timer in stopped state
  * 
  * Preconditions: None
@@ -81,8 +81,8 @@ timer_type timer_reset(timer_type timer, uint32_t new_duration);
  * toward elapsed duration. Call timer_update() periodically with current
  * time to check if duration has elapsed.
  * 
- * @param timer Timer in stopped state
- * @param current_time Current time from chosen time source
+ * @param [in] timer Timer in stopped state
+ * @param [in] current_time Current time from chosen time source
  * @return Timer in running state (or unchanged if precondition not met)
  * 
  * Preconditions: timer_is_stopped(timer) == true
@@ -96,7 +96,7 @@ timer_type timer_start(timer_type timer, uint32_t current_time);
 
 /**
  * @brief Stops a timer.
- * @param timer Timer in any state
+ * @param [in] timer Timer in any state
  * @return Timer in stopped state
  * 
  * Preconditions: None
@@ -110,8 +110,8 @@ timer_type timer_stop(timer_type timer);
  * Transitions timer from running to paused state. The elapsed time is
  * recorded. Call timer_resume() to continue timing from where it paused.
  * 
- * @param timer Timer in running state
- * @param current_time Current time from chosen time source
+ * @param [in] timer Timer in running state
+ * @param [in] current_time Current time from chosen time source
  * @return Timer in paused state (or unchanged if precondition not met)
  * 
  * Preconditions: timer_is_running(timer) == true
@@ -131,8 +131,8 @@ timer_type timer_pause(timer_type timer, uint32_t current_time);
  * Continues timing from where it paused. Correctly handles cases where
  * resume happens long after pause (time gaps). Remaining time is preserved.
  * 
- * @param timer Timer in paused state
- * @param current_time Current time from chosen time source
+ * @param [in] timer Timer in paused state
+ * @param [in] current_time Current time from chosen time source
  * @return Timer in running or elapsed state (or unchanged if precondition not met)
  * 
  * Preconditions: timer_is_paused(timer) == true
@@ -155,8 +155,8 @@ timer_type timer_resume(timer_type timer, uint32_t current_time);
  * Call this function periodically with current time. If elapsed duration
  * reaches the specified duration, timer transitions to elapsed state.
  * 
- * @param timer Timer in running or elapsed state
- * @param current_time Current time from chosen time source
+ * @param [in] timer Timer in running or elapsed state
+ * @param [in] current_time Current time from chosen time source
  * @return Timer with updated state
  * 
  * Preconditions: timer_is_running(timer) or timer_is_elapsed(timer)
@@ -180,7 +180,7 @@ timer_type timer_update(timer_type timer, uint32_t current_time);
 
 /***
  * @brief Determines the elapsed duration of a timer
- * @param timer Timer in any state
+ * @param [in] timer Timer in any state
  * @return uint32_t Duration which has elapsed (can be greater than the timer duration)
  */
 INLINE_OR_STATIC
@@ -191,7 +191,7 @@ uint32_t timer_elapsed_duration(timer_type timer)
 
 /***
  * @brief Determines the remaining duration of a timer
- * @param timer Timer in any state
+ * @param [in] timer Timer in any state
  * @return uint32_t Remaining duration (0 if elapsed duration is greater than or equal to the timer duration)
  */
 INLINE_OR_STATIC
@@ -203,7 +203,7 @@ uint32_t timer_remaining_duration(timer_type timer)
 
 /**
  * @brief Checks whether the duration of a timer has elapsed.
- * @param timer Timer in any state
+ * @param [in] timer Timer in any state
  * @return bool true if the timer duration has elapsed, false otherwise
  */
 INLINE_OR_STATIC
@@ -214,7 +214,7 @@ bool timer_has_elapsed(timer_type timer)
 
 /**
  * @brief Checks whether a timer is still running.
- * @param timer Timer in any state
+ * @param [in] timer Timer in any state
  * @return bool true if the timer is still running, false otherwise
  */
 INLINE_OR_STATIC
@@ -225,7 +225,7 @@ bool timer_is_running(timer_type timer)
 
 /**
  * @brief Checks whether a timer is paused. 
- * @param timer Timer in any state
+ * @param [in] timer Timer in any state
  * @return bool true if the timer is paused, false otherwise
  */
 INLINE_OR_STATIC
@@ -237,7 +237,7 @@ bool timer_is_paused(timer_type timer)
 /**
  * @brief Checks whether a timer is stopped.
  * 
- * @param timer Timer in any state
+ * @param [in] timer Timer in any state
  * @return bool true if the timer is stopped, false otherwise
  */
 INLINE_OR_STATIC
@@ -307,7 +307,7 @@ timer64_type timer64_update(timer64_type timer, uint64_t current_time);
 
 /***
  * @brief Determines the elapsed duration of a 64-bit timer
- * @param timer Timer in any state
+ * @param [in] timer Timer in any state
  * @return uint64_t Duration which has elapsed (can be greater than the timer duration)
  */
 INLINE_OR_STATIC
@@ -318,7 +318,7 @@ uint64_t timer64_elapsed_duration(timer64_type timer)
 
 /***
  * @brief Determines the remaining duration of a 64-bit timer
- * @param timer Timer in any state
+ * @param [in] timer Timer in any state
  * @return uint64_t Remaining duration (0 if elapsed duration is greater than or equal to the timer duration)
  */
 INLINE_OR_STATIC
