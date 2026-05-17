@@ -12,16 +12,6 @@
 extern "C" {
 #endif
 
-#ifdef __cplusplus
-#define UNIT_TESTING_LIBRARY_USE_C99_DESIGNATED_INITIALIZERS 0
-#else
-#if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)
-#define UNIT_TESTING_LIBRARY_USE_C99_DESIGNATED_INITIALIZERS 1
-#else
-#define UNIT_TESTING_LIBRARY_USE_C99_DESIGNATED_INITIALIZERS 0
-#endif
-#endif
-
 /** @brief Overall test data */
 typedef struct testing_library_data_type
 {
@@ -132,7 +122,7 @@ testing_library_test_statistics_type testing_library_determine_test_statistics(c
 
 /**
  * @brief Prints test statistics
- * @param pstat A pointer to test statistics instance
+ * @param [in] pstat A pointer to test statistics instance
  */
 void testing_library_print_test_statistics(const testing_library_test_statistics_type *pstat);
 
@@ -144,51 +134,51 @@ void testing_library_print_file_name(const char *file_name);
 
 /**
  * @brief Prints the values of two signed integers
- * @param LHS Integer on the left side of a comparison
- * @param RHS Integer on the right side of a comparison
+ * @param [in] LHS Integer on the left side of a comparison
+ * @param [in] RHS Integer on the right side of a comparison
  */
 void testing_library_print_LHS_and_RHS_as_signed_integers(int LHS, int RHS);
 
 /**
  * @brief Prints the values of two unsigned integers
- * @param LHS Integer on the left side of a comparison
- * @param RHS Integer on the right side of a comparison
+ * @param [in] LHS Integer on the left side of a comparison
+ * @param [in] RHS Integer on the right side of a comparison
  */
 void testing_library_print_LHS_and_RHS_as_unsigned_integers(unsigned int LHS, unsigned int RHS);
 
 /**
  * @brief Prints the values of two signed long integers
- * @param LHS Integer on the left side of a comparison
- * @param RHS Integer on the right side of a comparison
+ * @param [in] LHS Integer on the left side of a comparison
+ * @param [in] RHS Integer on the right side of a comparison
  */
 void testing_library_print_LHS_and_RHS_as_signed_long_integers(long LHS, long RHS);
 
 /**
  * @brief Prints the values of two unsigned long integers
- * @param LHS Integer on the left side of a comparison
- * @param RHS Integer on the right side of a comparison
+ * @param [in] LHS Integer on the left side of a comparison
+ * @param [in] RHS Integer on the right side of a comparison
  */
 void testing_library_print_LHS_and_RHS_as_unsigned_long_integers(unsigned long LHS, unsigned long RHS);
 
 /**
  * @brief Prints the values of two strings
- * @param LHS Null-terminated string on the left side of a comparison
- * @param RHS Null-terminated string on the right side of a comparison
+ * @param [in] LHS Null-terminated string on the left side of a comparison
+ * @param [in] RHS Null-terminated string on the right side of a comparison
  */
 void testing_library_print_LHS_and_RHS_as_strings(const char *LHS, const char *RHS);
 
 /**
  * @brief Compares whether two strings are equal or identical
- * @param LHS Null-terminated string on the left side of a comparison
- * @param RHS Null-terminated string on the right side of a comparison
+ * @param [in] LHS Null-terminated string on the left side of a comparison
+ * @param [in] RHS Null-terminated string on the right side of a comparison
  * @return bool true if both strings are the same, otherwise false
  */
 bool testing_library_strings_are_equal(const char *LHS, const char *RHS);
 
 /**
  * @brief Compares whether two strings are not equal
- * @param LHS Null-terminated string on the left side of a comparison
- * @param RHS Null-terminated string on the right side of a comparison
+ * @param [in] LHS Null-terminated string on the left side of a comparison
+ * @param [in] RHS Null-terminated string on the right side of a comparison
  * @return bool true if both strings are not the same, otherwise false
  */
 bool testing_library_strings_are_not_equal(const char *LHS, const char *RHS);
@@ -197,10 +187,11 @@ bool testing_library_strings_are_not_equal(const char *LHS, const char *RHS);
 
 #include "static_assert.h"
 #include "fixed_width_integer_types.h"
+#include "inline_or_static.h"
 #include <limits.h>
 
 static testing_library_data_type testing_library_data = {
-#if UNIT_TESTING_LIBRARY_USE_C99_DESIGNATED_INITIALIZERS
+#if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)
 	.number_of_false_assertions = 0U,
 	.number_of_true_assertions = 0U,
 	.should_print_true_assertions = false
@@ -210,7 +201,7 @@ static testing_library_data_type testing_library_data = {
 };
 
 /* Use these macros instead of the functions above */
-#if UNIT_TESTING_LIBRARY_USE_C99_DESIGNATED_INITIALIZERS
+#if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)
 #define TEST(test, test_name_or_description) \
 	static void test##_function(void); \
 	static testing_library_test_type test##_data = { \
@@ -339,7 +330,7 @@ static testing_library_data_type testing_library_data = {
 
 /* for comparison of long long integers */
 #if defined(LLONG_MAX) && defined(LLONG_MIN)
-static void testing_library_print_LHS_and_RHS_as_signed_long_long_integers(long long lhs, long long rhs)
+INLINE_OR_STATIC void testing_library_print_LHS_and_RHS_as_signed_long_long_integers(long long lhs, long long rhs)
 {
 	FILE *fp = testing_library_get_file();
 	fprintf(fp, "LHS == %lld, RHS == %lld\n", lhs, rhs);
@@ -358,7 +349,7 @@ static void testing_library_print_LHS_and_RHS_as_signed_long_long_integers(long 
 
 /* for comparison of unsigned long long integers */
 #if defined(ULLONG_MAX)
-static void testing_library_print_LHS_and_RHS_as_unsigned_long_long_integers(unsigned long long lhs, unsigned long long rhs)
+INLINE_OR_STATIC void testing_library_print_LHS_and_RHS_as_unsigned_long_long_integers(unsigned long long lhs, unsigned long long rhs)
 {
 	FILE *fp = testing_library_get_file();
 	fprintf(fp, "LHS == %llu, RHS == %llu\n", lhs, rhs);

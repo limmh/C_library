@@ -21,7 +21,7 @@ typedef enum terminal_color_code_type
 
 /**
  * @brief Sets the text color for the terminal
- * @param text_color_code Text color code
+ * @param [in] text_color_code Text color code
  */
 void terminal_text_color_set(terminal_color_code_type text_color_code);
 

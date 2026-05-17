@@ -5,22 +5,52 @@
 #include "inline_or_static.h"
 
 /* unsigned int */
+
+/**
+ * @brief Performs a bitwise AND operation on two unsigned int operands
+ * @param [in] a Operand 1
+ * @param [in] b Operand 2
+ * @return unsigned int
+ */
 INLINE_OR_STATIC unsigned int safe_uint_and(unsigned int a, unsigned int b) {
 	return (a & b);
 }
 
+/**
+ * @brief Performs a bitwise OR operation on two unsigned int operands
+ * @param [in] a Operand 1
+ * @param [in] b Operand 2
+ * @return unsigned int
+ */
 INLINE_OR_STATIC unsigned int safe_uint_or(unsigned int a, unsigned int b) {
 	return (a | b);
 }
 
+/**
+ * @brief Performs a bitwise XOR operation on two unsigned int operands
+ * @param [in] a Operand 1
+ * @param [in] b Operand 2
+ * @return unsigned int
+ */
 INLINE_OR_STATIC unsigned int safe_uint_xor(unsigned int a, unsigned int b) {
 	return (a ^ b);
 }
 
+/**
+ * @brief Performs a bitwise NOT operation on an unsigned int operand
+ * @param [in] var Operand
+ * @return unsigned int
+ */
 INLINE_OR_STATIC unsigned int safe_uint_invert(unsigned int var) {
 	return ~var;
 }
 
+/**
+ * @brief Shifts an unsigned int operand by a number of bits to the left
+ * @param [in] var Operand
+ * @param [in] number_of_bits Number of bits to shift to the left
+ * @return unsigned int
+ */
 INLINE_OR_STATIC unsigned int safe_uint_left_shift(unsigned int var, size_t number_of_bits) {
 	unsigned int result = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
@@ -30,6 +60,12 @@ INLINE_OR_STATIC unsigned int safe_uint_left_shift(unsigned int var, size_t numb
 	return result;
 }
 
+/**
+ * @brief Shifts an unsigned int operand by a number of bits to the right
+ * @param [in] var Operand
+ * @param [in] number_of_bits Number of bits to shift to the left
+ * @return unsigned int
+ */
 INLINE_OR_STATIC unsigned int safe_uint_right_shift(unsigned int var, size_t number_of_bits) {
 	unsigned int result = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
@@ -39,6 +75,12 @@ INLINE_OR_STATIC unsigned int safe_uint_right_shift(unsigned int var, size_t num
 	return result;
 }
 
+/**
+ * @brief Shifts an unsigned int operand by a number of bits to the right and takes into account on the sign bit
+ * @param [in] var Operand
+ * @param [in] number_of_bits Number of bits to shift to the right
+ * @return unsigned int
+ */
 INLINE_OR_STATIC unsigned int safe_uint_arithmetic_right_shift(unsigned int var, size_t number_of_bits) {
 	unsigned int result = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
@@ -57,6 +99,12 @@ INLINE_OR_STATIC unsigned int safe_uint_arithmetic_right_shift(unsigned int var,
 	return result;
 }
 
+/**
+ * @brief Rotates an unsigned int operand to the left by a number of bits
+ * @param [in] var Operand
+ * @param [in] number_of_bits Number of bits to rotate left
+ * @return unsigned int
+ */
 INLINE_OR_STATIC unsigned int safe_uint_left_rotate(unsigned int var, size_t number_of_bits)
 {
 	unsigned int result = 0U, left_part = 0U, right_part = 0U;
@@ -68,6 +116,12 @@ INLINE_OR_STATIC unsigned int safe_uint_left_rotate(unsigned int var, size_t num
 	return result;
 }
 
+/**
+ * @brief Rotates an unsigned int operand to the right by a number of bits
+ * @param [in] var Operand
+ * @param [in] number_of_bits Number of bits to rotate right
+ * @return unsigned int
+ */
 INLINE_OR_STATIC unsigned int safe_uint_right_rotate(unsigned int var, size_t number_of_bits)
 {
 	unsigned int result = 0U, left_part = 0U, right_part = 0U;
@@ -80,22 +134,28 @@ INLINE_OR_STATIC unsigned int safe_uint_right_rotate(unsigned int var, size_t nu
 }
 
 /* unsigned short */
+
+/** @brief Unsigned short version of bitwise AND */
 INLINE_OR_STATIC unsigned short safe_ushort_and(unsigned short a, unsigned short b) {
 	return (unsigned short) safe_uint_and(a, b);
 }
 
+/** @brief Unsigned short version of bitwise OR */
 INLINE_OR_STATIC unsigned short safe_ushort_or(unsigned short a, unsigned short b) {
 	return (unsigned short) safe_uint_or(a, b);
 }
 
+/** @brief Unsigned short version of bitwise XOR */
 INLINE_OR_STATIC unsigned short safe_ushort_xor(unsigned short a, unsigned short b) {
 	return (unsigned short) safe_uint_xor(a, b);
 }
 
+/** @brief Unsigned short version of bitwise NOT */
 INLINE_OR_STATIC unsigned short safe_ushort_invert(unsigned short var) {
 	return (unsigned short) safe_uint_invert(var);
 }
 
+/** @brief Unsigned short version of bitwise left shift */
 INLINE_OR_STATIC unsigned short safe_ushort_left_shift(unsigned short var, size_t number_of_bits) {
 	unsigned short result = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
@@ -105,6 +165,7 @@ INLINE_OR_STATIC unsigned short safe_ushort_left_shift(unsigned short var, size_
 	return result;
 }
 
+/** @brief Unsigned short version of bitwise right shift */
 INLINE_OR_STATIC unsigned short safe_ushort_right_shift(unsigned short var, size_t number_of_bits) {
 	unsigned short result = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
@@ -114,6 +175,7 @@ INLINE_OR_STATIC unsigned short safe_ushort_right_shift(unsigned short var, size
 	return result;
 }
 
+/** @brief Unsigned short version of bitwise arithmetic right shift */
 INLINE_OR_STATIC unsigned short safe_ushort_arithmetic_right_shift(unsigned short var, size_t number_of_bits) {
 	unsigned int result = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
@@ -132,6 +194,7 @@ INLINE_OR_STATIC unsigned short safe_ushort_arithmetic_right_shift(unsigned shor
 	return (unsigned short) result;
 }
 
+/** @brief Unsigned short version of bitwise left rotation */
 INLINE_OR_STATIC unsigned short safe_ushort_left_rotate(unsigned short var, size_t number_of_bits)
 {
 	unsigned int result = 0U, left_part = 0U, right_part = 0U;
@@ -143,6 +206,7 @@ INLINE_OR_STATIC unsigned short safe_ushort_left_rotate(unsigned short var, size
 	return (unsigned short) result;
 }
 
+/** @brief Unsigned short version of bitwise right rotation */
 INLINE_OR_STATIC unsigned short safe_ushort_right_rotate(unsigned short var, size_t number_of_bits)
 {
 	unsigned int result = 0U, left_part = 0U, right_part = 0U;
@@ -155,22 +219,28 @@ INLINE_OR_STATIC unsigned short safe_ushort_right_rotate(unsigned short var, siz
 }
 
 /* unsigned char */
+
+/** @brief Unsigned char version of bitwise AND */
 INLINE_OR_STATIC unsigned char safe_uchar_and(unsigned char a, unsigned char b) {
 	return (unsigned char) safe_uint_and(a, b);
 }
 
+/** @brief Unsigned char version of bitwise OR */
 INLINE_OR_STATIC unsigned char safe_uchar_or(unsigned char a, unsigned char b) {
 	return (unsigned char) safe_uint_or(a, b);
 }
 
+/** @brief Unsigned char version of bitwise XOR */
 INLINE_OR_STATIC unsigned char safe_uchar_xor(unsigned char a, unsigned char b) {
 	return (unsigned char) safe_uint_xor(a, b);
 }
 
+/** @brief Unsigned char version of bitwise NOT */
 INLINE_OR_STATIC unsigned char safe_uchar_invert(unsigned char var) {
 	return (unsigned char) safe_uint_invert(var);
 }
 
+/** @brief Unsigned char version of bitwise left shift */
 INLINE_OR_STATIC unsigned char safe_uchar_left_shift(unsigned char var, size_t number_of_bits) {
 	unsigned char result = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
@@ -180,6 +250,7 @@ INLINE_OR_STATIC unsigned char safe_uchar_left_shift(unsigned char var, size_t n
 	return result;
 }
 
+/** @brief Unsigned char version of bitwise right shift */
 INLINE_OR_STATIC unsigned char safe_uchar_right_shift(unsigned char var, size_t number_of_bits) {
 	unsigned char result = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
@@ -189,6 +260,7 @@ INLINE_OR_STATIC unsigned char safe_uchar_right_shift(unsigned char var, size_t 
 	return result;
 }
 
+/** @brief Unsigned char version of bitwise arithmetic right shift */
 INLINE_OR_STATIC unsigned char safe_uchar_arithmetic_right_shift(unsigned char var, size_t number_of_bits) {
 	unsigned int result = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
@@ -207,6 +279,7 @@ INLINE_OR_STATIC unsigned char safe_uchar_arithmetic_right_shift(unsigned char v
 	return (unsigned char) result;
 }
 
+/** @brief Unsigned char version of bitwise left rotation */
 INLINE_OR_STATIC unsigned char safe_uchar_left_rotate(unsigned char var, size_t number_of_bits)
 {
 	unsigned int result = 0U, left_part = 0U, right_part = 0U;
@@ -218,6 +291,7 @@ INLINE_OR_STATIC unsigned char safe_uchar_left_rotate(unsigned char var, size_t 
 	return (unsigned char) result;
 }
 
+/** @brief Unsigned char version of bitwise right rotation */
 INLINE_OR_STATIC unsigned char safe_uchar_right_rotate(unsigned char var, size_t number_of_bits)
 {
 	unsigned int result = 0U, left_part = 0U, right_part = 0U;
@@ -230,22 +304,28 @@ INLINE_OR_STATIC unsigned char safe_uchar_right_rotate(unsigned char var, size_t
 }
 
 /* unsigned long */
+
+/** @brief Unsigned long version of bitwise AND */
 INLINE_OR_STATIC unsigned long safe_ulong_and(unsigned long a, unsigned long b) {
 	return (a & b);
 }
 
+/** @brief Unsigned long version of bitwise OR */
 INLINE_OR_STATIC unsigned long safe_ulong_or(unsigned long a, unsigned long b) {
 	return (a | b);
 }
 
+/** @brief Unsigned long version of bitwise XOR */
 INLINE_OR_STATIC unsigned long safe_ulong_xor(unsigned long a, unsigned long b) {
 	return (a ^ b);
 }
 
+/** @brief Unsigned long version of bitwise NOT */
 INLINE_OR_STATIC unsigned long safe_ulong_invert(unsigned long a) {
 	return ~a;
 }
 
+/** @brief Unsigned long version of bitwise left shift */
 INLINE_OR_STATIC unsigned long safe_ulong_left_shift(unsigned long var, size_t number_of_bits) {
 	unsigned long result = 0UL;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
@@ -255,6 +335,7 @@ INLINE_OR_STATIC unsigned long safe_ulong_left_shift(unsigned long var, size_t n
 	return result;
 }
 
+/** @brief Unsigned long version of bitwise right shift */
 INLINE_OR_STATIC unsigned long safe_ulong_right_shift(unsigned long var, size_t number_of_bits) {
 	unsigned long result = 0UL;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
@@ -264,6 +345,7 @@ INLINE_OR_STATIC unsigned long safe_ulong_right_shift(unsigned long var, size_t 
 	return result;
 }
 
+/** @brief Unsigned long version of bitwise arithmetic right shift */
 INLINE_OR_STATIC unsigned long safe_ulong_arithmetic_right_shift(unsigned long var, size_t number_of_bits) {
 	unsigned long result = 0UL;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
@@ -282,6 +364,7 @@ INLINE_OR_STATIC unsigned long safe_ulong_arithmetic_right_shift(unsigned long v
 	return result;
 }
 
+/** @brief Unsigned long version of bitwise left rotation */
 INLINE_OR_STATIC unsigned long safe_ulong_left_rotate(unsigned long var, size_t number_of_bits)
 {
 	unsigned long result = 0U, left_part = 0U, right_part = 0U;
@@ -293,6 +376,7 @@ INLINE_OR_STATIC unsigned long safe_ulong_left_rotate(unsigned long var, size_t 
 	return result;
 }
 
+/** @brief Unsigned long version of bitwise right rotation */
 INLINE_OR_STATIC unsigned long safe_ulong_right_rotate(unsigned long var, size_t number_of_bits)
 {
 	unsigned long result = 0U, left_part = 0U, right_part = 0U;
@@ -306,22 +390,27 @@ INLINE_OR_STATIC unsigned long safe_ulong_right_rotate(unsigned long var, size_t
 
 /* unsigned long long */
 #if defined(ULLONG_MAX)
+/** @brief Unsigned long long version of bitwise AND */
 INLINE_OR_STATIC unsigned long long safe_ullong_and(unsigned long long a, unsigned long long b) {
 	return (a & b);
 }
 
+/** @brief Unsigned long long version of bitwise OR */
 INLINE_OR_STATIC unsigned long long safe_ullong_or(unsigned long long a, unsigned long long b) {
 	return (a | b);
 }
 
+/** @brief Unsigned long long version of bitwise XOR */
 INLINE_OR_STATIC unsigned long long safe_ullong_xor(unsigned long long a, unsigned long long b) {
 	return (a ^ b);
 }
 
+/** @brief Unsigned long long version of bitwise NOT */
 INLINE_OR_STATIC unsigned long long safe_ullong_invert(unsigned long long a) {
 	return ~a;
 }
 
+/** @brief Unsigned long long version of bitwise left shift */
 INLINE_OR_STATIC unsigned long long safe_ullong_left_shift(unsigned long long var, size_t number_of_bits) {
 	unsigned long long result = 0ULL;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
@@ -331,6 +420,7 @@ INLINE_OR_STATIC unsigned long long safe_ullong_left_shift(unsigned long long va
 	return result;
 }
 
+/** @brief Unsigned long long version of bitwise right shift */
 INLINE_OR_STATIC unsigned long long safe_ullong_right_shift(unsigned long long var, size_t number_of_bits) {
 	unsigned long long result = 0ULL;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
@@ -340,6 +430,7 @@ INLINE_OR_STATIC unsigned long long safe_ullong_right_shift(unsigned long long v
 	return result;
 }
 
+/** @brief Unsigned long long version of bitwise arithmetic right shift */
 INLINE_OR_STATIC unsigned long long safe_ullong_arithmetic_right_shift(unsigned long long var, size_t number_of_bits) {
 	unsigned long long result = 0ULL;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
@@ -358,6 +449,7 @@ INLINE_OR_STATIC unsigned long long safe_ullong_arithmetic_right_shift(unsigned 
 	return result;
 }
 
+/** @brief Unsigned long long version of bitwise left rotation */
 INLINE_OR_STATIC unsigned long long safe_ullong_left_rotate(unsigned long long var, size_t number_of_bits)
 {
 	unsigned long long result = 0U, left_part = 0U, right_part = 0U;
@@ -369,6 +461,7 @@ INLINE_OR_STATIC unsigned long long safe_ullong_left_rotate(unsigned long long v
 	return result;
 }
 
+/** @brief Unsigned long long version of bitwise right rotation */
 INLINE_OR_STATIC unsigned long long safe_ullong_right_rotate(unsigned long long var, size_t number_of_bits)
 {
 	unsigned long long result = 0U, left_part = 0U, right_part = 0U;
@@ -382,22 +475,28 @@ INLINE_OR_STATIC unsigned long long safe_ullong_right_rotate(unsigned long long 
 #endif
 
 /* unsigned 8-bit */
+
+/** @brief uint8_t version of bitwise AND */
 INLINE_OR_STATIC uint8_t safe_u8_and(uint8_t a, uint8_t b) {
 	return (uint8_t) safe_uint_and(a, b);
 }
 
+/** @brief uint8_t version of bitwise OR */
 INLINE_OR_STATIC uint8_t safe_u8_or(uint8_t a, uint8_t b) {
 	return (uint8_t) safe_uint_or(a, b);
 }
 
+/** @brief uint8_t version of bitwise XOR */
 INLINE_OR_STATIC uint8_t safe_u8_xor(uint8_t a, uint8_t b) {
 	return (uint8_t) safe_uint_xor(a, b);
 }
 
+/** @brief uint8_t version of bitwise NOT */
 INLINE_OR_STATIC uint8_t safe_u8_invert(uint8_t var) {
 	return (uint8_t) safe_uint_invert(var);
 }
 
+/** @brief uint8_t version of bitwise left shift */
 INLINE_OR_STATIC uint8_t safe_u8_left_shift(uint8_t var, size_t number_of_bits) {
 	uint8_t result = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
@@ -407,6 +506,7 @@ INLINE_OR_STATIC uint8_t safe_u8_left_shift(uint8_t var, size_t number_of_bits) 
 	return result;
 }
 
+/** @brief uint8_t version of bitwise right shift */
 INLINE_OR_STATIC uint8_t safe_u8_right_shift(uint8_t var, size_t number_of_bits) {
 	uint8_t result = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
@@ -416,6 +516,7 @@ INLINE_OR_STATIC uint8_t safe_u8_right_shift(uint8_t var, size_t number_of_bits)
 	return result;
 }
 
+/** @brief uint8_t version of bitwise arithmetic right shift */
 INLINE_OR_STATIC uint8_t safe_u8_arithmetic_right_shift(uint8_t var, size_t number_of_bits) {
 	unsigned int result = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
@@ -434,6 +535,7 @@ INLINE_OR_STATIC uint8_t safe_u8_arithmetic_right_shift(uint8_t var, size_t numb
 	return (uint8_t) result;
 }
 
+/** @brief uint8_t version of bitwise left rotation */
 INLINE_OR_STATIC uint8_t safe_u8_left_rotate(uint8_t var, size_t number_of_bits)
 {
 	unsigned int result = 0U, left_part = 0U, right_part = 0U;
@@ -445,6 +547,7 @@ INLINE_OR_STATIC uint8_t safe_u8_left_rotate(uint8_t var, size_t number_of_bits)
 	return (uint8_t) result;
 }
 
+/** @brief uint8_t version of bitwise right rotation */
 INLINE_OR_STATIC uint8_t safe_u8_right_rotate(uint8_t var, size_t number_of_bits)
 {
 	unsigned int result = 0U, left_part = 0U, right_part = 0U;
@@ -457,22 +560,28 @@ INLINE_OR_STATIC uint8_t safe_u8_right_rotate(uint8_t var, size_t number_of_bits
 }
 
 /* unsigned 16-bit */
+
+/** @brief uint16_t version of bitwise AND */
 INLINE_OR_STATIC uint16_t safe_u16_and(uint16_t a, uint16_t b) {
 	return (uint16_t) safe_uint_and(a, b);
 }
 
+/** @brief uint16_t version of bitwise OR */
 INLINE_OR_STATIC uint16_t safe_u16_or(uint16_t a, uint16_t b) {
 	return (uint16_t) safe_uint_or(a, b);
 }
 
+/** @brief uint16_t version of bitwise XOR */
 INLINE_OR_STATIC uint16_t safe_u16_xor(uint16_t a, uint16_t b) {
 	return (uint16_t) safe_uint_xor(a, b);
 }
 
+/** @brief uint16_t version of bitwise NOT */
 INLINE_OR_STATIC uint16_t safe_u16_invert(uint16_t var) {
 	return (uint16_t) safe_uint_invert(var);
 }
 
+/** @brief uint16_t version of bitwise left shift */
 INLINE_OR_STATIC uint16_t safe_u16_left_shift(uint16_t var, size_t number_of_bits) {
 	uint16_t result = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
@@ -482,6 +591,7 @@ INLINE_OR_STATIC uint16_t safe_u16_left_shift(uint16_t var, size_t number_of_bit
 	return result;
 }
 
+/** @brief uint16_t version of bitwise right shift */
 INLINE_OR_STATIC uint16_t safe_u16_right_shift(uint16_t var, size_t number_of_bits) {
 	uint16_t result = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
@@ -491,6 +601,7 @@ INLINE_OR_STATIC uint16_t safe_u16_right_shift(uint16_t var, size_t number_of_bi
 	return result;
 }
 
+/** @brief uint16_t version of bitwise arithmetic right shfit */
 INLINE_OR_STATIC uint16_t safe_u16_arithmetic_right_shift(uint16_t var, size_t number_of_bits) {
 	unsigned int result = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
@@ -509,6 +620,7 @@ INLINE_OR_STATIC uint16_t safe_u16_arithmetic_right_shift(uint16_t var, size_t n
 	return (uint16_t) result;
 }
 
+/** @brief uint16_t version of bitwise left rotation */
 INLINE_OR_STATIC uint16_t safe_u16_left_rotate(uint16_t var, size_t number_of_bits)
 {
 	unsigned int result = 0U, left_part = 0U, right_part = 0U;
@@ -520,6 +632,7 @@ INLINE_OR_STATIC uint16_t safe_u16_left_rotate(uint16_t var, size_t number_of_bi
 	return (uint16_t) result;
 }
 
+/** @brief uint16_t version of bitwise right rotation */
 INLINE_OR_STATIC uint16_t safe_u16_right_rotate(uint16_t var, size_t number_of_bits)
 {
 	unsigned int result = 0U, left_part = 0U, right_part = 0U;
@@ -532,22 +645,28 @@ INLINE_OR_STATIC uint16_t safe_u16_right_rotate(uint16_t var, size_t number_of_b
 }
 
 /* unsigned 32-bit */
+
+/** @brief uint32_t version of bitwise AND */
 INLINE_OR_STATIC uint32_t safe_u32_and(uint32_t a, uint32_t b) {
 	return (a & b);
 }
 
+/** @brief uint32_t version of bitwise OR */
 INLINE_OR_STATIC uint32_t safe_u32_or(uint32_t a, uint32_t b) {
 	return (a | b);
 }
 
+/** @brief uint32_t version of bitwise XOR */
 INLINE_OR_STATIC uint32_t safe_u32_xor(uint32_t a, uint32_t b) {
 	return (a ^ b);
 }
 
+/** @brief uint32_t version of bitwise NOT */
 INLINE_OR_STATIC uint32_t safe_u32_invert(uint32_t var) {
 	return ~var;
 }
 
+/** @brief uint32_t version of bitwise left shift */
 INLINE_OR_STATIC uint32_t safe_u32_left_shift(uint32_t var, size_t number_of_bits) {
 	uint32_t result = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
@@ -557,6 +676,7 @@ INLINE_OR_STATIC uint32_t safe_u32_left_shift(uint32_t var, size_t number_of_bit
 	return result;
 }
 
+/** @brief uint32_t version of bitwise right shift */
 INLINE_OR_STATIC uint32_t safe_u32_right_shift(uint32_t var, size_t number_of_bits) {
 	uint32_t result = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
@@ -566,6 +686,7 @@ INLINE_OR_STATIC uint32_t safe_u32_right_shift(uint32_t var, size_t number_of_bi
 	return result;
 }
 
+/** @brief uint32_t version of bitwise arithmetic right shift */
 INLINE_OR_STATIC uint32_t safe_u32_arithmetic_right_shift(uint32_t var, size_t number_of_bits) {
 	uint32_t result = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
@@ -584,6 +705,7 @@ INLINE_OR_STATIC uint32_t safe_u32_arithmetic_right_shift(uint32_t var, size_t n
 	return result;
 }
 
+/** @brief uint32_t version of bitwise left rotation */
 INLINE_OR_STATIC uint32_t safe_u32_left_rotate(uint32_t var, size_t number_of_bits)
 {
 	uint32_t result = 0U, left_part = 0U, right_part = 0U;
@@ -595,6 +717,7 @@ INLINE_OR_STATIC uint32_t safe_u32_left_rotate(uint32_t var, size_t number_of_bi
 	return result;
 }
 
+/** @brief uint32_t version of bitwise right rotation */
 INLINE_OR_STATIC uint32_t safe_u32_right_rotate(uint32_t var, size_t number_of_bits)
 {
 	uint32_t result = 0U, left_part = 0U, right_part = 0U;
@@ -608,22 +731,27 @@ INLINE_OR_STATIC uint32_t safe_u32_right_rotate(uint32_t var, size_t number_of_b
 
 /* unsigned 64-bit */
 #if defined(UINT64_MAX)
+/** @brief uint64_t version of bitwise AND */
 INLINE_OR_STATIC uint64_t safe_u64_and(uint64_t a, uint64_t b) {
 	return (a & b);
 }
 
+/** @brief uint64_t version of bitwise OR */
 INLINE_OR_STATIC uint64_t safe_u64_or(uint64_t a, uint64_t b) {
 	return (a | b);
 }
 
+/** @brief uint64_t version of bitwise XOR */
 INLINE_OR_STATIC uint64_t safe_u64_xor(uint64_t a, uint64_t b) {
 	return (a ^ b);
 }
 
+/** @brief uint64_t version of bitwise NOT */
 INLINE_OR_STATIC uint64_t safe_u64_invert(uint64_t var) {
 	return ~var;
 }
 
+/** @brief uint64_t version of bitwise left shift */
 INLINE_OR_STATIC uint64_t safe_u64_left_shift(uint64_t var, size_t number_of_bits) {
 	uint64_t result = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
@@ -633,6 +761,7 @@ INLINE_OR_STATIC uint64_t safe_u64_left_shift(uint64_t var, size_t number_of_bit
 	return result;
 }
 
+/** @brief uint64_t version of bitwise right shift */
 INLINE_OR_STATIC uint64_t safe_u64_right_shift(uint64_t var, size_t number_of_bits) {
 	uint64_t result = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
@@ -642,6 +771,7 @@ INLINE_OR_STATIC uint64_t safe_u64_right_shift(uint64_t var, size_t number_of_bi
 	return result;
 }
 
+/** @brief uint64_t version of bitwise arithmetic right shift */
 INLINE_OR_STATIC uint64_t safe_u64_arithmetic_right_shift(uint64_t var, size_t number_of_bits) {
 	uint64_t result = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
@@ -660,6 +790,7 @@ INLINE_OR_STATIC uint64_t safe_u64_arithmetic_right_shift(uint64_t var, size_t n
 	return result;
 }
 
+/** @brief uint64_t version of bitwise left rotation */
 INLINE_OR_STATIC uint64_t safe_u64_left_rotate(uint64_t var, size_t number_of_bits)
 {
 	uint64_t result = 0U, left_part = 0U, right_part = 0U;
@@ -671,6 +802,7 @@ INLINE_OR_STATIC uint64_t safe_u64_left_rotate(uint64_t var, size_t number_of_bi
 	return result;
 }
 
+/** @brief uint64_t version of bitwise right rotation */
 INLINE_OR_STATIC uint64_t safe_u64_right_rotate(uint64_t var, size_t number_of_bits)
 {
 	uint64_t result = 0U, left_part = 0U, right_part = 0U;

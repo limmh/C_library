@@ -16,6 +16,12 @@ For signed char and unsigned char comparisons, use the int and unsigned version 
 For int8_t and uint8_t comparisons, use the int version or the int16_t and uint16_t version.
 */
 
+/**
+ * @brief Compares an int operand to an unsigned int operand
+ * @param [in] a signed operand
+ * @param [in] b unsigned operand
+ * @return int Result: -1 (a < b), 0 (a == b) or 1 (a > b)
+ */
 INLINE_OR_STATIC int safer_int_and_uint_compare(int a, unsigned int b) {
 	int result = 0;
 	if (a < 0) {
@@ -31,6 +37,12 @@ INLINE_OR_STATIC int safer_int_and_uint_compare(int a, unsigned int b) {
 	return result;
 }
 
+/**
+ * @brief Compares an unsigned int operand to an int operand
+ * @param [in] a unsigned operand
+ * @param [in] b signed operand
+ * @return int Result: -1 (a < b), 0 (a == b) or 1 (a > b)
+ */
 INLINE_OR_STATIC int safer_uint_and_int_compare(unsigned int a, int b) {
 	int result = 0;
 	if (b < 0) {
@@ -46,6 +58,12 @@ INLINE_OR_STATIC int safer_uint_and_int_compare(unsigned int a, int b) {
 	return result;
 }
 
+/**
+ * @brief Compares a long operand to an unsigned long operand
+ * @param [in] a signed operand
+ * @param [in] b unsigned operand
+ * @return int Result: -1 (a < b), 0 (a == b) or 1 (a > b)
+ */
 INLINE_OR_STATIC int safer_long_and_ulong_compare(long a, unsigned long b) {
 	int result = 0;
 	if (a < 0L) {
@@ -61,6 +79,12 @@ INLINE_OR_STATIC int safer_long_and_ulong_compare(long a, unsigned long b) {
 	return result;
 }
 
+/**
+ * @brief Compares an unsigned long operand to a long operand
+ * @param [in] a unsigned operand
+ * @param [in] b signed operand
+ * @return int Result: -1 (a < b), 0 (a == b) or 1 (a > b)
+ */
 INLINE_OR_STATIC int safer_ulong_and_long_compare(unsigned long a, long b) {
 	int result = 0;
 	if (b < 0L) {
@@ -77,6 +101,12 @@ INLINE_OR_STATIC int safer_ulong_and_long_compare(unsigned long a, long b) {
 }
 
 #if defined(LLONG_MIN) && defined(LLONG_MAX) && defined(ULLONG_MAX)
+/**
+ * @brief Compares a long long operand to an unsigned long long operand
+ * @param [in] a signed operand
+ * @param [in] b unsigned operand
+ * @return int Result: -1 (a < b), 0 (a == b) or 1 (a > b)
+ */
 INLINE_OR_STATIC int safer_llong_and_ullong_compare(long long a, unsigned long long b) {
 	int result = 0;
 	if (a < 0LL) {
@@ -92,6 +122,12 @@ INLINE_OR_STATIC int safer_llong_and_ullong_compare(long long a, unsigned long l
 	return result;
 }
 
+/**
+ * @brief Compares an unsigned long long operand to a long long operand
+ * @param [in] a unsigned operand
+ * @param [in] b signed operand
+ * @return int Result: -1 (a < b), 0 (a == b) or 1 (a > b)
+ */
 INLINE_OR_STATIC int safer_ullong_and_llong_compare(unsigned long long a, long long b) {
 	int result = 0;
 	if (b < 0LL) {
@@ -108,6 +144,12 @@ INLINE_OR_STATIC int safer_ullong_and_llong_compare(unsigned long long a, long l
 }
 #endif
 
+/**
+ * @brief Compares an int16_t operand to a uint16_t operand
+ * @param [in] a signed operand
+ * @param [in] b unsigned operand
+ * @return int Result: -1 (a < b), 0 (a == b) or 1 (a > b)
+ */
 INLINE_OR_STATIC int safer_i16_and_u16_compare(int16_t a, uint16_t b) {
 #if (INT_MIN < INT16_MIN) && (INT_MAX > INT16_MAX) && (UINT_MAX > UINT16_MAX)
 	int result = 0;
@@ -122,6 +164,12 @@ INLINE_OR_STATIC int safer_i16_and_u16_compare(int16_t a, uint16_t b) {
 	return result;
 }
 
+/**
+ * @brief Compares a uint16_t operand to an int16_t operand
+ * @param [in] a unsigned operand
+ * @param [in] b signed operand
+ * @return int Result: -1 (a < b), 0 (a == b) or 1 (a > b)
+ */
 INLINE_OR_STATIC int safer_u16_and_i16_compare(uint16_t a, int16_t b) {
 #if (INT_MIN < INT16_MIN) && (INT_MAX > INT16_MAX) && (UINT_MAX > UINT16_MAX)
 	int result = 0;
@@ -136,6 +184,12 @@ INLINE_OR_STATIC int safer_u16_and_i16_compare(uint16_t a, int16_t b) {
 	return result;
 }
 
+/**
+ * @brief Compares an int32_t operand to a uint32_t operand
+ * @param [in] a signed operand
+ * @param [in] b unsigned operand
+ * @return int Result: -1 (a < b), 0 (a == b) or 1 (a > b)
+ */
 INLINE_OR_STATIC int safer_i32_and_u32_compare(int32_t a, uint32_t b) {
 	int result = 0;
 	if (a < (int32_t) 0) {
@@ -151,6 +205,12 @@ INLINE_OR_STATIC int safer_i32_and_u32_compare(int32_t a, uint32_t b) {
 	return result;
 }
 
+/**
+ * @brief Compares a uint32_t operand to an int32_t operand
+ * @param [in] a unsigned operand
+ * @param [in] b signed operand
+ * @return int Result: -1 (a < b), 0 (a == b) or 1 (a > b)
+ */
 INLINE_OR_STATIC int safer_u32_and_i32_compare(uint32_t a, int32_t b) {
 	int result = 0;
 	if (b < (int32_t) 0) {
@@ -167,6 +227,12 @@ INLINE_OR_STATIC int safer_u32_and_i32_compare(uint32_t a, int32_t b) {
 }
 
 #if defined(INT64_MIN) && defined(INT64_MAX) && defined(UINT64_MAX)
+/**
+ * @brief Compares an int64_t operand to a uint64_t operand
+ * @param [in] a signed operand
+ * @param [in] b unsigned operand
+ * @return int Result: -1 (a < b), 0 (a == b) or 1 (a > b)
+ */
 INLINE_OR_STATIC int safer_i64_and_u64_compare(int64_t a, uint64_t b) {
 	int result = 0;
 	if (a < (int64_t) 0) {
@@ -182,6 +248,12 @@ INLINE_OR_STATIC int safer_i64_and_u64_compare(int64_t a, uint64_t b) {
 	return result;
 }
 
+/**
+ * @brief Compares a uint64_t operand to an int64_t operand
+ * @param [in] a unsigned operand
+ * @param [in] b signed operand
+ * @return int Result: -1 (a < b), 0 (a == b) or 1 (a > b)
+ */
 INLINE_OR_STATIC int safer_u64_and_i64_compare(uint64_t a, int64_t b) {
 	int result = 0;
 	if (b < (int64_t) 0) {
@@ -197,6 +269,17 @@ INLINE_OR_STATIC int safer_u64_and_i64_compare(uint64_t a, int64_t b) {
 	return result;
 }
 #endif
+
+/*
+Explanation:
+type1 and type2 have different signedness
+type1_eq_type2: type1_operand == type2_operand
+type1_ne_type2: type1_operand != type2_operand
+type1_ge_type2: type1_operand >= type2_operand
+type1_gt_type2: type1_operand >  type2_operand
+type1_le_type2: type1_operand <= type2_operand
+type1_lt_type2: type1_operand <  type2_operand
+*/
 
 INLINE_OR_STATIC bool i_eq_u(int i, unsigned int u) { return (safer_int_and_uint_compare(i, u) == 0); }
 INLINE_OR_STATIC bool i_ne_u(int i, unsigned int u) { return (safer_int_and_uint_compare(i, u) != 0); }
