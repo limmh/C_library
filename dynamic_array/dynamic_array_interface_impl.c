@@ -44,7 +44,7 @@ void dynamic_array_default_error_reporter(dynamic_array_debug_info_type debug_in
 		break;
 	case dynamic_array_error_index_out_of_range:
 		fprintf(output, "The index (%lu) is out of range (number of array elements = %lu).\n", info_1, info_2);
- 		break;
+		break;
 	case dynamic_array_error_element_size_mismatch:
 		fprintf(output, "The size of a source element (%lu) is not the same as that of an array element (%lu).\n", info_1, info_2);
 		break;

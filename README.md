@@ -52,6 +52,8 @@ Hence, it is generally meant for user-mode applications and not for resource-con
   API for conversions between integers and strings.
 - **Simple tokenizer**  
   A tokenizer module for splitting text into simple tokens.
+- **Timer API**  
+  A portable timer API which emphasizes value semantics and has no dependency on the system clock.
 - **Input/Output (IO)**  
   Input/output APIs which hide operating system (OS) details.
 - **Terminal text color**  

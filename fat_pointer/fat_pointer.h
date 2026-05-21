@@ -354,7 +354,11 @@ fat_pointer_remove_elements_starting_from_index_(
  * @return fat_pointer_error_type Error code
  */
 #define fat_pointer_pop_back(type, fatptr, variable) \
-	fat_pointer_remove_elements_starting_from_index_(&(fatptr), fat_pointer_length(fatptr) - 1U, &(variable), 1U, sizeof(variable), __FILE__, __LINE__)
+	( \
+		assert(fat_pointer_length(fatptr) >= 1U), \
+		fat_pointer_remove_elements_starting_from_index_(&(fatptr), (fat_pointer_length(fatptr) - 1U), &(variable), 1U, \
+			sizeof(variable), __FILE__, __LINE__) \
+	)
 
 /**
  * @brief Resizes the array referenced by an opaque fat pointer

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ ! -d "builds" ]; then
+if [ ! -d "build" ]; then
 	mkdir build
 fi
 

@@ -169,7 +169,8 @@ void testing_library_run_test(size_t sequence_number, testing_library_test_type 
 		}
 
 		terminal_text_color_set(color_code);
-		fprintf(file, "Status of %s: %s\n", ptest->id, status_message);
+		fprintf(file, "Status of %s: %s (passed: %lu, failed: %lu)\n", ptest->id, status_message,
+			(unsigned long) ptest->number_of_true_assertions, (unsigned long) ptest->number_of_false_assertions);
 		terminal_text_color_set(terminal_color_code_default);
 	}
 }

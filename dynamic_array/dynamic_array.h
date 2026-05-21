@@ -498,7 +498,7 @@ void dynamic_array_resize_(
  * @brief Macro to clear all elements of a dynamic array
  * @param [in, out] array An instance of dynamic array container (NOT a pointer)
  */
-#define dynamic_array_clear(array) dynamic_array_resize(array, 0U);
+#define dynamic_array_clear(array) dynamic_array_resize(array, 0U)
 
 #ifdef __cplusplus
 }
