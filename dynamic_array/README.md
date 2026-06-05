@@ -1,11 +1,12 @@
-# dynamic_array
+# Dynamic Arrays and Dynamic Strings
 
-A generic dynamic array C API.
+A generic dynamic array and dynamic string API in plain C.
 
 ## Overview
 
-The API provides an opaque, type-agnostic dynamic array container, supporting safe memory management, extensible error reporting, custom memory allocators, and a comprehensive set of macros for ease of use.
-It is designed for safety and correctness, suitable for high security and high reliability applications.
+The API provides an opaque, type-agnostic dynamic array container and a dynamic string container,
+supporting safe memory management, extensible error reporting, custom memory allocators, and a comprehensive set of macros for ease of use.
+The API is designed for safety and correctness, suitable for high security and high reliability applications.
 
 ## Features
 
@@ -16,19 +17,27 @@ It is designed for safety and correctness, suitable for high security and high r
 ## Usage Examples
 
 ```c
+// C99
 #include "dynamic_array.h"
+#include <stdio.h>
 
 int main(void)
 {
-    dynamic_array_type(int) dynarray = dynamic_array_create(int, 16);  // Create a dynamic array for ints
-    dynamic_array_append_element(int, dynarray, 42);                   // Append an element
-    int value = dynamic_array_element(int, dynarray, 0);               // Access an element
-    dynamic_array_delete(dynarray);                                    // Clean up
+    dynamic_array_type(int) integers = dynamic_array_create(int, 0);                // Create a dynamic integer array with no elements
+    dynamic_array_append_element(int, integers, 42);                                // Append an element
+    dynamic_array_append_element(int, integers, 1);                                 // Append another element
+    dynamic_array_append_element(int, integers, -10);                               // Append another element
+    for (size_t i = 0U, length = dynamic_array_length(integers); i < length;  ++i) {
+        const int value = dynamic_array_element(int, integers, i);                  // Access an element
+        printf("%d\n", value);
+    }
+    dynamic_array_delete(integers);                                    // Clean up
     return 0;
 }
 ```
 
 ```c
+// C99
 #include "dynamic_string.h"
 #include <stdio.h>
 #include <string.h>
@@ -36,10 +45,11 @@ int main(void)
 int main(int argc, char **argv)
 {
     if (argc >= 2) {
-	const char *separator = ", ";
+        const char *separator = ", ";
+        const size_t separator_length = strlen(separator);
         dynamic_string_type str = dynamic_string_create(argv[1], strlen(argv[1]));
         for (int i = 2; i < argc; ++i) {
-            dynamic_string_append(str, separator, strlen(separator));
+            dynamic_string_append(str, separator, separator_length);
             dynamic_string_append(str, argv[i], strlen(argv[i]));
         }
         printf("%s\n", dynamic_string_cstring(str));
@@ -52,12 +62,12 @@ int main(int argc, char **argv)
 ## Data Types
 
 - `dynamic_array_type(element_type)`: Opaque dynamic array type (use in variable declarations).
-- `dynamic_array_allocator_type`: Structure for custom memory allocators.
+- `dynamic_array_interface_type`: Data structure containing allocator, exception handler and error reporter.
 - `dynamic_array_error_type`: Enum of error codes (for error reporting and debugging).
 - `dynamic_array_debug_info_type`: Carries file/line/struct size information for diagnostics.
 - `dynamic_string_type`: Opaque dynamic string type
 
-## Key Macros
+## Function-like Macros
 
 - Creation: `dynamic_array_create(element_type, size)`, `dynamic_array_create_with_interface(element_type, size, interface)`
 - Cleanup: `dynamic_array_delete(array)`
@@ -69,7 +79,7 @@ int main(int argc, char **argv)
 
 ## Error Handling
 
-You can provide an exception handler and an error reporting function via an interface. By default, errors terminate the program.
+You can provide an exception handler and an error reporting function via an interface. By default, most errors terminate the program.
 
 ## Unit Tests
 

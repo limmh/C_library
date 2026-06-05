@@ -40,11 +40,27 @@ static void unit_test_pool_deinit(void)
 
 static jmp_buf s_execution_context;
 static int s_error_code = 0;
+static bool s_setjmp_called_previously = false;
+
+static void unit_test_set_error_code(int error_code)
+{
+	s_error_code = error_code;
+}
+
+static int unit_test_get_error_code(void)
+{
+	return s_error_code;
+}
 
 static void exception_handler(dynamic_array_error_type error_code)
 {
-	s_error_code = (int) error_code;
-	longjmp(s_execution_context, error_code);
+	if (s_setjmp_called_previously) {
+		s_setjmp_called_previously = false;
+		s_error_code = (int) error_code;
+		longjmp(s_execution_context, error_code);
+	} else {
+		fprintf(stderr, "Exception handling was not properly set up.\n"); 
+	}
 }
 
 static const dynamic_array_interface_type *dynamic_array_unit_test_interface(void)
@@ -72,35 +88,38 @@ TEST(char_dynamic_array_with_no_buffer, "A character dynamic array with no buffe
 
 TEST(allocation_and_reallocation_failure, "Allocation and reallocation failure")
 {
-	const size_t largest_memory_size = static_pool_largest_chunk_size();
 	dynamic_array_type(char) array = {0};
 	dynamic_array_debug_info_type debug_info = {0};
 	bool exception_has_occurred = false;
+	const size_t largest_memory_size = static_pool_largest_chunk_size();
 
 	unit_test_pool_init();
-	s_error_code = 0;
+	unit_test_set_error_code(0);
 
 	if (setjmp(s_execution_context) == 0) {
+		s_setjmp_called_previously = true;
 		array = dynamic_array_create_with_interface(char, largest_memory_size + 1U, *dynamic_array_unit_test_interface());
 	} else {
 		exception_has_occurred = true;
 	}
 	ASSERT(exception_has_occurred);
-	ASSERT_EQUAL(s_error_code, (int) dynamic_array_error_memory_allocation_failure);
+	ASSERT_EQUAL(unit_test_get_error_code(), (int) dynamic_array_error_memory_allocation_failure);
 
 	array = dynamic_array_create_with_interface(char, largest_memory_size, *dynamic_array_unit_test_interface());
 	debug_info = dynamic_array_check(array);
 	ASSERT_EQUAL(debug_info.error, (int) dynamic_array_error_none);
 
 	if (setjmp(s_execution_context) == 0) {
+		s_setjmp_called_previously = true;
 		dynamic_array_resize(array, largest_memory_size + 1U);
 	} else {
 		exception_has_occurred = true;
 	}
 	ASSERT(exception_has_occurred);
-	ASSERT_EQUAL(s_error_code, (int) dynamic_array_error_memory_reallocation_failure);
+	ASSERT_EQUAL(unit_test_get_error_code(), (int) dynamic_array_error_memory_reallocation_failure);
 
 	dynamic_array_delete(array);
+	unit_test_set_error_code(0);
 	unit_test_pool_deinit();
 }
 
@@ -111,31 +130,33 @@ TEST(out_of_bounds_access_to_char_dynamic_array_with_no_element, "A character dy
 	bool exception_has_occurred = false;
 
 	unit_test_pool_init();
-	s_error_code = 0;
+	unit_test_set_error_code(0);
 
 	array = dynamic_array_create_with_interface(char, initial_size, *dynamic_array_unit_test_interface());
 	ASSERT_SIZE_EQUAL(dynamic_array_size(array), 0U);
 
 	if (setjmp(s_execution_context) == 0) {
+		s_setjmp_called_previously = true;
 		dynamic_array_element(char, array, 0U) = 1;
 	} else {
 		exception_has_occurred = true;
 	}
 	ASSERT(exception_has_occurred);
-	ASSERT_EQUAL(s_error_code, (int) dynamic_array_error_index_out_of_range);
+	ASSERT_EQUAL(unit_test_get_error_code(), (int) dynamic_array_error_index_out_of_range);
 
-	s_error_code = 0;
+	unit_test_set_error_code(0);
 	exception_has_occurred = false;
 	if (setjmp(s_execution_context) == 0) {
+		s_setjmp_called_previously = true;
 		dynamic_array_element(char, array, 30U) = 1;
 	} else {
 		exception_has_occurred = true;
 	}
 	ASSERT(exception_has_occurred);
-	ASSERT_EQUAL(s_error_code, (int) dynamic_array_error_index_out_of_range);
+	ASSERT_EQUAL(unit_test_get_error_code(), (int) dynamic_array_error_index_out_of_range);
 
 	dynamic_array_delete(array);
-	s_error_code = 0;
+	unit_test_set_error_code(0);
 	unit_test_pool_deinit();
 }
 #endif

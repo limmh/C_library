@@ -19,13 +19,17 @@ typedef struct dynamic_string_type
  * @param [in] string Source string
  * @param [in] byte_length Length of source string in number of bytes
  * @param [in] interface Dynamic array interface
+ * @param [in] file_name Caller's file name or path for debugging purpose
+ * @param [in] line_number Line number of function call for debugging purpose
  * @return dynamic_string_type A new instance of dynamic string
  */
 dynamic_string_type
 dynamic_string_create_(
 	const char *string,
 	size_t byte_length,
-	const dynamic_array_interface_type *interface
+	const dynamic_array_interface_type *interface,
+	const char *file_name,
+	int line_number
 );
 
 /**
@@ -34,7 +38,8 @@ dynamic_string_create_(
  * @param [in] length Length of source string in number of bytes
  * @return dynamic_string_type A new instance of dynamic string
  */
-#define dynamic_string_create(string, length) dynamic_string_create_(string, length, dynamic_array_default_interface())
+#define dynamic_string_create(string, length) \
+	dynamic_string_create_(string, length, dynamic_array_default_interface(), __FILE__, __LINE__)
 
 /**
  * @brief Macro to create a dynamic string from a source string using a custom interface
@@ -44,19 +49,26 @@ dynamic_string_create_(
  * @return dynamic_string_type A new instance of dynamic string
  */
 #define dynamic_string_create_with_interface(string, length, interface) \
-	dynamic_string_create_(string, length, &(interface))
+	dynamic_string_create_(string, length, &(interface), __FILE__, __LINE__)
 
 /**
  * @brief Destroys or deletes a dynamic string
  * @param [in, out] pdynstring Dynamic string
+ * @param [in] file_name Caller's file name or path for debugging purpose
+ * @param [in] line_number Line number of function call for debugging purpose
  */
-void dynamic_string_delete_(dynamic_string_type *pdynstring);
+void dynamic_string_delete_(
+	dynamic_string_type *pdynstring,
+	const char *file_name,
+	int line_number
+);
 
 /**
  * @brief Macro to destroy or delete a dynamic string
  * @param [in, out] dynstring Dynamic string instance (NOT pointer)
  */
-#define dynamic_string_delete(dynstring) dynamic_string_delete_(&(dynstring))
+#define dynamic_string_delete(dynstring) \
+	dynamic_string_delete_(&(dynstring), __FILE__, __LINE__)
 
 /** @brief The same as dynamic_string_delete */
 #define dynamic_string_destroy(dynstring) dynamic_string_delete(dynstring)
@@ -64,16 +76,23 @@ void dynamic_string_delete_(dynamic_string_type *pdynstring);
 /**
  * @brief Returns the length of a dynamic string in number of bytes
  * @param [in] pdynstring Dynamic string
+ * @param [in] file_name Caller's file name or path for debugging purpose
+ * @param [in] line_number Line number of function call for debugging purpose
  * @return size_t Length in number of bytes
  */
-size_t dynamic_string_byte_length_(const dynamic_string_type *pdynstring);
+size_t dynamic_string_byte_length_(
+	const dynamic_string_type *pdynstring,
+	const char *file_name,
+	int line_number
+);
 
 /**
-* @brief Macro to determine the length of a dynamic string in number of bytes
-* @param [in] dynstring Dynamic string instance (NOT pointer)
-* @return size_t Length in number of bytes
-*/
-#define dynamic_string_byte_length(dynstring) dynamic_string_byte_length_(&(dynstring))
+ * @brief Macro to determine the length of a dynamic string in number of bytes
+ * @param [in] dynstring Dynamic string instance (NOT pointer)
+ * @return size_t Length in number of bytes
+ */
+#define dynamic_string_byte_length(dynstring) \
+	dynamic_string_byte_length_(&(dynstring), __FILE__, __LINE__)
 
 /**
  * @brief Macro to check whether a dynamic string is empty
@@ -86,12 +105,16 @@ size_t dynamic_string_byte_length_(const dynamic_string_type *pdynstring);
  * @brief Obtains a pointer to a character of a dynamic string
  * @param [in] pdynstring Dynamic string
  * @param [in] char_index
+ * @param [in] file_name Caller's file name or path for debugging purpose
+ * @param [in] line_number Line number of function call for debugging purpose
  * @return char * A pointer to the mutable character 
  * The exception handler will be invoked if char_index is out of bounds.
  */
 char *dynamic_string_ptr_(
 	dynamic_string_type *pdynstring,
-	size_t char_index
+	size_t char_index,
+	const char *file_name,
+	int line_number
 );
 
 /**
@@ -101,18 +124,23 @@ char *dynamic_string_ptr_(
  * @return char An lvalue of the mutable character
  * The exception handler will be invoked if char_index is out of bounds.
  */
-#define dynamic_string_char(dynstring, index) (*dynamic_string_ptr_(&(dynstring), index))
+#define dynamic_string_char(dynstring, index) \
+	(*dynamic_string_ptr_(&(dynstring), index, __FILE__, __LINE__))
 
 /**
-* @brief Obtains a pointer to a const character of a dynamic string
-* @param [in] pdynstring Dynamic string
-* @param [in] char_index Index of the character
-* @return const char * A pointer to the immutable character
-* The exception handler will be invoked if char_index is out of bounds.
-*/
+ * @brief Obtains a pointer to a const character of a dynamic string
+ * @param [in] pdynstring Dynamic string
+ * @param [in] char_index Index of the character
+ * @param [in] file_name Caller's file name or path for debugging purpose
+ * @param [in] line_number Line number of function call for debugging purpose
+ * @return const char * A pointer to the immutable character
+ * The exception handler will be invoked if char_index is out of bounds.
+ */
 const char *dynamic_string_const_ptr_(
 	const dynamic_string_type *pdynstring,
-	size_t char_index
+	size_t char_index,
+	const char *file_name,
+	int line_number
 );
 
 /**
@@ -122,15 +150,20 @@ const char *dynamic_string_const_ptr_(
  * @return const char An lvalue of the immutable character
  * The exception handler will be invoked if char_index is out of bounds.
  */
-#define dynamic_string_const_char(dynstring, index) (*dynamic_string_const_ptr_(&(dynstring), index))
+#define dynamic_string_const_char(dynstring, index) \
+	(*dynamic_string_const_ptr_(&(dynstring), index, __FILE__, __LINE__))
 
 /**
  * @brief Obtains the underlying C-style string
  * @param [in] pdynstring Dynamic string
+ * @param [in] file_name Caller's file name or path for debugging purpose
+ * @param [in] line_number Line number of function call for debugging purpose
  * @return const char * A pointer to the first character
  */
 const char *dynamic_string_cstring_(
-	const dynamic_string_type *pdynstring
+	const dynamic_string_type *pdynstring,
+	const char *file_name,
+	int line_number
 );
 
 /**
@@ -138,18 +171,23 @@ const char *dynamic_string_cstring_(
  * @param [in] dynstring Dynamic string instance (NOT pointer)
  * @return const char * A pointer to the first character
  */
-#define dynamic_string_cstring(dynstring) dynamic_string_cstring_(&(dynstring))
+#define dynamic_string_cstring(dynstring) \
+	dynamic_string_cstring_(&(dynstring), __FILE__, __LINE__)
 
 /**
  * @brief Assigns a source string to a target dynamic string
  * @param [in, out] pdynstring Dynamic string
  * @param [in] source_string Source string
  * @param [in] byte_length Length of source string in number of bytes
+ * @param [in] file_name Caller's file name or path for debugging purpose
+ * @param [in] line_number Line number of function call for debugging purpose
  */
 void dynamic_string_assign_(
 	dynamic_string_type *pdynstring,
 	const char *source_string,
-	size_t byte_length
+	size_t byte_length,
+	const char *file_name,
+	int line_number
 );
 
 /**
@@ -158,7 +196,8 @@ void dynamic_string_assign_(
  * @param [in] string Source string
  * @param [in] length Length of source string in number of bytes
  */
-#define dynamic_string_assign(dynstring, string, length) dynamic_string_assign_(&(dynstring), string, length) 
+#define dynamic_string_assign(dynstring, string, length) \
+	dynamic_string_assign_(&(dynstring), string, length, __FILE__, __LINE__)
 
 /**
  * @brief Inserts a source string to a target dynamic string at the specified index
@@ -166,13 +205,17 @@ void dynamic_string_assign_(
  * @param [in] index Index to insert the source string
  * @param [in] source_string Source string
  * @param [in] byte_length Length of source string in number of bytes
+ * @param [in] file_name Caller's file name or path for debugging purpose
+ * @param [in] line_number Line number of function call for debugging purpose
  * The exception handler will be invoked if the index is out of bounds.
  */
 void dynamic_string_insert_(
 	dynamic_string_type *pdynstring,
 	size_t index,
 	const char *source_string,
-	size_t byte_length
+	size_t byte_length,
+	const char *file_name,
+	int line_number
 );
 
 /**
@@ -183,18 +226,23 @@ void dynamic_string_insert_(
  * @param [in] length Length of source string in number of bytes
  * The exception handler will be invoked if the index is out of bounds.
  */
-#define dynamic_string_insert(dynstring, index, string, length) dynamic_string_insert_(&(dynstring), index, string, length)
+#define dynamic_string_insert(dynstring, index, string, length) \
+	dynamic_string_insert_(&(dynstring), index, string, length, __FILE__, __LINE__)
 
 /**
  * @brief Appends a source string to a target dynamic string
  * @param [in, out] pdynstring Dynamic string
  * @param [in] source_string Source string
  * @param [in] byte_length Length of source string in number of bytes
+ * @param [in] file_name Caller's file name or path for debugging purpose
+ * @param [in] line_number Line number of function call for debugging purpose
  */
 void dynamic_string_append_(
 	dynamic_string_type *pdynstring,
 	const char *source_string,
-	size_t byte_length
+	size_t byte_length,
+	const char *file_name,
+	int line_number
 );
 
 /**
@@ -203,18 +251,23 @@ void dynamic_string_append_(
  * @param [in] string Source string
  * @param [in] length Length of source string in number of bytes
  */
-#define dynamic_string_append(dynstring, string, length) dynamic_string_append_(&(dynstring), string, length)
+#define dynamic_string_append(dynstring, string, length) \
+	dynamic_string_append_(&(dynstring), string, length, __FILE__, __LINE__)
 
 /**
  * @brief Removes a substring from a target dynamic string
  * @param [in, out] pdynstring Dynamic string
  * @param [in] index Index of the first character to be removed
  * @param [in] byte_length Number of bytes to be removed
+ * @param [in] file_name Caller's file name or path for debugging purpose
+ * @param [in] line_number Line number of function call for debugging purpose
  */
 void dynamic_string_remove_substring_(
 	dynamic_string_type *pdynstring,
 	size_t index,
-	size_t byte_length
+	size_t byte_length,
+	const char *file_name,
+	int line_number
 );
 
 /**
@@ -223,7 +276,8 @@ void dynamic_string_remove_substring_(
  * @param [in] index Index of the first character to be removed
  * @param [in] length Number of bytes to be removed
  */
-#define dynamic_string_remove_substring(dynstring, index, length) dynamic_string_remove_substring_(&(dynstring), index, length)
+#define dynamic_string_remove_substring(dynstring, index, length) \
+	dynamic_string_remove_substring_(&(dynstring), index, length, __FILE__, __LINE__)
 
 /**
  * @brief Clears a target dynamic string
