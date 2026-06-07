@@ -16,6 +16,10 @@ add_library(
 	"${CMAKE_CURRENT_SOURCE_DIR}/integer_to_string.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/string_to_integer.c"
 	"${CMAKE_CURRENT_SOURCE_DIR}/string_to_integer.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/string_to_integer_error_codes.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/string_info_type.c"
+	"${CMAKE_CURRENT_SOURCE_DIR}/string_info_type.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/char_utils.h"
 )
 set_target_properties(
 	conversions PROPERTIES
