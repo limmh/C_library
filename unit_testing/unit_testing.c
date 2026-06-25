@@ -77,7 +77,7 @@ void testing_library_assert(int line_number, bool condition, const char *message
 		terminal_text_color_set(terminal_color_code_default);
 	} else if (pdata->should_print_true_assertions) {
 		terminal_text_color_set(terminal_color_code_green);
-		fprintf(file, "Line %d: %s\n", line_number, message);
+		fprintf(file, "OK (line %d): %s\n", line_number, message);
 		terminal_text_color_set(terminal_color_code_default);
 	}
 }
