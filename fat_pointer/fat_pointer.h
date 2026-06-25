@@ -17,6 +17,15 @@ typedef struct fat_pointer_type_
 /** @brief For type annotation, 'element_type' is the type of each element being referenced */
 #define fat_pointer_type(element_type) fat_pointer_type_
 
+/** @brief opaque fat pointer for immutable data */
+typedef struct immutable_fat_pointer_type_
+{
+	size_t do_not_access_directly[4];
+} immutable_fat_pointer_type_;
+
+/** @brief For type annotation, 'element_type' is the type of each element being referenced */
+#define immutable_fat_pointer_type(element_type) immutable_fat_pointer_type_
+
 /** @brief Error codes */
 typedef enum fat_pointer_error_type
 {
@@ -91,6 +100,30 @@ fat_pointer_create_(void *ptr, size_t capacity, size_t initial_size, size_t elem
 	( assert(sizeof(type) == sizeof(*(ptr))), fat_pointer_create_(ptr, capacity, initial_length, sizeof(type), __FILE__, __LINE__) )
 
 /**
+ * @brief Creates an opaque fat pointer from a non-owning pointer and other parameters.
+ * @param [in] ptr The non-owning pointer (MUST NOT be NULL)
+ * @param [in] capacity The maximum number of elements allowed (MUST NOT exceed the actual number of elements)
+ * @param [in] initial_size The initial length (MUST NOT exceed the capacity)
+ * @param [in] element_size The size of each element (MUST NOT be zero)
+ * @param [in] file_name The name or path of the source file which calls the function, For debugging purpose.
+ * @param [in] line_number The line number of the source file at which the function is called. For debugging purpose.
+ * @return immutable_fat_pointer_type_ An immutable opaque fat pointer of type immutable_fat_pointer_type_.
+ */
+immutable_fat_pointer_type_
+immutable_fat_pointer_create_(const void* ptr, size_t capacity, size_t initial_size, size_t element_size, const char* file_name, int line_number);
+
+/**
+ * @brief Macro to create an immutable opaque fat pointer from a non-owning pointer and other parameters
+ * @param [in] type Type of each element
+ * @param [in] ptr The non-owning pointer (MUST NOT be NULL)
+ * @param [in] capacity The maximum number of elements allowed (MUST NOT exceed the actual number of elements)
+ * @param [in] initial_length The initial length (MUST NOT exceed the capacity)
+ * @return immutable_fat_pointer_type_ An immutable opaque fat pointer of type immutable_fat_pointer_type_.
+ */
+#define immutable_fat_pointer_create(type, ptr, capacity, initial_length) \
+	( assert(sizeof(type) == sizeof(*(ptr))), immutable_fat_pointer_create_(ptr, capacity, initial_length, sizeof(type), __FILE__, __LINE__) )
+
+/**
  * @brief Destroys a fat pointer without modifying the data it references.
  * @param [in, out] fatptr Opaque fat pointer (MUST NOT be NULL)
  * @param [in] file_name The name or path of the source file which calls the function, For debugging purpose.
@@ -103,6 +136,20 @@ void fat_pointer_destroy_(fat_pointer_type_ *fatptr, const char *file_name, int 
  * @param [in, out] fatptr Opaque fat pointer instance
  */
 #define fat_pointer_destroy(fatptr) fat_pointer_destroy_(&(fatptr), __FILE__, __LINE__)
+
+/**
+ * @brief Destroys an immutable fat pointer without modifying the data it references.
+ * @param [in, out] fatptr Opaque immutable fat pointer (MUST NOT be NULL)
+ * @param [in] file_name The name or path of the source file which calls the function, For debugging purpose.
+ * @param [in] line_number The line number of the source file at which the function is called. For debugging purpose.
+ */
+void immutable_fat_pointer_destroy_(immutable_fat_pointer_type_* fatptr, const char* file_name, int line_number);
+
+/**
+ * @brief Macro to destroy an immutable fat pointer without modifying the data it references
+ * @param [in, out] fatptr Opaque immutable fat pointer instance
+ */
+#define immutable_fat_pointer_destroy(fatptr) immutable_fat_pointer_destroy_(&(fatptr), __FILE__, __LINE__)
 
 /**
  * @brief Zeros all the valid elements referenced by a fat pointer
@@ -135,6 +182,22 @@ size_t fat_pointer_capacity_(const fat_pointer_type_ *fatptr, const char *file_n
 #define fat_pointer_capacity(fatptr) fat_pointer_capacity_(&(fatptr), __FILE__, __LINE__)
 
 /**
+ * @brief Returns the maximum number of elements referenced by an opaque immutable fat pointer
+ * @param [in, out] fatptr Opaque immutable fat pointer (MUST NOT be NULL)
+ * @param [in] file_name The name or path of the source file which calls the function, For debugging purpose.
+ * @param [in] line_number The line number of the source file at which the function is called. For debugging purpose.
+ * @return size_t Maximum number of elements allowed
+ */
+size_t immutable_fat_pointer_capacity_(const immutable_fat_pointer_type_* fatptr, const char* file_name, int line_number);
+
+/**
+ * @brief Macro to determine the maximum number of elements referenced by an opaque immutable fat pointer
+ * @param [in, out] fatptr Opaque immutable fat pointer instance
+ * @return size_t Maximum number of elements allowed
+ */
+#define immutable_fat_pointer_capacity(fatptr) immutable_fat_pointer_capacity_(&(fatptr), __FILE__, __LINE__)
+
+/**
  * @brief Returns the number of valid elements referenced by an opaque fat pointer
  *
  * May not be the same as the maximum mumber of elements
@@ -157,6 +220,28 @@ size_t fat_pointer_size_(const fat_pointer_type_ *fatptr, const char *file_name,
 #define fat_pointer_length(fatptr) fat_pointer_size(fatptr)
 
 /**
+ * @brief Returns the number of valid elements referenced by an opaque immutable fat pointer
+ *
+ * May not be the same as the maximum mumber of elements
+ *
+ * @param [in, out] fatptr Opaque immutable fat pointer (MUST NOT be NULL)
+ * @param [in] file_name The name or path of the source file which calls the function, For debugging purpose.
+ * @param [in] line_number The line number of the source file at which the function is called. For debugging purpose.
+ * @return size_t The number of valid elements, i.e. elements in use
+ */
+size_t immutable_fat_pointer_size_(const immutable_fat_pointer_type_* fatptr, const char* file_name, int line_number);
+
+/**
+ * @brief Macro to determine the number of valid elements referenced by an opaque immutable fat pointer
+ * @param [in, out] fatptr Opaque immutable fat pointer instance
+ * @return size_t The number of valid elements, i.e. elements in use
+ */
+#define immutable_fat_pointer_size(fatptr) immutable_fat_pointer_size_(&(fatptr), __FILE__, __LINE__)
+
+/** @brief The same as immutable_fat_pointer_size */
+#define immutable_fat_pointer_length(fatptr) immutable_fat_pointer_size(fatptr)
+
+/**
  * @brief Returns the size of each element referenced by an opaque fat pointer
  * @param [in, out] fatptr Opaque fat pointer (MUST NOT be NULL)
  * @param [in] file_name The name or path of the source file which calls the function, For debugging purpose.
@@ -171,6 +256,22 @@ size_t fat_pointer_element_size_(const fat_pointer_type_ *fatptr, const char *fi
  * @return size_t The size of each element
  */
 #define fat_pointer_element_size(fatptr) fat_pointer_element_size_(&(fatptr), __FILE__, __LINE__)
+
+/**
+ * @brief Returns the size of each element referenced by an opaque immutable fat pointer
+ * @param [in, out] fatptr Opaque immutable fat pointer (MUST NOT be NULL)
+ * @param [in] file_name The name or path of the source file which calls the function, For debugging purpose.
+ * @param [in] line_number The line number of the source file at which the function is called. For debugging purpose.
+ * @return size_t The size of each element
+ */
+size_t immutable_fat_pointer_element_size_(const immutable_fat_pointer_type_* fatptr, const char* file_name, int line_number);
+
+/**
+ * @brief Macro to determine the size of each element referenced by an opaque immutable fat pointer
+ * @param [in, out] fatptr Opaque immutable fat pointer instance
+ * @return size_t The size of each element
+ */
+#define immutable_fat_pointer_element_size(fatptr) immutable_fat_pointer_element_size_(&(fatptr), __FILE__, __LINE__)
 
 /**
  * @brief Returns the address of an element referenced by an opaque fat pointer
@@ -211,6 +312,39 @@ void *fat_pointer_element_ptr_(
  */
 #define fat_pointer_element(type, fatptr, index) \
 	(*fat_pointer_element_ptr(type, fatptr, index))
+
+/**
+ * @brief Returns the address of an element referenced by an opaque immutable fat pointer
+ * @param [in, out] fatptr Opaque immutable fat pointer (MUST NOT be NULL)
+ * @param [in] index The index of an element (MUST NOT exceed the number of valid elements (elements in use)
+ * @param [in] element_size The size of each element (MUST match the element size specified when the fat pointer was first initialized)
+ * @param [in] file_name The name or path of the source file which calls the function, For debugging purpose.
+ * @param [in] line_number : The line number of the source file at which the function is called. For debugging purpose.
+ * @return const void * A const void pointer referring to an element referenced by the fat pointer
+ *
+ * Note: DO NOT call the function directly but use the provided function macros for element access.
+ */
+const void* immutable_fat_pointer_element_ptr_(const immutable_fat_pointer_type_* fatptr, size_t index, size_t element_size, const char* file_name, int line_number);
+
+/**
+ * @brief Macro to access an element via a pointer
+ * @param [in] type Type of each element
+ * @param [in] fatptr Opaque immutable fat pointer instance
+ * @param [in] index Index of the element
+ * @return const type * Pointer to the element
+ */
+#define immutable_fat_pointer_element_ptr(type, fatptr, index) \
+	( (const type*) immutable_fat_pointer_element_ptr_(&(fatptr), index, sizeof(type), __FILE__, __LINE__) )
+
+/**
+ * @brief Macro to access the element as a const lvalue
+ * @param [in] type Type of each element
+ * @param [in] fatptr Opaque immutable fat pointer instance
+ * @param [in] index Index of the element
+ * @return const type lvalue of the element
+ */
+#define immutable_fat_pointer_element(type, fatptr, index) \
+	(*immutable_fat_pointer_element_ptr(type, fatptr, index))
 
 /**
  * @brief Adds elements to the array referenced by an opaque fat pointer

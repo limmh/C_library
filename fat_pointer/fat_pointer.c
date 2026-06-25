@@ -14,8 +14,17 @@ typedef struct fat_pointer_internal_type {
 	void *ptr;
 } fat_pointer_internal_type;
 
+typedef struct immutable_fat_pointer_internal_type {
+	size_t capacity;
+	size_t size;
+	size_t element_size;
+	const void *ptr;
+} immutable_fat_pointer_internal_type;
+
 STATIC_ASSERT(sizeof(fat_pointer_type_) == sizeof(fat_pointer_internal_type), "Size mismatch between public fat pointer type and internal fat pointer type.");
 STATIC_ASSERT(ALIGNOF(fat_pointer_type_) == ALIGNOF(fat_pointer_internal_type), "Alignment mismatch between public fat pointer type and internal fat pointer type.");
+STATIC_ASSERT(sizeof(immutable_fat_pointer_type_) == sizeof(immutable_fat_pointer_internal_type), "Size mismatch between public immutable fat pointer type and internal immutable fat pointer type.");
+STATIC_ASSERT(ALIGNOF(immutable_fat_pointer_type_) == ALIGNOF(immutable_fat_pointer_internal_type), "Alignment mismatch between public immutable fat pointer type and internal immutable fat pointer type.");
 
 static void fat_pointer_default_error_reporting_handler(fat_pointer_debug_info_type debug_info)
 {
@@ -140,6 +149,37 @@ static void fat_pointer_detect_first_obvious_error(const fat_pointer_type_ *fatp
 	}
 }
 
+static void immutable_fat_pointer_detect_first_obvious_error(const immutable_fat_pointer_type_ *fatptr, fat_pointer_debug_info_type *pdebug_info)
+{
+	const immutable_fat_pointer_internal_type *fatptr_ = (const immutable_fat_pointer_internal_type*) fatptr;
+	assert(fatptr_ != NULL);
+	assert(pdebug_info != NULL);
+	if (fatptr_->ptr == NULL) {
+		pdebug_info->error = fat_pointer_error_no_pointer;
+		pdebug_info->info_1 = 0U;
+		pdebug_info->info_2 = 0U;
+	} else if (fatptr_->capacity < fatptr_->size) {
+		pdebug_info->error = fat_pointer_error_incorrect_capacity;
+		pdebug_info->info_1 = fatptr_->capacity;
+		pdebug_info->info_2 = fatptr_->size;
+	} else if (fatptr_->element_size < 1U) {
+		pdebug_info->error = fat_pointer_error_incorrect_element_size;
+		pdebug_info->info_1 = fatptr_->element_size;
+		pdebug_info->info_2 = 0U;
+	} else {
+		const size_result_type result = safer_size_multiply(fatptr_->capacity, fatptr_->element_size);
+		if (result.error == integer_operation_error_none) {
+			pdebug_info->error = fat_pointer_error_none;
+			pdebug_info->info_1 = 0U;
+			pdebug_info->info_2 = 0U;
+		} else {
+			pdebug_info->error = fat_pointer_error_multiplication_overflow_detected;
+			pdebug_info->info_1 = fatptr_->capacity;
+			pdebug_info->info_2 = fatptr_->element_size;
+		}
+	}
+}
+
 fat_pointer_type_ fat_pointer_create_(void *ptr, size_t capacity, size_t initial_size, size_t element_size, const char *file_name, int line_number)
 {
 	fat_pointer_type_ fatptr = {0};
@@ -172,6 +212,39 @@ fat_pointer_type_ fat_pointer_create_(void *ptr, size_t capacity, size_t initial
 	return fatptr;
 }
 
+immutable_fat_pointer_type_
+immutable_fat_pointer_create_(const void* ptr, size_t capacity, size_t initial_size, size_t element_size, const char* file_name, int line_number)
+{
+	immutable_fat_pointer_type_ fatptr = {0};
+	immutable_fat_pointer_internal_type fatptr_ = {0};
+#ifndef FAT_POINTER_NO_RUNTIME_CHECKS
+	fat_pointer_debug_info_type debug_info = {0};
+	debug_info.file_name = file_name;
+	debug_info.line_number = line_number;
+#endif
+
+	assert(ptr != NULL);
+	fatptr_.ptr = ptr;
+	assert(capacity > 0U);
+	fatptr_.capacity = capacity;
+	assert(initial_size <= capacity);
+	fatptr_.size = initial_size;
+	assert(element_size > 0U);
+	fatptr_.element_size = element_size;
+
+	memcpy(&fatptr, &fatptr_, sizeof(fatptr));
+
+#ifndef FAT_POINTER_NO_RUNTIME_CHECKS
+	immutable_fat_pointer_detect_first_obvious_error(&fatptr, &debug_info);
+	if (debug_info.error != fat_pointer_error_none) {
+		fat_pointer_report_error(debug_info);
+		fat_pointer_handle_exception(debug_info.error);
+		fat_pointer_terminate();
+	}
+#endif
+	return fatptr;
+}
+
 void fat_pointer_destroy_(fat_pointer_type_ *fatptr, const char *file_name, int line_number)
 {
 #ifndef FAT_POINTER_NO_RUNTIME_CHECKS
@@ -179,6 +252,24 @@ void fat_pointer_destroy_(fat_pointer_type_ *fatptr, const char *file_name, int 
 	debug_info.file_name = file_name;
 	debug_info.line_number = line_number;
 	fat_pointer_detect_first_obvious_error(fatptr, &debug_info);
+	if (debug_info.error != fat_pointer_error_none) {
+		fat_pointer_report_error(debug_info);
+		fat_pointer_handle_exception(debug_info.error);
+		return;
+	}
+#endif
+	if (fatptr != NULL) {
+		memset(fatptr, 0, sizeof(*fatptr));
+	}
+}
+
+void immutable_fat_pointer_destroy_(immutable_fat_pointer_type_* fatptr, const char* file_name, int line_number)
+{
+#ifndef FAT_POINTER_NO_RUNTIME_CHECKS
+	fat_pointer_debug_info_type debug_info = {0};
+	debug_info.file_name = file_name;
+	debug_info.line_number = line_number;
+	immutable_fat_pointer_detect_first_obvious_error(fatptr, &debug_info);
 	if (debug_info.error != fat_pointer_error_none) {
 		fat_pointer_report_error(debug_info);
 		fat_pointer_handle_exception(debug_info.error);
@@ -230,6 +321,23 @@ size_t fat_pointer_capacity_(const fat_pointer_type_ *fatptr, const char *file_n
 	return fatptr_->capacity;
 }
 
+size_t immutable_fat_pointer_capacity_(const immutable_fat_pointer_type_ *fatptr, const char* file_name, int line_number)
+{
+    const immutable_fat_pointer_internal_type* fatptr_ = (const immutable_fat_pointer_internal_type*) fatptr;
+#ifndef FAT_POINTER_NO_RUNTIME_CHECKS
+	fat_pointer_debug_info_type debug_info = {0};
+	debug_info.file_name = file_name;
+	debug_info.line_number = line_number;
+	immutable_fat_pointer_detect_first_obvious_error(fatptr, &debug_info);
+	if (debug_info.error != fat_pointer_error_none) {
+		fat_pointer_report_error(debug_info);
+		fat_pointer_handle_exception(debug_info.error);
+		return 0U;
+	}
+#endif
+	return fatptr_->capacity;
+}
+
 size_t fat_pointer_size_(const fat_pointer_type_ *fatptr, const char *file_name, int line_number)
 {
 	const fat_pointer_internal_type *fatptr_ = (const fat_pointer_internal_type*) fatptr;
@@ -247,6 +355,23 @@ size_t fat_pointer_size_(const fat_pointer_type_ *fatptr, const char *file_name,
 	return fatptr_->size;
 }
 
+size_t immutable_fat_pointer_size_(const immutable_fat_pointer_type_* fatptr, const char* file_name, int line_number)
+{
+    const immutable_fat_pointer_internal_type* fatptr_ = (const immutable_fat_pointer_internal_type*) fatptr;
+#ifndef FAT_POINTER_NO_RUNTIME_CHECKS
+	fat_pointer_debug_info_type debug_info = {0};
+	debug_info.file_name = file_name;
+	debug_info.line_number = line_number;
+	immutable_fat_pointer_detect_first_obvious_error(fatptr, &debug_info);
+	if (debug_info.error != fat_pointer_error_none) {
+		fat_pointer_report_error(debug_info);
+		fat_pointer_handle_exception(debug_info.error);
+		return 0U;
+	}
+#endif
+	return fatptr_->size;
+}
+
 size_t fat_pointer_element_size_(const fat_pointer_type_ *fatptr, const char *file_name, int line_number)
 {
 	const fat_pointer_internal_type *fatptr_ = (const fat_pointer_internal_type*) fatptr;
@@ -255,6 +380,23 @@ size_t fat_pointer_element_size_(const fat_pointer_type_ *fatptr, const char *fi
 	debug_info.file_name = file_name;
 	debug_info.line_number = line_number;
 	fat_pointer_detect_first_obvious_error(fatptr, &debug_info);
+	if (debug_info.error != fat_pointer_error_none) {
+		fat_pointer_report_error(debug_info);
+		fat_pointer_handle_exception(debug_info.error);
+		return 0U;
+	}
+#endif
+	return fatptr_->element_size;
+}
+
+size_t immutable_fat_pointer_element_size_(const immutable_fat_pointer_type_* fatptr, const char* file_name, int line_number)
+{
+    const immutable_fat_pointer_internal_type* fatptr_ = (const immutable_fat_pointer_internal_type*)fatptr;
+#ifndef FAT_POINTER_NO_RUNTIME_CHECKS
+	fat_pointer_debug_info_type debug_info = { 0 };
+	debug_info.file_name = file_name;
+	debug_info.line_number = line_number;
+	immutable_fat_pointer_detect_first_obvious_error(fatptr, &debug_info);
 	if (debug_info.error != fat_pointer_error_none) {
 		fat_pointer_report_error(debug_info);
 		fat_pointer_handle_exception(debug_info.error);
@@ -303,6 +445,49 @@ void *fat_pointer_element_ptr_(
 	{
 		const size_t byte_offset = index * fatptr_->element_size;
 		unsigned char *ptr = (unsigned char*) fatptr_->ptr;
+		return (ptr + byte_offset);
+	}
+}
+
+const void *immutable_fat_pointer_element_ptr_(
+	const immutable_fat_pointer_type_* fatptr,
+	size_t index,
+	size_t element_size,
+	const char* file_name,
+	int line_number
+)
+{
+    const immutable_fat_pointer_internal_type* fatptr_ = (const immutable_fat_pointer_internal_type*)fatptr;
+#ifndef FAT_POINTER_NO_RUNTIME_CHECKS
+	fat_pointer_debug_info_type debug_info = { 0 };
+	debug_info.file_name = file_name;
+	debug_info.line_number = line_number;
+	immutable_fat_pointer_detect_first_obvious_error(fatptr, &debug_info);
+	if (debug_info.error != fat_pointer_error_none) {
+		fat_pointer_report_error(debug_info);
+		fat_pointer_handle_exception(debug_info.error);
+		fat_pointer_terminate();
+	}
+	if (index >= fatptr_->size) {
+		debug_info.error = fat_pointer_error_index_out_of_range;
+		debug_info.info_1 = index;
+		debug_info.info_2 = fatptr_->size;
+		fat_pointer_report_error(debug_info);
+		fat_pointer_handle_exception(debug_info.error);
+		fat_pointer_terminate();
+	}
+	if (element_size != fatptr_->element_size) {
+		debug_info.error = fat_pointer_error_element_size_mismatch;
+		debug_info.info_1 = fatptr_->element_size;
+		debug_info.info_2 = element_size;
+		fat_pointer_report_error(debug_info);
+		fat_pointer_handle_exception(debug_info.error);
+		fat_pointer_terminate();
+    }
+#endif
+	{
+		const size_t byte_offset = index * fatptr_->element_size;
+		const unsigned char* ptr = (const unsigned char*)fatptr_->ptr;
 		return (ptr + byte_offset);
 	}
 }

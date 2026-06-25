@@ -218,15 +218,245 @@ TEST(fat_pointer_referencing_an_integer_buffer, "Fat pointer referencing an inte
 	fat_pointer_destroy(fatptr);
 }
 
-/* More tests will be added in the future */
+TEST(fat_pointer_referencing_a_struct_buffer, "Fat pointer referencing a struct buffer")
+{
+	typedef struct name_type {const char *first_name; const char *last_name;} name_type;
+	typedef struct date_type {short year; unsigned char month; unsigned char day;} date_type;
+	typedef struct person_type {name_type name; date_type date_of_birth;} person_type;
+
+	person_type people[4] = {0};
+	person_type person = {0};
+
+	fat_pointer_type(person_type) person_fatptr = fat_pointer_create(person_type, people, sizeof_array(people), 0U);
+
+	person.name.first_name = "John";
+	person.name.last_name = "Doe";
+	person.date_of_birth.year = 1990;
+	person.date_of_birth.month = 1;
+	person.date_of_birth.day = 1;
+	fat_pointer_append_element(person_type, person_fatptr, person);
+
+	person.name.first_name = "Jane";
+	person.date_of_birth.year = 1995;
+	person.date_of_birth.month = 12;
+	fat_pointer_append_element(person_type, person_fatptr, person);
+
+	person.name.last_name = "Smith";
+	person.date_of_birth.year = 1991;
+	person.date_of_birth.month = 11;
+	person.date_of_birth.day = 30;
+	fat_pointer_add_element_at_index(person_type, person_fatptr, 1, person);
+
+	person.name.first_name = "John";
+	person.date_of_birth.year = 1987;
+	person.date_of_birth.month = 5;
+	person.date_of_birth.day = 21;
+	fat_pointer_add_element_at_index(person_type, person_fatptr, 0, person);
+
+	ASSERT(fat_pointer_element_ptr(person_type, person_fatptr, 0U) == &people[0]);
+	ASSERT_SIZE_EQUAL(fat_pointer_capacity(person_fatptr), 4U);
+	ASSERT_SIZE_EQUAL(fat_pointer_length(person_fatptr), 4U);
+	ASSERT_SIZE_EQUAL(fat_pointer_element_size(person_fatptr), sizeof(person));
+
+	ASSERT_STRING_EQUAL(fat_pointer_element(person_type, person_fatptr, 0).name.first_name, "John");
+	ASSERT_STRING_EQUAL(fat_pointer_element(person_type, person_fatptr, 0).name.last_name, "Smith");
+	ASSERT_EQUAL(fat_pointer_element(person_type, person_fatptr, 0).date_of_birth.year, 1987);
+	ASSERT_EQUAL(fat_pointer_element(person_type, person_fatptr, 0).date_of_birth.month, 5);
+	ASSERT_EQUAL(fat_pointer_element(person_type, person_fatptr, 0).date_of_birth.day, 21);
+
+	ASSERT_STRING_EQUAL(fat_pointer_element(person_type, person_fatptr, 1).name.first_name, "John");
+	ASSERT_STRING_EQUAL(fat_pointer_element(person_type, person_fatptr, 1).name.last_name, "Doe");
+	ASSERT_EQUAL(fat_pointer_element(person_type, person_fatptr, 1).date_of_birth.year, 1990);
+	ASSERT_EQUAL(fat_pointer_element(person_type, person_fatptr, 1).date_of_birth.month, 1);
+	ASSERT_EQUAL(fat_pointer_element(person_type, person_fatptr, 1).date_of_birth.day, 1);
+
+	ASSERT_STRING_EQUAL(fat_pointer_element(person_type, person_fatptr, 2).name.first_name, "Jane");
+	ASSERT_STRING_EQUAL(fat_pointer_element(person_type, person_fatptr, 2).name.last_name, "Smith");
+	ASSERT_EQUAL(fat_pointer_element(person_type, person_fatptr, 2).date_of_birth.year, 1991);
+	ASSERT_EQUAL(fat_pointer_element(person_type, person_fatptr, 2).date_of_birth.month, 11);
+	ASSERT_EQUAL(fat_pointer_element(person_type, person_fatptr, 2).date_of_birth.day, 30);
+
+	ASSERT_STRING_EQUAL(fat_pointer_element(person_type, person_fatptr, 3).name.first_name, "Jane");
+	ASSERT_STRING_EQUAL(fat_pointer_element(person_type, person_fatptr, 3).name.last_name, "Doe");
+	ASSERT_EQUAL(fat_pointer_element(person_type, person_fatptr, 3).date_of_birth.year, 1995);
+	ASSERT_EQUAL(fat_pointer_element(person_type, person_fatptr, 3).date_of_birth.month, 12);
+	ASSERT_EQUAL(fat_pointer_element(person_type, person_fatptr, 3).date_of_birth.day, 1);
+
+	fat_pointer_remove_elements_starting_from_index(person_type, person_fatptr, 0U, 4U);
+
+	ASSERT_SIZE_EQUAL(fat_pointer_capacity(person_fatptr), 4U);
+	ASSERT_SIZE_EQUAL(fat_pointer_length(person_fatptr), 0U);
+	ASSERT_SIZE_EQUAL(fat_pointer_element_size(person_fatptr), sizeof(person));
+
+	fat_pointer_destroy(person_fatptr);
+}
+
+TEST(immutable_fat_pointer_referencing_a_const_char_buffer, "Immutable fat pointer referencing a const char buffer")
+{
+	const char *read_only_string = "Hello, World";
+	const char *ptr = NULL;
+	immutable_fat_pointer_type(char) cfatptr = immutable_fat_pointer_create(char, read_only_string,
+		strlen(read_only_string) + 1U, strlen(read_only_string) + 1U);
+
+	ASSERT_SIZE_EQUAL(immutable_fat_pointer_capacity(cfatptr), 13U);
+	ASSERT_SIZE_EQUAL(immutable_fat_pointer_length(cfatptr), 13U);
+	ASSERT_SIZE_EQUAL(immutable_fat_pointer_element_size(cfatptr), sizeof(char));
+
+	ASSERT_EQUAL(immutable_fat_pointer_element(char, cfatptr, 0U), 'H');
+	ASSERT_EQUAL(immutable_fat_pointer_element(char, cfatptr, 1U), 'e');
+	ASSERT_EQUAL(immutable_fat_pointer_element(char, cfatptr, 2U), 'l');
+	ASSERT_EQUAL(immutable_fat_pointer_element(char, cfatptr, 3U), 'l');
+	ASSERT_EQUAL(immutable_fat_pointer_element(char, cfatptr, 4U), 'o');
+	ASSERT_EQUAL(immutable_fat_pointer_element(char, cfatptr, 5U), ',');
+	ASSERT_EQUAL(immutable_fat_pointer_element(char, cfatptr, 6U), ' ');
+	ASSERT_EQUAL(immutable_fat_pointer_element(char, cfatptr, 7U), 'W');
+	ASSERT_EQUAL(immutable_fat_pointer_element(char, cfatptr, 8U), 'o');
+	ASSERT_EQUAL(immutable_fat_pointer_element(char, cfatptr, 9U), 'r');
+	ASSERT_EQUAL(immutable_fat_pointer_element(char, cfatptr, 10U), 'l');
+	ASSERT_EQUAL(immutable_fat_pointer_element(char, cfatptr, 11U), 'd');
+	ASSERT_EQUAL(immutable_fat_pointer_element(char, cfatptr, 12U), '\0');
+
+	ptr = immutable_fat_pointer_element_ptr(char, cfatptr, 0U);
+	ASSERT(ptr == read_only_string);
+	ASSERT_SIZE_EQUAL(strlen(ptr), 12U);
+
+	immutable_fat_pointer_destroy(cfatptr);
+}
+
+TEST(immutable_fat_pointer_referencing_a_const_integer_array, "Immutable fat pointer referencing a const integer array")
+{
+	const int const_array[] = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
+	const int *ptr = NULL;
+	immutable_fat_pointer_type(int) cfatptr = immutable_fat_pointer_create(int, const_array,
+		sizeof_array(const_array), sizeof_array(const_array));
+
+	ASSERT_SIZE_EQUAL(immutable_fat_pointer_capacity(cfatptr), 10U);
+	ASSERT_SIZE_EQUAL(immutable_fat_pointer_length(cfatptr), 10U);
+	ASSERT_SIZE_EQUAL(immutable_fat_pointer_element_size(cfatptr), sizeof(int));
+
+	ASSERT_EQUAL(immutable_fat_pointer_element(int, cfatptr, 0U), 10);
+	ASSERT_EQUAL(immutable_fat_pointer_element(int, cfatptr, 1U), 20);
+	ASSERT_EQUAL(immutable_fat_pointer_element(int, cfatptr, 2U), 30);
+	ASSERT_EQUAL(immutable_fat_pointer_element(int, cfatptr, 3U), 40);
+	ASSERT_EQUAL(immutable_fat_pointer_element(int, cfatptr, 4U), 50);
+	ASSERT_EQUAL(immutable_fat_pointer_element(int, cfatptr, 5U), 60);
+	ASSERT_EQUAL(immutable_fat_pointer_element(int, cfatptr, 6U), 70);
+	ASSERT_EQUAL(immutable_fat_pointer_element(int, cfatptr, 7U), 80);
+	ASSERT_EQUAL(immutable_fat_pointer_element(int, cfatptr, 8U), 90);
+	ASSERT_EQUAL(immutable_fat_pointer_element(int, cfatptr, 9U), 100);
+
+	ptr = immutable_fat_pointer_element_ptr(int, cfatptr, 0U);
+	ASSERT(ptr == const_array);
+
+	immutable_fat_pointer_destroy(cfatptr);
+}
+
+TEST(immutable_fat_pointer_referencing_const_struct_array, "Immutable fat pointer referencing const struct array")
+{
+	typedef struct name_type {const char *first_name; const char *last_name;} name_type;
+	typedef struct date_type {short year; unsigned char month; unsigned char day;} date_type;
+	typedef struct person_type {name_type name; date_type date_of_birth;} person_type;
+
+	const person_type people[4] = {
+		{{"John", "Smith"}, {1987, 5, 21}},
+		{{"John", "Doe"}, {1990, 1, 1}},
+		{{"Jane", "Smith"}, {1991, 11, 30}},
+		{{"Jane", "Doe"}, {1995, 12, 1}}
+	};
+
+	immutable_fat_pointer_type(person_type) person_fatptr = immutable_fat_pointer_create(person_type, people, sizeof_array(people), sizeof_array(people));
+
+	ASSERT(immutable_fat_pointer_element_ptr(person_type, person_fatptr, 0U) == &people[0]);
+	ASSERT_SIZE_EQUAL(immutable_fat_pointer_capacity(person_fatptr), 4U);
+	ASSERT_SIZE_EQUAL(immutable_fat_pointer_length(person_fatptr), 4U);
+	ASSERT_SIZE_EQUAL(immutable_fat_pointer_element_size(person_fatptr), sizeof(person_type));
+
+	ASSERT_STRING_EQUAL(immutable_fat_pointer_element(person_type, person_fatptr, 0).name.first_name, "John");
+	ASSERT_STRING_EQUAL(immutable_fat_pointer_element(person_type, person_fatptr, 0).name.last_name, "Smith");
+	ASSERT_EQUAL(immutable_fat_pointer_element(person_type, person_fatptr, 0).date_of_birth.year, 1987);
+	ASSERT_EQUAL(immutable_fat_pointer_element(person_type, person_fatptr, 0).date_of_birth.month, 5);
+	ASSERT_EQUAL(immutable_fat_pointer_element(person_type, person_fatptr, 0).date_of_birth.day, 21);
+
+	ASSERT_STRING_EQUAL(immutable_fat_pointer_element(person_type, person_fatptr, 1).name.first_name, "John");
+	ASSERT_STRING_EQUAL(immutable_fat_pointer_element(person_type, person_fatptr, 1).name.last_name, "Doe");
+	ASSERT_EQUAL(immutable_fat_pointer_element(person_type, person_fatptr, 1).date_of_birth.year, 1990);
+	ASSERT_EQUAL(immutable_fat_pointer_element(person_type, person_fatptr, 1).date_of_birth.month, 1);
+	ASSERT_EQUAL(immutable_fat_pointer_element(person_type, person_fatptr, 1).date_of_birth.day, 1);
+
+	ASSERT_STRING_EQUAL(immutable_fat_pointer_element(person_type, person_fatptr, 2).name.first_name, "Jane");
+	ASSERT_STRING_EQUAL(immutable_fat_pointer_element(person_type, person_fatptr, 2).name.last_name, "Smith");
+	ASSERT_EQUAL(immutable_fat_pointer_element(person_type, person_fatptr, 2).date_of_birth.year, 1991);
+	ASSERT_EQUAL(immutable_fat_pointer_element(person_type, person_fatptr, 2).date_of_birth.month, 11);
+	ASSERT_EQUAL(immutable_fat_pointer_element(person_type, person_fatptr, 2).date_of_birth.day, 30);
+
+	ASSERT_STRING_EQUAL(immutable_fat_pointer_element(person_type, person_fatptr, 3).name.first_name, "Jane");
+	ASSERT_STRING_EQUAL(immutable_fat_pointer_element(person_type, person_fatptr, 3).name.last_name, "Doe");
+	ASSERT_EQUAL(immutable_fat_pointer_element(person_type, person_fatptr, 3).date_of_birth.year, 1995);
+	ASSERT_EQUAL(immutable_fat_pointer_element(person_type, person_fatptr, 3).date_of_birth.month, 12);
+	ASSERT_EQUAL(immutable_fat_pointer_element(person_type, person_fatptr, 3).date_of_birth.day, 1);
+
+	immutable_fat_pointer_destroy(person_fatptr);
+}
+
+TEST(immutable_fat_pointer_string_array, "Immutable fat pointer referencing array of string pointers")
+{
+	const char * const string_array[] = {"Alice", "Bob", "Charlie", "Diana", "Eve"};
+
+	immutable_fat_pointer_type(char*) cfatptr = immutable_fat_pointer_create(char*, string_array,
+		sizeof_array(string_array), sizeof_array(string_array));
+
+	ASSERT_SIZE_EQUAL(immutable_fat_pointer_capacity(cfatptr), 5U);
+	ASSERT_SIZE_EQUAL(immutable_fat_pointer_length(cfatptr), 5U);
+
+	ASSERT_STRING_EQUAL(immutable_fat_pointer_element(char*, cfatptr, 0U), "Alice");
+	ASSERT_STRING_EQUAL(immutable_fat_pointer_element(char*, cfatptr, 1U), "Bob");
+	ASSERT_STRING_EQUAL(immutable_fat_pointer_element(char*, cfatptr, 2U), "Charlie");
+	ASSERT_STRING_EQUAL(immutable_fat_pointer_element(char*, cfatptr, 3U), "Diana");
+	ASSERT_STRING_EQUAL(immutable_fat_pointer_element(char*, cfatptr, 4U), "Eve");
+
+	immutable_fat_pointer_destroy(cfatptr);
+}
+
+TEST(immutable_fat_pointer_comparison_with_mutable_fat_pointer, "Mutable and immutable fat pointers can reference same data")
+{
+	int array[5] = {1, 2, 3, 4, 5};
+
+	fat_pointer_type(int) mfatptr = fat_pointer_create(int, array, sizeof_array(array), sizeof_array(array));
+	immutable_fat_pointer_type(int) cfatptr = immutable_fat_pointer_create(int, array,
+		sizeof_array(array), sizeof_array(array));
+
+	ASSERT_EQUAL(fat_pointer_capacity(mfatptr), immutable_fat_pointer_capacity(cfatptr));
+	ASSERT_EQUAL(fat_pointer_length(mfatptr), immutable_fat_pointer_length(cfatptr));
+	ASSERT_EQUAL(fat_pointer_element_size(mfatptr), immutable_fat_pointer_element_size(cfatptr));
+
+	ASSERT_EQUAL(fat_pointer_element(int, mfatptr, 0), immutable_fat_pointer_element(int, cfatptr, 0));
+	ASSERT_EQUAL(fat_pointer_element(int, mfatptr, 1), immutable_fat_pointer_element(int, cfatptr, 1));
+	ASSERT_EQUAL(fat_pointer_element(int, mfatptr, 2), immutable_fat_pointer_element(int, cfatptr, 2));
+	ASSERT_EQUAL(fat_pointer_element(int, mfatptr, 3), immutable_fat_pointer_element(int, cfatptr, 3));
+	ASSERT_EQUAL(fat_pointer_element(int, mfatptr, 4), immutable_fat_pointer_element(int, cfatptr, 4));
+
+	/* modify via the mutable pointer and verify that the immutable pointer sees the change */
+	fat_pointer_element(int, mfatptr, 0U) = 100;
+	ASSERT_EQUAL(immutable_fat_pointer_element(int, cfatptr, 0U), 100);
+
+	immutable_fat_pointer_destroy(cfatptr);
+	fat_pointer_destroy(mfatptr);
+}
+
+/* More tests may be added in the future */
 
 int main(void)
 {
 	DEFINE_LIST_OF_TESTS(tests) {
 		fat_pointer_referencing_a_char_buffer,
-		fat_pointer_referencing_an_integer_buffer
+		fat_pointer_referencing_an_integer_buffer,
+		fat_pointer_referencing_a_struct_buffer,
+		immutable_fat_pointer_referencing_a_const_char_buffer,
+		immutable_fat_pointer_referencing_a_const_integer_array,
+		immutable_fat_pointer_referencing_const_struct_array,
+		immutable_fat_pointer_comparison_with_mutable_fat_pointer,
+		immutable_fat_pointer_string_array
 	};
-
 	PRINT_FILE_NAME();
 	RUN_TESTS(tests);
 	PRINT_TEST_STATISTICS(tests);
