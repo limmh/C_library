@@ -75,3 +75,24 @@ target_link_libraries(
 	terminal_text_color
 	unit_testing
 )
+
+add_executable(
+	min_and_max_tests
+	"${CMAKE_CURRENT_SOURCE_DIR}/min_and_max_tests.c"
+)
+set_target_properties(
+	min_and_max_tests PROPERTIES
+	C_STANDARD ${PROGRAM_C_STANDARD}
+	C_STANDARD_REQUIRED YES
+	C_EXTENSIONS NO
+)
+target_include_directories(
+	min_and_max_tests PRIVATE
+	"${CMAKE_CURRENT_SOURCE_DIR}/../includes"
+	"${CMAKE_CURRENT_SOURCE_DIR}/../unit_testing"
+)
+target_link_libraries(
+	min_and_max_tests
+	terminal_text_color
+	unit_testing
+)
