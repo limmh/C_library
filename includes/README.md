@@ -75,6 +75,10 @@ Macros for converting macro arguments to string literals:
 
 Provides the TYPEOF macro which will resolve to the data type of an expression.
 
+### `min_and_max.h`
+
+Provides static or inline functions to determine the minimum or maximum value of two integers for common integer types.
+
 ### `reference_type_emulation.h`
 
 Provides macros which emulate C++'s reference semantics.
@@ -129,6 +133,7 @@ Include the relevant headers in your C or C++ source files:
 #include "macro_alignof.h"
 #include "macro_concatenate.h"
 #include "macro_stringify.h"
+#include "min_and_max.h"
 #include "reference_type_emulation.h"
 #include "sizeof_array.h"
 #include "static_assert.h"
