@@ -1,7 +1,7 @@
 #ifndef STATIC_ASSERT_H
 #define STATIC_ASSERT_H
 /*
-Compile time assertion which is applicable to C89 and C99
+Compile time assertion macro for C89 and C99
 Note:
 - Manually define STATIC_ASSERT_AVAILABLE to 1 in the compiler flags if static_assert is supported by your compiler, but
   the C or C++ version your compiler is not up to date.
@@ -16,9 +16,7 @@ Note:
 #include <assert.h>
 #endif
 #define STATIC_ASSERT(condition, message) static_assert(condition, message)
-#pragma message("static_assert is available, STATIC_ASSERT is mapped to static_assert.")
 #else
-#pragma message("Using a custom implementation for STATIC_ASSERT")
 #include "macro_concatenate.h"
 #if defined(__COUNTER__)
 #define STATIC_ASSERT(condition, message) typedef int CONCATENATE(static_assert_array_type_, __COUNTER__)[(condition) ? 1 : -1]

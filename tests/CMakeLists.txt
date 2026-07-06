@@ -96,3 +96,66 @@ target_link_libraries(
 	terminal_text_color
 	unit_testing
 )
+
+add_executable(
+	fixed_width_integer_types_tests
+	"${CMAKE_CURRENT_SOURCE_DIR}/fixed_width_integer_types_tests.c"
+)
+set_target_properties(
+	fixed_width_integer_types_tests PROPERTIES
+	C_STANDARD 90
+	C_STANDARD_REQUIRED YES
+	C_EXTENSIONS YES
+)
+target_include_directories(
+	fixed_width_integer_types_tests PRIVATE
+	"${CMAKE_CURRENT_SOURCE_DIR}/../includes"
+	"${CMAKE_CURRENT_SOURCE_DIR}/../unit_testing"
+)
+target_link_libraries(
+	fixed_width_integer_types_tests
+	terminal_text_color
+	unit_testing
+)
+
+add_executable(
+	fixed_width_integer_types_tests_c89
+	"${CMAKE_CURRENT_SOURCE_DIR}/fixed_width_integer_types_tests.c"
+)
+set_target_properties(
+	fixed_width_integer_types_tests_c89 PROPERTIES
+	C_STANDARD 90 
+	C_STANDARD_REQUIRED YES
+	C_EXTENSIONS NO
+)
+target_include_directories(
+	fixed_width_integer_types_tests_c89 PRIVATE
+	"${CMAKE_CURRENT_SOURCE_DIR}/../includes"
+	"${CMAKE_CURRENT_SOURCE_DIR}/../unit_testing"
+)
+target_link_libraries(
+	fixed_width_integer_types_tests_c89
+	terminal_text_color
+	unit_testing
+)
+
+add_executable(
+	fixed_width_integer_types_tests_c99
+	"${CMAKE_CURRENT_SOURCE_DIR}/fixed_width_integer_types_tests.c"
+)
+set_target_properties(
+	fixed_width_integer_types_tests_c99 PROPERTIES
+	C_STANDARD ${PROGRAM_C_STANDARD}
+	C_STANDARD_REQUIRED YES
+	C_EXTENSIONS NO
+)
+target_include_directories(
+	fixed_width_integer_types_tests_c99 PRIVATE
+	"${CMAKE_CURRENT_SOURCE_DIR}/../includes"
+	"${CMAKE_CURRENT_SOURCE_DIR}/../unit_testing"
+)
+target_link_libraries(
+	fixed_width_integer_types_tests_c99
+	terminal_text_color
+	unit_testing
+)
