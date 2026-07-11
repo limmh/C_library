@@ -119,8 +119,8 @@ int main(int argc, char **argv)
 		} else if ((number_of_hexadecimal_characters % 2) != 0) {
 			const size_t n = number_of_hexadecimal_characters;
 			error_code = 2;
-			printf("There %s %lu hexadecimal character%s. There must be an even number of characters.\n",
-				((n > 1U) ? "are" : "is"),(unsigned long) n, ((n > 1U) ? "s" : ""));
+			printf("There %s %zu hexadecimal character%s. There must be an even number of characters.\n",
+				((n > 1U) ? "are" : "is"),n, ((n > 1U) ? "s" : ""));
 		} else {
 			const size_t N = number_of_hexadecimal_characters / 2U;
 			dynamic_array_type(uint8_t) bytes = dynamic_array_create_empty(uint8_t);
@@ -143,8 +143,8 @@ int main(int argc, char **argv)
 				const size_t number_of_bytes_to_write = dynamic_array_length(bytes);
 				const size_t number_of_bytes_written =
 					fwrite(data, sizeof(data[0]), number_of_bytes_to_write, file);
-				printf("Number of bytes to write: %lu\n", (unsigned long) number_of_bytes_to_write);
-				printf("Number of bytes written: %lu\n", (unsigned long) number_of_bytes_to_write);
+				printf("Number of bytes to write: %zu\n", number_of_bytes_to_write);
+				printf("Number of bytes written: %zu\n", number_of_bytes_written);
 				if (number_of_bytes_written == number_of_bytes_to_write) {
 					printf("OK\n");
 				} else {
