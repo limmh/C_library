@@ -44,7 +44,7 @@ int main(void)
 int main(int argc, char **argv)
 {
     if (argc >= 2) {
-	int i = 0;
+        int i = 0;
         const char *separator = ", ";
         const size_t separator_length = strlen(separator);
         dynamic_string_type str = dynamic_string_create(argv[1], strlen(argv[1]));
