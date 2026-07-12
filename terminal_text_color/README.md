@@ -15,6 +15,7 @@ Provides a portable API to set the text color in supported terminals (e.g. Windo
 
 ```c
 #include "terminal_text_color.h"
+#include <stdio.h>
 
 terminal_text_color_set(terminal_color_code_blue);
 printf("This is blue text!\n");

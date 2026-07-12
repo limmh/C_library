@@ -16,6 +16,7 @@ It also includes utilities for decoding UTF-8 characters with error detection.
 
 ```c
 #include "simple_tokenizer.h"
+#include <stdio.h>
 
 simple_tokenizer_token_type tokens[64];
 size_t token_count = simple_tokenizer_tokenize("hello 123!", 10, tokens, 64);

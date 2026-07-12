@@ -29,32 +29,31 @@ This enables bounds checking, range validation, and safer element access while m
 #include "fat_pointer.h"
 
 int main(void) {
-    // Create a buffer
     int buffer[100] = {0};
     int initial_size = 10;
-    
-    // Create fat pointer (non-owning reference)
-    fat_pointer_type(int) arr = fat_pointer_create(
-        int,              // Element type
-        buffer,           // Underlying data
-        100,              // Capacity
-        initial_size      // Initial size
-    );
-    
-    // Access elements safely
-    fat_pointer_element(int, arr, 0) = 42;
-    
-    // Add more elements
     int new_values[] = {1, 2, 3};
-    fat_pointer_append_elements(int, arr, new_values, 3);
-    
-    // Query information
-    printf("Size: %zu\n", fat_pointer_size(arr));
-    printf("Capacity: %zu\n", fat_pointer_capacity(arr));
-    
-    // Clean up
-    fat_pointer_destroy(arr);
-    
+
+    /* Create fat pointer (non-owning reference) */
+    fat_pointer_type(int) ptr = fat_pointer_create(
+        int,              /* Element type    */
+        buffer,           /* Underlying data */
+        100,              /* Capacity        */
+        initial_size      /* Initial size    */
+    );
+
+    /* Access elements safely */
+    fat_pointer_element(int, ptr, 0) = 42;
+
+    /* Add more elements */
+    fat_pointer_append_elements(int, ptr, new_values, 3);
+
+    /* Query information */
+    printf("Size: %zu\n", fat_pointer_size(ptr));
+    printf("Capacity: %zu\n", fat_pointer_capacity(ptr));
+
+    /* Clean up */
+    fat_pointer_destroy(ptr);
+
     return 0;
 }
 ```
@@ -92,7 +91,7 @@ void custom_error_handler(fat_pointer_debug_info_type info) {
 
 int main(void) {
     fat_pointer_set_report_handler(custom_error_handler);
-    // ... use fat pointers ...
+    /* ... use fat pointers ... */
 }
 ```
 
@@ -108,7 +107,7 @@ void custom_exception_handler(fat_pointer_error_type error) {
 
 int main(void) {
     fat_pointer_set_exception_handler(custom_exception_handler);
-    // ... operations can now throw exceptions ...
+    /* ... operations can now throw exceptions ... */
 }
 ```
 
@@ -124,29 +123,36 @@ int main(void) {
 #include <string.h>
 
 int main(void) {
-    // Allocate buffer
+    /* Allocate buffer */
+    size_t i = 0;
+    fat_pointer_type(int) fatptr = {0};
     int *buffer = malloc(sizeof(int) * 100);
-    
-    // Create fat pointer (non-owning)
-    fat_pointer_type(int) arr = fat_pointer_create(
+
+    if (buffer == NULL) {
+        printf("Memory allocation failed.\n");
+        return 1;
+    }
+
+    /* Create fat pointer (non-owning) */
+    fatptr = fat_pointer_create(
         int, buffer, 100, 0
     );
-    
-    // Add elements
-    for (int i = 0; i < 10; ++i) {
-        fat_pointer_append_element(int, arr, i * 10);
+
+    /* Add elements */
+    for (i = 0; i < 10; ++i) {
+        fat_pointer_append_element(int, fatptr, (int)i * 10);
     }
-    
-    // Access elements
-    for (size_t i = 0; i < fat_pointer_size(arr); ++i) {
-        printf("%d ", fat_pointer_element(int, arr, i));
+
+    /* Access elements */
+    for (i = 0; i < fat_pointer_size(fatptr); ++i) {
+        printf("%d ", fat_pointer_element(int, fatptr, i));
     }
     printf("\n");
-    
-    // Clean up
-    fat_pointer_destroy(arr);
+
+    /* Clean up */
+    fat_pointer_destroy(fatptr);
     free(buffer);
-    
+
     return 0;
 }
 ```
@@ -161,26 +167,26 @@ int main(void) {
 #include <stdio.h>
 
 int main(void) {
-    // Stack-allocated buffer
-    char buffer[1024];
+    /* read-only strings */
+    const char *hello = "Hello";
+    const char *world = "World";
+
+    /* Stack-allocated buffer */
+    char buffer[1024] = {0};
     
-    // Create fat pointer
+    /* Create fat pointer */
     fat_pointer_type(char) str = fat_pointer_create(
         char, buffer, sizeof_array(buffer), 0
     );
     
-    // Build string safely
-    const char *hello = "Hello";
+    /* Build string via fat pointer */
     fat_pointer_append_elements(char, str, hello, strlen(hello));
-
     fat_pointer_append_element(char, str, (char)' ');
-
-    const char *world = "World";
     fat_pointer_append_elements(char, str, world, strlen(world));
 
-    // Print the string to the screen
+    /* Print the string to the screen */
     printf("%s\n", &fat_pointer_element(char, str, 0U));
-    
+
     fat_pointer_destroy(str);
     return 0;
 }
@@ -201,27 +207,26 @@ typedef struct person_type {
 } person_type;
 
 int main(void) {
-    // Allocate array of structs
+    size_t i = 0;
     person_type people[50] = {{0, {0}}};
-    
-    // Create fat pointer
+    person_type alice = {1, "Alice"};
+    person_type bob = {2, "Bob"};
+
+    /* Create fat pointer */
     fat_pointer_type(person_type) roster = fat_pointer_create(
         person_type, people, sizeof_array(people), 0
     );
-    
-    // Add people
-    person_type alice = {1, "Alice"};
-    person_type bob = {2, "Bob"};
-    
+
+    /* Add people */
     fat_pointer_append_element(person_type, roster, alice);
     fat_pointer_append_element(person_type, roster, bob);
-    
-    // Access
-    for (size_t i = 0, size = fat_pointer_size(roster); i < size; ++i) {
+
+    /* Access */
+    for (i = 0, size = fat_pointer_size(roster); i < size; ++i) {
         person_type *p = fat_pointer_element_ptr(person_type, roster, i);
         printf("%d: %s\n", p->id, p->name);
     }
-    
+
     fat_pointer_destroy(roster);
     return 0;
 }
@@ -238,31 +243,24 @@ int main(void) {
 
 int main(void) {
     int buffer[10] = {0};
-    
-    fat_pointer_type(int) arr = fat_pointer_create(
-        int, buffer, sizeof_array(buffer), 5
+    fat_pointer_type(int) fatptr = fat_pointer_create(
+        int, buffer, sizeof_array(buffer), sizeof_array(buffer)
     );
-    
-    // Try to access out of bounds
-    const int index = 42;
-    fat_pointer_error_type error = fat_pointer_append_element(int, arr, index);
-    
+
+    /* Try to append an element */
+    fat_pointer_error_type error = fat_pointer_append_element(int, fatptr, 42);
     if (error != fat_pointer_error_none) {
-        printf("Operation failed with error: %d\n", error);
-        
+        printf("Operation failed with error: %d\n", error); 
         switch (error) {
         case fat_pointer_error_no_enough_capacity:
             printf("Buffer is full\n");
-            break;
-        case fat_pointer_error_index_out_of_range:
-            printf("Index out of range\n");
             break;
         default:
             printf("Another error\n");
         }
     }
     
-    fat_pointer_destroy(arr);
+    fat_pointer_destroy(fatptr);
     return 0;
 }
 ```
@@ -271,11 +269,11 @@ int main(void) {
 
 ## Performance
 
-- **Memory overhead**: 32 bytes (64-bit systems) per fat pointer
+- **Memory overhead**: 16 bytes (32-bit systems) or 32 bytes (64-bit systems) per fat pointer
 - **Access time**: O(1) for all operations
-- **Creation time**: O(1), no initialization needed
+- **Creation time**: O(1)
 - **Element access**: Direct memory access, no indirection
-- **Bounds checking**: Minimal overhead (comparisons only)
+- **Bounds checking**: Minimal overhead
 
 ---
 
@@ -283,9 +281,9 @@ int main(void) {
 
 - **Non-owning**: Caller must manage underlying data lifetime
 - **Fixed capacity**: Cannot exceed initial capacity
-- **Type safety**: Macro-based (compile-time only)
+- **Type safety**: Runtime check of element size
 - **No reallocation**: Cannot grow beyond capacity
-- **Manual management**: User handles memory allocation/deallocation
+- **Manual management**: User handles allocation and deallocation for arrays being referenced
 
 ---
 
@@ -294,9 +292,9 @@ int main(void) {
 **Suitable for:**
 - Wrapping stack-allocated buffers with bounds checking
 - Non-owning array references
-- Safe iteration over external data
+- Safer iteration over contiguous data
 - Temporary array views
-- Safe element access without dynamic allocation
+- Checked element access without dynamic allocation
 
 **Not suitable for:**
 - Owning data collections

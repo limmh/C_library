@@ -57,10 +57,10 @@ Provides a portable macro for determining type alignment:
 
 ### `macro_concatenate.h`
 
-Macros for combining two string literals:
+Macros for combining two tokens:
 ```c
 #define CONCATENATE_(A, B) A##B
-#define CONCATENATE (A, B) CONCATENATE_(A, B)
+#define CONCATENATE(A, B)  CONCATENATE_(A, B)
 ```
 
 ### `macro_stringify.h`

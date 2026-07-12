@@ -255,32 +255,32 @@ int main(void) {
 |Macro               |Function                |Integer Operation |Operand Type   |Return Type |
 |------------------|----------------------|----------------|--------------|-----------|
 |i8add               |safe_i8_add             |Addition          |int8_t         |int16_t     |
-|i8ub (or i8minus)   |safe_i8_minus           |Subtraction       |int8_t         |int16_t     |
+|i8sub (or i8minus)  |safe_i8_minus           |Subtraction       |int8_t         |int16_t     |
 |i8mul               |safe_i8_multiply        |Multiplication    |int8_t         |int16_t     |
 |i8div               |less_safe_i8_divide     |Division          |int8_t         |int16_t     |
 |i8rem               |less_safe_i8_remainder  |Remainder         |int8_t         |int8_t      |
 |u8add               |safe_u8_add             |Addition          |uint8_t        |uint16_t    |
-|u8ub (or u8minus)   |safe_u8_minus           |Subtraction       |uint8_t        |int16_t     |
+|u8sub (or u8minus)  |safe_u8_minus           |Subtraction       |uint8_t        |int16_t     |
 |u8mul               |safe_u8_multiply        |Multiplication    |uint8_t        |uint16_t    |
 |u8div               |less_safe_u8_divide     |Division          |uint8_t        |uint8_t     |
 |u8rem               |less_safe_u8_remainder  |Remainder         |uint8_t        |uint8_t     |
 |i16add              |safe_i16_add            |Addition          |int16_t        |int32_t     |
-|i16ub (or i16minus) |safe_i16_minus          |Subtraction       |int16_t        |int32_t     |
+|i16sub (or i16minus)|safe_i16_minus          |Subtraction       |int16_t        |int32_t     |
 |i16mul              |safe_i16_multiply       |Multiplication    |int16_t        |int32_t     |
 |i16div              |less_safe_i16_divide    |Division          |int16_t        |int32_t     |
 |i16rem              |less_safe_i16_remainder |Remainder         |int16_t        |int16_t     |
 |u16add              |safe_u16_add            |Addition          |uint16_t       |uint32_t    |
-|u16ub (or u16minus) |safe_u16_minus          |Subtraction       |uint16_t       |int32_t     |
+|u16sub (or u16minus)|safe_u16_minus          |Subtraction       |uint16_t       |int32_t     |
 |u16mul              |safe_u16_multiply       |Multiplication    |uint16_t       |uint32_t    |
 |u16div              |less_safe_u16_divide    |Division          |uint16_t       |uint16_t    |
 |u16rem              |less_safe_u16_remainder |Remainder         |uint16_t       |uint16_t    |
 |i32add              |safe_i32_add            |Addition          |int32_t        |int64_t     |
-|i32ub (or i32minus) |safe_i32_minus          |Subtraction       |int32_t        |int64_t     |
+|i32sub (or i32minus)|safe_i32_minus          |Subtraction       |int32_t        |int64_t     |
 |i32mul              |safe_i32_multiply       |Multiplication    |int32_t        |int64_t     |
 |i32div              |less_safe_i32_divide    |Division          |int32_t        |int64_t     |
 |i32rem              |less_safe_i32_remainder |Remainder         |int32_t        |int32_t     |
 |u32add              |safe_u32_add            |Addition          |uint32_t       |uint64_t    |
-|u32ub (or u32minus) |safe_u32_minus          |Subtraction       |uint32_t       |int64_t     |
+|u32sub (or u32minus)|safe_u32_minus          |Subtraction       |uint32_t       |int64_t     |
 |u32mul              |safe_u32_multiply       |Multiplication    |uint32_t       |uint64_t    |
 |u32div              |less_safe_u32_divide    |Division          |uint32_t       |uint32_t    |
 |u32rem              |less_safe_u32_remainder |Remainder         |uint32_t       |uint32_t    |
