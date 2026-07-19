@@ -6,7 +6,7 @@
 
 #include "safer_integer_type.h"
 #include "sizeof_array.h"
-#include <iso646.h>
+#include "alternative_operators.h"
 #include <stdio.h>
 
 static void test_sum_of_series(int n)

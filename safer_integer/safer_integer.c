@@ -1,8 +1,8 @@
 #include "safer_integer.h"
+#include "alternative_operators.h"
 #include "Boolean_type.h"
 #include "static_assert.h"
 #include <assert.h>
-#include <iso646.h>
 
 const char *integer_operation_error_message(integer_operation_error_type error)
 {

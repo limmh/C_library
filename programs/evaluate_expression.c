@@ -1,10 +1,10 @@
+#include "alternative_operators.h"
 #include "dynamic_array.h"
 #include "dynamic_string.h"
 #include "simple_tokenizer.h"
 #include "safer_fixed_width_integers.h"
 
 #include <assert.h>
-#include <iso646.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>

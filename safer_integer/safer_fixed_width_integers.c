@@ -1,7 +1,7 @@
 #include "safer_fixed_width_integers.h"
 #include "safer_integer_util.h"
+#include "alternative_operators.h"
 #include <assert.h>
-#include <iso646.h>
 
 /* Preconditions */
 STATIC_ASSERT(sizeof(int) > sizeof(int8_t), "The size of int shall be greater than the size of int8_t");

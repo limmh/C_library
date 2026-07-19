@@ -3,11 +3,11 @@
 
 #include "safer_integer_type.h"
 #include "safer_integer_comparison.h"
+#include "alternative_operators.h"
 #include "Boolean_type.h"
 #include "static_assert.h"
 #include "unit_testing.h"
 #include <errno.h>
-#include <iso646.h>
 #include <math.h>
 #include <stdio.h>
 #include <string.h>

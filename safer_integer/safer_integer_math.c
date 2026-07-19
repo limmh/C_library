@@ -1,6 +1,6 @@
 #include "safer_integer_math.h"
 #include "safer_fixed_width_integers.h"
-#include <iso646.h>
+#include "alternative_operators.h"
 
 bool i32_is_divisible(int32_t dividend, int32_t divisor)
 {

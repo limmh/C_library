@@ -1,7 +1,6 @@
 #include "fixed_width_integer_types.h"
 #include "unit_testing.h"
-
-#include <iso646.h>
+#include "alternative_operators.h"
 
 /* Exact-width signed types */
 TEST(int8_type_tests, "int8_t has exactly 8 bits and the correct range")

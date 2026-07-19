@@ -1,6 +1,6 @@
 #include "keyboard_input.h"
+#include "alternative_operators.h"
 #include <ctype.h>
-#include <iso646.h>
 #include <stdio.h>
 #include <string.h>
 

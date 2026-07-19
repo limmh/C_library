@@ -1,6 +1,6 @@
 #include "timer.h"
 #include "unit_testing.h"
-#include <iso646.h>
+#include "alternative_operators.h"
 
 TEST(timer_basic_timing, "Timer starts, runs, elapses")
 {

@@ -1,6 +1,6 @@
 #include "min_and_max.h"
 #include "unit_testing.h"
-#include <iso646.h>
+#include "alternative_operators.h"
 
 TEST(min_char_tests, "Minimum char")
 {

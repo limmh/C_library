@@ -1,11 +1,11 @@
 #include "integer_to_string.h"
+#include "alternative_operators.h"
 #include "Boolean_type.h"
 #include "sizeof_array.h"
 #include "static_assert.h"
 #include "string_reference.h"
 
 #include <assert.h>
-#include <iso646.h>
 #include <stddef.h>
 
 static const char lowercase_characters[] = {

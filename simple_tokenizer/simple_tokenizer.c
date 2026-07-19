@@ -1,10 +1,10 @@
 #include "simple_tokenizer.h"
+#include "alternative_operators.h"
 #include "Boolean_type.h"
 #include "static_assert.h"
 
 #include <assert.h>
 #include <ctype.h>
-#include <iso646.h>
 #include <string.h>
 
 typedef enum byte_token_type_enum {

@@ -1,6 +1,6 @@
 #include "safer_integer_math.h"
 #include "unit_testing.h"
-#include <iso646.h>
+#include "alternative_operators.h"
 
 /* ============================================================================
  * Tests for i32_is_even / i32_is_odd

@@ -1,11 +1,11 @@
 #include "string_to_integer.h"
+#include "alternative_operators.h"
 #include "char_utils.h"
 #include "string_info_type.h"
 #include "safer_fixed_width_integers.h"
 #include "string_reference.h"
 #include "sizeof_array.h"
 #include <assert.h>
-#include <iso646.h>
 
 static string_to_int_error_type integer_operation_error_to_string_to_int_error(integer_operation_error_type integer_op_error)
 {

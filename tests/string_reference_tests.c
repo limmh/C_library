@@ -1,8 +1,8 @@
 #include "string_reference.h"
 #include "sizeof_array.h"
 #include "unit_testing.h"
+#include "alternative_operators.h"
 
-#include <iso646.h>
 #include <string.h>
 
 /* TEST: stringref_to_const_stringref */

@@ -1,6 +1,6 @@
 #include "timer.h"
+#include "alternative_operators.h"
 #include <assert.h>
-#include <iso646.h>
 
 timer_type timer_init(uint32_t duration)
 {

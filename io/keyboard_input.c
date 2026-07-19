@@ -1,9 +1,9 @@
 #include "keyboard_input.h"
+#include "alternative_operators.h"
 #include "sizeof_array.h"
 
 #include <assert.h>
 #include <errno.h>
-#include <iso646.h>
 
 /* OS-specific header files */
 #if !(defined(_WIN32) || defined(WIN32))

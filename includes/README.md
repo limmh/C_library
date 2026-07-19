@@ -13,6 +13,10 @@ An allocator interface-like data structure which contains the following function
 - reallocate: points to a function which reallocates a block of previously allocated memory, similar to realloc.
 - deallocate: points to a function which deallocates a block of previously allocated memory, similar to free.
 
+### `alternative_operators.h`
+
+Backports iso646.h from C95 to C89 or C90 to provide preprocessor macros for logical and bitwise operators, e.g. `and`, `or`, `not`, etc.
+
 ### `Boolean_type.h`
 
 Provides a portable boolean type for both C and C++.  

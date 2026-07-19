@@ -1,8 +1,8 @@
 #include "debug_mode_integer.h"
+#include "alternative_operators.h"
 #include "Boolean_type.h"
 #include "static_assert.h"
 #include <assert.h>
-#include <iso646.h>
 
 static FILE *output_file_pointer = NULL;
 

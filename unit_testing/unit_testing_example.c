@@ -1,7 +1,6 @@
+#include "alternative_operators.h"
 #include "Boolean_type.h"
 #include "unit_testing.h"
-
-#include <iso646.h>
 
 static bool is_leap_year(int year)
 {

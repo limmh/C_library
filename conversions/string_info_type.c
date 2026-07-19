@@ -1,8 +1,8 @@
 #include "char_utils.h"
+#include "alternative_operators.h"
 #include "string_info_type.h"
 #include "inline_or_static.h"
 #include <assert.h>
-#include <iso646.h>
 
 INLINE_OR_STATIC size_t index_of_first_non_whitespace_character(const char *string, size_t length)
 {

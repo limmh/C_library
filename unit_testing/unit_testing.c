@@ -4,9 +4,9 @@
 
 #include "unit_testing.h"
 #include "terminal_text_color.h"
+#include "alternative_operators.h"
 
 #include <assert.h>
-#include <iso646.h>
 #include <string.h>
 
 #define TEST_STATUS_PASSED "Passed"
