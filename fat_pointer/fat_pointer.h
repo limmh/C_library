@@ -200,7 +200,7 @@ size_t immutable_fat_pointer_capacity_(const immutable_fat_pointer_type_* fatptr
 /**
  * @brief Returns the number of valid elements referenced by an opaque fat pointer
  *
- * May not be the same as the maximum mumber of elements
+ * May not be the same as the maximum number of elements
  *
  * @param [in, out] fatptr Opaque fat pointer (MUST NOT be NULL)
  * @param [in] file_name The name or path of the source file which calls the function, For debugging purpose.

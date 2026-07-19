@@ -1,9 +1,9 @@
 #include "dynamic_array.h"
+#include "alternative_operators.h"
 #include "Boolean_type.h"
 #include "inline_or_static.h"
 #include "macro_alignof.h"
 #include "safer_fixed_width_integers.h"
-#include <iso646.h>
 #include <string.h>
 
 /* Notes:
@@ -437,6 +437,7 @@ void *dynamic_array_element_ptr_(
 		debug_info.info_2 = array->element_size;
 		dynamic_array_report_error(array->interface->error_reporter, debug_info);
 		dynamic_array_handle_exception(array->interface->exception_handler, debug_info.error);
+		return NULL;
 	}
 
 	if (index >= array->number_of_elements) {
@@ -446,6 +447,7 @@ void *dynamic_array_element_ptr_(
 		debug_info.info_2 = array->number_of_elements;
 		dynamic_array_report_error(array->interface->error_reporter, debug_info);
 		dynamic_array_handle_exception(array->interface->exception_handler, debug_info.error);
+		return NULL;
 	}
 
 	multiplication_overflow_detected = dynamic_array_multiplication_overflow_detected(index, array->element_size);
@@ -456,6 +458,7 @@ void *dynamic_array_element_ptr_(
 		debug_info.info_2 = array->element_size;
 		dynamic_array_report_error(array->interface->error_reporter, debug_info);
 		dynamic_array_handle_exception(array->interface->exception_handler, debug_info.error);
+		return NULL;
 	}
 #endif
 	offset = index * array->element_size;
@@ -738,7 +741,7 @@ void dynamic_array_resize_(
 
 		if (new_number_of_elements > array->capacity) {
 			size_t old_byte_count = 0U, new_byte_count = 0U;
-			void *ptr = NULL;
+			void *new_memory = NULL;
 			size_t new_capacity = array->capacity;
 #ifndef DYNAMIC_ARRAY_NO_RUNTIME_CHECKS
 			bool multiplication_overflow_detected = false;
@@ -760,9 +763,9 @@ void dynamic_array_resize_(
 #endif
 			old_byte_count = array->capacity * array->element_size;
 			new_byte_count = new_capacity * array->element_size;
-			ptr = allocator_reallocate(array->interface->allocator, array->ptr, old_byte_count, new_byte_count);
-			if (ptr != NULL) {
-				array->ptr = ptr;
+			new_memory = allocator_reallocate(array->interface->allocator, array->ptr, old_byte_count, new_byte_count);
+			if (new_memory != NULL) {
+				array->ptr = new_memory;
 				array->capacity = new_capacity;
 			} else {
 #ifndef DYNAMIC_ARRAY_NO_RUNTIME_CHECKS

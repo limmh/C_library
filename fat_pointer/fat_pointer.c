@@ -1,11 +1,19 @@
 #include "fat_pointer.h"
+#include "alternative_operators.h"
 #include "macro_alignof.h"
 #include "safer_fixed_width_integers.h"
 #include "static_assert.h"
-#include <iso646.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#if (defined(__STDC_VERSION__) and (__STDC_VERSION__ >= 199901L)) or (defined(__cplusplus) and (__cplusplus >= 201103L))
+#define INFO_FORMAT_SPECIFIER "%zu"
+typedef size_t info_type;
+#else
+#define INFO_FORMAT_SPECIFIER "%lu"
+typedef unsigned long info_type; 
+#endif
 
 typedef struct fat_pointer_internal_type {
 	size_t capacity;
@@ -31,8 +39,8 @@ static void fat_pointer_default_error_reporting_handler(fat_pointer_debug_info_t
 	FILE *file = stdout;
 	const char *file_name = (debug_info.file_name != NULL) ? debug_info.file_name : "Unknown file";
 	const int line_number = debug_info.line_number;
-	const unsigned long long info_1 = (unsigned long long) debug_info.info_1;
-	const unsigned long long info_2 = (unsigned long long) debug_info.info_2;
+	const info_type info_1 = (info_type) debug_info.info_1;
+	const info_type info_2 = (info_type) debug_info.info_2;
 
 	fprintf(file, "%s (line %d): ", file_name, line_number);
 
@@ -47,31 +55,31 @@ static void fat_pointer_default_error_reporting_handler(fat_pointer_debug_info_t
 		fprintf(file, "No pointer internally.\n");
 		break;
 	case fat_pointer_error_incorrect_capacity:
-		fprintf(file, "Incorrect capacity (capacity is %llu, length is %llu)\n", info_1, info_2);
+		fprintf(file, "Incorrect capacity (capacity is " INFO_FORMAT_SPECIFIER ", length is " INFO_FORMAT_SPECIFIER ")\n", info_1, info_2);
 		break;
 	case fat_pointer_error_incorrect_element_size:
-		fprintf(file, "Incorrect element size (%llu)\n", info_1);
+		fprintf(file, "Incorrect element size (" INFO_FORMAT_SPECIFIER ")\n", info_1);
 		break;
 	case fat_pointer_error_index_out_of_range:
-		fprintf(file, "Index (%llu) is out of range (length: %llu)\n", info_1, info_2);
+		fprintf(file, "Index (" INFO_FORMAT_SPECIFIER ") is out of range (length: " INFO_FORMAT_SPECIFIER ")\n", info_1, info_2);
 		break;
 	case fat_pointer_error_element_size_mismatch:
-		fprintf(file, "Element size mismatch (internal: %llu, external: %llu\n", info_1, info_2);
+		fprintf(file, "Element size mismatch (internal: " INFO_FORMAT_SPECIFIER ", external: " INFO_FORMAT_SPECIFIER ")\n", info_1, info_2);
 		break;
 	case fat_pointer_error_addition_overflow_detected:
-		fprintf(file, "Addition overflow detected (operand 1: %llu, operand 2: %llu)\n", info_1, info_2);
+		fprintf(file, "Addition overflow detected (operand 1: " INFO_FORMAT_SPECIFIER ", operand 2: " INFO_FORMAT_SPECIFIER ")\n", info_1, info_2);
 		break;
 	case fat_pointer_error_multiplication_overflow_detected:
-		fprintf(file, "Multiplication overflow detected (operand 1: %llu, operand 2: %llu)\n", info_1, info_2);
+		fprintf(file, "Multiplication overflow detected (operand 1: " INFO_FORMAT_SPECIFIER ", operand 2: " INFO_FORMAT_SPECIFIER ")\n", info_1, info_2);
 		break;
 	case fat_pointer_error_no_source_elements:
 		fprintf(file, "There are no source elements.\n");
 		break;
 	case fat_pointer_error_no_enough_capacity:
-		fprintf(file, "The final number of elements (%llu) exceeds the actual capacity (%llu).\n", info_1, info_2);
+		fprintf(file, "The final number of elements (" INFO_FORMAT_SPECIFIER ") exceeds the actual capacity (" INFO_FORMAT_SPECIFIER ").\n", info_1, info_2);
 		break;
 	case fat_pointer_error_too_many_elements_to_remove:
-		fprintf(file, "There are more elements to remove (%llu) than the actual number of elements present (%llu).\n", info_1, info_2);
+		fprintf(file, "There are more elements to remove (" INFO_FORMAT_SPECIFIER ") than the actual number of elements present (" INFO_FORMAT_SPECIFIER ").\n", info_1, info_2);
 		break;
 	default:
 		fprintf(file, "Unknown error (error code %d)\n", (int) debug_info.error);
@@ -727,7 +735,7 @@ fat_pointer_resize_(
 	} else if (new_size > fatptr_->size) {
 		unsigned char *ptr = NULL;
 		const size_t number_of_elements_to_zero = new_size - fatptr_->size;
-		const size_t offset = new_size * fatptr_->element_size;
+		const size_t offset = fatptr_->size * fatptr_->element_size;
 		const size_t total_bytes_to_zero = number_of_elements_to_zero * fatptr_->element_size;
 		ptr = (unsigned char*) fatptr_->ptr;
 		memset(&ptr[offset], 0, total_bytes_to_zero);

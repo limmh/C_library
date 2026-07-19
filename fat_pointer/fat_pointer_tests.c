@@ -98,10 +98,30 @@ TEST(fat_pointer_referencing_a_char_buffer, "Fat pointer referencing a char buff
 	ASSERT_EQUAL(buffer[4], '\0');
 	ASSERT_SIZE_EQUAL(strlen(buffer), 4U);
 
-	fat_pointer_resize(cfatptr, 0U);
+	error = fat_pointer_resize(cfatptr, 0U);
+	ASSERT_EQUAL(error, fat_pointer_error_none);
 	ASSERT_SIZE_EQUAL(fat_pointer_capacity(cfatptr), 13U);
 	ASSERT_SIZE_EQUAL(fat_pointer_length(cfatptr), 0U);
 	ASSERT_SIZE_EQUAL(fat_pointer_element_size(cfatptr), sizeof(char));
+
+	error = fat_pointer_resize(cfatptr, 13U);
+	ASSERT_EQUAL(error, fat_pointer_error_none);
+	ASSERT_SIZE_EQUAL(fat_pointer_capacity(cfatptr), 13U);
+	ASSERT_SIZE_EQUAL(fat_pointer_length(cfatptr), 13U);
+	ASSERT_SIZE_EQUAL(fat_pointer_element_size(cfatptr), sizeof(char));
+	ASSERT_EQUAL(fat_pointer_element(char, cfatptr, 0U), '\0');
+	ASSERT_EQUAL(fat_pointer_element(char, cfatptr, 1U), '\0');
+	ASSERT_EQUAL(fat_pointer_element(char, cfatptr, 2U), '\0');
+	ASSERT_EQUAL(fat_pointer_element(char, cfatptr, 3U), '\0');
+	ASSERT_EQUAL(fat_pointer_element(char, cfatptr, 4U), '\0');
+	ASSERT_EQUAL(fat_pointer_element(char, cfatptr, 5U), '\0');
+	ASSERT_EQUAL(fat_pointer_element(char, cfatptr, 6U), '\0');
+	ASSERT_EQUAL(fat_pointer_element(char, cfatptr, 7U), '\0');
+	ASSERT_EQUAL(fat_pointer_element(char, cfatptr, 8U), '\0');
+	ASSERT_EQUAL(fat_pointer_element(char, cfatptr, 9U), '\0');
+	ASSERT_EQUAL(fat_pointer_element(char, cfatptr, 10U), '\0');
+	ASSERT_EQUAL(fat_pointer_element(char, cfatptr, 11U), '\0');
+	ASSERT_EQUAL(fat_pointer_element(char, cfatptr, 12U), '\0');
 
 	fat_pointer_destroy(cfatptr);
 }
@@ -214,6 +234,22 @@ TEST(fat_pointer_referencing_an_integer_buffer, "Fat pointer referencing an inte
 	ASSERT_EQUAL(array[3], 9);
 	ASSERT_EQUAL(array[4], 10);
 	ASSERT_EQUAL(var2, 11);
+
+	error = fat_pointer_resize(fatptr, 10U);
+	ASSERT_EQUAL(error, fat_pointer_error_none);
+	ASSERT_SIZE_EQUAL(fat_pointer_capacity(fatptr), 10U);
+	ASSERT_SIZE_EQUAL(fat_pointer_length(fatptr), 10U);
+	ASSERT_SIZE_EQUAL(fat_pointer_element_size(fatptr), sizeof(int));
+	ASSERT_EQUAL(fat_pointer_element(int, fatptr, 0U), 6);
+	ASSERT_EQUAL(fat_pointer_element(int, fatptr, 1U), 7);
+	ASSERT_EQUAL(fat_pointer_element(int, fatptr, 2U), 8);
+	ASSERT_EQUAL(fat_pointer_element(int, fatptr, 3U), 9);
+	ASSERT_EQUAL(fat_pointer_element(int, fatptr, 4U), 10);
+	ASSERT_EQUAL(fat_pointer_element(int, fatptr, 5U), 0);
+	ASSERT_EQUAL(fat_pointer_element(int, fatptr, 6U), 0);	
+	ASSERT_EQUAL(fat_pointer_element(int, fatptr, 7U), 0);
+	ASSERT_EQUAL(fat_pointer_element(int, fatptr, 8U), 0);
+	ASSERT_EQUAL(fat_pointer_element(int, fatptr, 9U), 0);	
 
 	fat_pointer_destroy(fatptr);
 }

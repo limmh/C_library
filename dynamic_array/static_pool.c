@@ -1,8 +1,8 @@
 #include "static_pool.h"
+#include "alternative_operators.h"
 #include "macro_alignof.h"
 #include "static_assert.h"
 #include <assert.h>
-#include <iso646.h>
 #include <string.h>
 
 STATIC_ASSERT(ALIGNOF(static_pool_type) == ALIGNOF(void*), "static_pool_type and pointer type must have the same memory alignment.");
@@ -159,7 +159,7 @@ void *static_pool_reallocate(static_pool_type *pool, void *ptr, size_t new_size)
 
 void static_pool_deallocate(static_pool_type *pool, void *ptr)
 {
-	unsigned char index = 0U;
+	size_t index = 0U;
 	assert(pool != NULL);
 
 	if (ptr == pool->chunk1) {

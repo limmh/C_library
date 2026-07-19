@@ -4,8 +4,8 @@
 #include "sizeof_array.h"
 #include "static_pool.h"
 #include "unit_testing.h"
+#include "alternative_operators.h"
 #include <assert.h>
-#include <iso646.h>
 #include <setjmp.h>
 #include <string.h>
 

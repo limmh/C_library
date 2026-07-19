@@ -2,9 +2,9 @@
 #include "dynamic_array.h"
 #include "macro_alignof.h"
 #include "static_assert.h"
+#include "alternative_operators.h"
 
 #include <assert.h>
-#include <iso646.h>
 
 typedef struct dynamic_string_internal_type
 {
