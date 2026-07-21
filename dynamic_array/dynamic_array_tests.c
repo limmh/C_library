@@ -109,6 +109,8 @@ TEST(allocation_and_reallocation_failure, "Allocation and reallocation failure")
 	debug_info = dynamic_array_check(array);
 	ASSERT_EQUAL(debug_info.error, (int) dynamic_array_error_none);
 
+	unit_test_set_error_code(0);
+	exception_has_occurred = false;
 	if (setjmp(s_execution_context) == 0) {
 		s_setjmp_called_previously = true;
 		dynamic_array_resize(array, largest_memory_size + 1U);
@@ -117,6 +119,41 @@ TEST(allocation_and_reallocation_failure, "Allocation and reallocation failure")
 	}
 	ASSERT(exception_has_occurred);
 	ASSERT_EQUAL(unit_test_get_error_code(), (int) dynamic_array_error_memory_reallocation_failure);
+
+	unit_test_set_error_code(0);
+	exception_has_occurred = false;
+	if (setjmp(s_execution_context) == 0) {
+		s_setjmp_called_previously = true;
+		dynamic_array_resize(array, SIZE_MAX - 1U);
+	} else {
+		exception_has_occurred = true;
+	}
+	ASSERT(exception_has_occurred);
+	ASSERT_EQUAL(unit_test_get_error_code(), (int) dynamic_array_error_memory_reallocation_failure);
+
+	dynamic_array_delete(array);
+
+	unit_test_set_error_code(0);
+	exception_has_occurred = false;
+	if (setjmp(s_execution_context) == 0) {
+		s_setjmp_called_previously = true;
+		array = dynamic_array_create_with_interface(char, SIZE_MAX - 1U, *dynamic_array_unit_test_interface());
+	} else {
+		exception_has_occurred = true;
+	}
+	ASSERT(exception_has_occurred);
+	ASSERT_EQUAL(unit_test_get_error_code(), (int) dynamic_array_error_memory_allocation_failure);
+
+	unit_test_set_error_code(0);
+	exception_has_occurred = false;
+	if (setjmp(s_execution_context) == 0) {
+		s_setjmp_called_previously = true;
+		array = dynamic_array_create_with_interface(char, SIZE_MAX, *dynamic_array_unit_test_interface());
+	} else {
+		exception_has_occurred = true;
+	}
+	ASSERT(exception_has_occurred);
+	ASSERT_EQUAL(unit_test_get_error_code(), (int) dynamic_array_error_memory_allocation_failure);
 
 	dynamic_array_delete(array);
 	unit_test_set_error_code(0);

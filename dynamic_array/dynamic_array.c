@@ -201,12 +201,9 @@ dynamic_array_create_(
 	}
 #endif
 
-	if (initial_size == SIZE_MAX) {
-		initial_capacity = initial_size;
-	}
-
 	while (initial_capacity < initial_size) {
-		initial_capacity += initial_capacity;
+		size_result_type capacity_result = safer_size_add(initial_capacity, initial_capacity);
+		initial_capacity = capacity_result.value;
 	}
 
 #ifndef DYNAMIC_ARRAY_NO_RUNTIME_CHECKS
@@ -561,7 +558,8 @@ void dynamic_array_add_elements_at_index_(
 		bool multiplication_overflow_detected = false;
 #endif
 		while (new_capacity < new_number_of_elements) {
-			new_capacity += new_capacity;
+			size_result_type new_capacity_result = safer_size_add(new_capacity, new_capacity);
+			new_capacity = new_capacity_result.value;
 		}
 #ifndef DYNAMIC_ARRAY_NO_RUNTIME_CHECKS
 		multiplication_overflow_detected = dynamic_array_multiplication_overflow_detected(new_capacity, array->element_size);
@@ -747,7 +745,8 @@ void dynamic_array_resize_(
 			bool multiplication_overflow_detected = false;
 #endif
 			while (new_capacity < new_number_of_elements) {
-				new_capacity += new_capacity;
+				size_result_type new_capacity_result = safer_size_add(new_capacity, new_capacity);
+				new_capacity = new_capacity_result.value;
 			}
 #ifndef DYNAMIC_ARRAY_NO_RUNTIME_CHECKS
 			multiplication_overflow_detected = dynamic_array_multiplication_overflow_detected(new_capacity, array->element_size);
