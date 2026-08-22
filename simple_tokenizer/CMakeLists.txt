@@ -44,3 +44,14 @@ target_link_libraries(
 	terminal_text_color
 	unit_testing
 )
+add_test(
+	NAME simple_tokenizer_tests
+	COMMAND $<TARGET_FILE:simple_tokenizer_tests>
+)
+set_tests_properties(
+	simple_tokenizer_tests
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
+)

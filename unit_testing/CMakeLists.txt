@@ -48,3 +48,14 @@ target_link_libraries(
 	terminal_text_color
 	unit_testing
 )
+add_test(
+	NAME unit_testing_example
+	COMMAND $<TARGET_FILE:unit_testing_example>
+)
+set_tests_properties(
+	unit_testing_example
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
+)

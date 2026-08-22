@@ -77,6 +77,17 @@ target_link_libraries(
 	terminal_text_color
 	unit_testing
 )
+add_test(
+	NAME fat_pointer_tests
+	COMMAND $<TARGET_FILE:fat_pointer_tests>
+)
+set_tests_properties(
+	fat_pointer_tests
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
+)
 
 add_executable(
 	fat_pointer_tests_c99
@@ -100,4 +111,15 @@ target_link_libraries(
 	safer_integer
 	terminal_text_color
 	unit_testing
+)
+add_test(
+	NAME fat_pointer_tests_c99
+	COMMAND $<TARGET_FILE:fat_pointer_tests_c99>
+)
+set_tests_properties(
+	fat_pointer_tests_c99
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
 )

@@ -29,6 +29,17 @@ target_link_libraries(
 	terminal_text_color
 	unit_testing
 )
+add_test(
+	NAME string_reference_tests
+	COMMAND $<TARGET_FILE:string_reference_tests>
+)
+set_tests_properties(
+	string_reference_tests
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
+)
 
 add_executable(
 	iterator_tests
@@ -49,6 +60,17 @@ target_link_libraries(
 	iterator_tests
 	terminal_text_color
 	unit_testing
+)
+add_test(
+	NAME iterator_tests
+	COMMAND $<TARGET_FILE:iterator_tests>
+)
+set_tests_properties(
+	iterator_tests
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
 )
 
 add_executable(
@@ -75,6 +97,17 @@ target_link_libraries(
 	terminal_text_color
 	unit_testing
 )
+add_test(
+	NAME iterator_tests_ndebug
+	COMMAND $<TARGET_FILE:iterator_tests_ndebug>
+)
+set_tests_properties(
+	iterator_tests_ndebug
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
+)
 
 add_executable(
 	min_and_max_tests
@@ -95,6 +128,17 @@ target_link_libraries(
 	min_and_max_tests
 	terminal_text_color
 	unit_testing
+)
+add_test(
+	NAME min_and_max_tests
+	COMMAND $<TARGET_FILE:min_and_max_tests>
+)
+set_tests_properties(
+	min_and_max_tests
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
 )
 
 add_executable(
@@ -117,6 +161,17 @@ target_link_libraries(
 	terminal_text_color
 	unit_testing
 )
+add_test(
+	NAME fixed_width_integer_types_tests
+	COMMAND $<TARGET_FILE:fixed_width_integer_types_tests>
+)
+set_tests_properties(
+	fixed_width_integer_types_tests
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
+)
 
 add_executable(
 	fixed_width_integer_types_tests_c89
@@ -138,6 +193,17 @@ target_link_libraries(
 	terminal_text_color
 	unit_testing
 )
+add_test(
+	NAME fixed_width_integer_types_tests_c89
+	COMMAND $<TARGET_FILE:fixed_width_integer_types_tests_c89>
+)
+set_tests_properties(
+	fixed_width_integer_types_tests_c89
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
+)
 
 add_executable(
 	fixed_width_integer_types_tests_c99
@@ -158,4 +224,15 @@ target_link_libraries(
 	fixed_width_integer_types_tests_c99
 	terminal_text_color
 	unit_testing
+)
+add_test(
+	NAME fixed_width_integer_types_tests_c99
+	COMMAND $<TARGET_FILE:fixed_width_integer_types_tests_c99>
+)
+set_tests_properties(
+	fixed_width_integer_types_tests_c99
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
 )

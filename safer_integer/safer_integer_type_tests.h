@@ -5843,8 +5843,9 @@ TEST(safer_integer_type_tests_for_conversion_from_floating_point_to_integer, "Co
 	}
 }
 
-static void run_safer_integer_type_tests(int argc, const char **argv)
+static int run_safer_integer_type_tests(int argc, const char **argv)
 {
+	int error_code = -1; 
 	const char *language = 
 #ifdef __cplusplus
 		"C++"
@@ -5965,9 +5966,11 @@ static void run_safer_integer_type_tests(int argc, const char **argv)
 		fprintf(output_file, "The tests were compiled as %s code.\n", language);
 		RUN_TESTS(tests);
 		PRINT_TEST_STATISTICS(tests);
+		error_code = TEST_RESULT_ERROR_CODE;
 	} else {
 		printf("%s\n", strerror(errno));
 	}
+	return error_code;
 }
 
 #undef LINE

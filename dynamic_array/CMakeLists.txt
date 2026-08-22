@@ -146,6 +146,17 @@ target_link_libraries(
 	terminal_text_color
 	unit_testing
 )
+add_test(
+	NAME dynamic_array_tests
+	COMMAND $<TARGET_FILE:dynamic_array_tests>
+)
+set_tests_properties(
+	dynamic_array_tests
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
+)
 
 # test program 2
 add_executable(
@@ -177,6 +188,17 @@ target_link_libraries(
 	terminal_text_color
 	unit_testing
 )
+add_test(
+	NAME dynamic_array_tests_no_realloc
+	COMMAND $<TARGET_FILE:dynamic_array_tests_no_realloc>
+)
+set_tests_properties(
+	dynamic_array_tests_no_realloc
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
+)
 
 # test program 3
 add_executable(
@@ -206,6 +228,17 @@ target_link_libraries(
 	static_pool
 	terminal_text_color
 	unit_testing
+)
+add_test(
+	NAME dynamic_array_tests_debug
+	COMMAND $<TARGET_FILE:dynamic_array_tests_debug>
+)
+set_tests_properties(
+	dynamic_array_tests_debug
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
 )
 
 # test program 4
@@ -238,6 +271,17 @@ target_link_libraries(
 	terminal_text_color
 	unit_testing
 )
+add_test(
+	NAME dynamic_array_tests_no_realloc_debug
+	COMMAND $<TARGET_FILE:dynamic_array_tests_no_realloc_debug>
+)
+set_tests_properties(
+	dynamic_array_tests_no_realloc_debug
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
+)
 
 # test program 5
 add_executable(
@@ -267,6 +311,17 @@ target_link_libraries(
 	static_pool
 	terminal_text_color
 	unit_testing
+)
+add_test(
+	NAME dynamic_array_tests_unsafe
+	COMMAND $<TARGET_FILE:dynamic_array_tests_unsafe>
+)
+set_tests_properties(
+	dynamic_array_tests_unsafe
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
 )
 
 # test program 6
@@ -299,6 +354,17 @@ target_link_libraries(
 	terminal_text_color
 	unit_testing
 )
+add_test(
+	NAME dynamic_array_tests_no_realloc_unsafe
+	COMMAND $<TARGET_FILE:dynamic_array_tests_no_realloc_unsafe>
+)
+set_tests_properties(
+	dynamic_array_tests_no_realloc_unsafe
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
+)
 
 # test program 7
 add_executable(
@@ -322,4 +388,15 @@ target_link_libraries(
 	static_pool
 	terminal_text_color
 	unit_testing
+)
+add_test(
+	NAME static_pool_tests
+	COMMAND $<TARGET_FILE:static_pool_tests>
+)
+set_tests_properties(
+	static_pool_tests
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
 )

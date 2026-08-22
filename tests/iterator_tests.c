@@ -93,5 +93,5 @@ int main(void)
 	PRINT_FILE_NAME();
 	RUN_TESTS(tests);
 	PRINT_TEST_STATISTICS(tests);
-	return 0;
+	return TEST_RESULT_ERROR_CODE;
 }

@@ -107,6 +107,17 @@ target_link_libraries(
 	terminal_text_color
 	unit_testing
 )
+add_test(
+	NAME safer_integer_tests
+	COMMAND $<TARGET_FILE:safer_integer_tests>
+)
+set_tests_properties(
+	safer_integer_tests
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
+)
 
 add_executable(
 	safer_fixed_width_integer_tests
@@ -129,6 +140,17 @@ target_link_libraries(
 	safer_integer
 	terminal_text_color
 	unit_testing
+)
+add_test(
+	NAME simple_tokenizer_tests
+	COMMAND $<TARGET_FILE:simple_tokenizer_tests>
+)
+set_tests_properties(
+	simple_tokenizer_tests
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
 )
 
 add_executable(
@@ -244,6 +266,17 @@ target_link_libraries(
 	terminal_text_color
 	unit_testing
 )
+add_test(
+	NAME safer_integer_comparison_tests
+	COMMAND $<TARGET_FILE:safer_integer_comparison_tests>
+)
+set_tests_properties(
+	safer_integer_comparison_tests
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
+)
 
 add_executable(
 	safe_bitwise_operation_tests
@@ -265,6 +298,17 @@ target_link_libraries(
 	safe_bitwise_operation_tests
 	terminal_text_color
 	unit_testing
+)
+add_test(
+	NAME safe_bitwise_operation_tests
+	COMMAND $<TARGET_FILE:safe_bitwise_operation_tests>
+)
+set_tests_properties(
+	safe_bitwise_operation_tests
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
 )
 
 add_executable(
@@ -288,6 +332,17 @@ target_link_libraries(
 	safer_integer
 	terminal_text_color
 	unit_testing
+)
+add_test(
+	NAME safer_integer_conversion_tests
+	COMMAND $<TARGET_FILE:safer_integer_conversion_tests>
+)
+set_tests_properties(
+	safer_integer_conversion_tests
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
 )
 
 add_executable(
@@ -323,6 +378,17 @@ target_link_libraries(
 	terminal_text_color
 	unit_testing
 )
+add_test(
+	NAME safer_integer_conversion_tests_where_char_is_unsigned
+	COMMAND $<TARGET_FILE:safer_integer_conversion_tests_where_char_is_unsigned>
+)
+set_tests_properties(
+	safer_integer_conversion_tests_where_char_is_unsigned
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
+)
 
 add_executable(
 	safer_fixed_width_integer_conversion_tests
@@ -345,6 +411,17 @@ target_link_libraries(
 	safer_integer
 	terminal_text_color
 	unit_testing
+)
+add_test(
+	NAME safer_fixed_width_integer_conversion_tests
+	COMMAND $<TARGET_FILE:safer_fixed_width_integer_conversion_tests>
+)
+set_tests_properties(
+	safer_fixed_width_integer_conversion_tests
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
 )
 
 add_executable(
@@ -446,6 +523,17 @@ target_link_libraries(
 	terminal_text_color
 	unit_testing
 )
+add_test(
+	NAME safer_integer_type_tests_c89
+	COMMAND $<TARGET_FILE:safer_integer_type_tests_c89>
+)
+set_tests_properties(
+	safer_integer_type_tests_c89
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
+)
 
 add_executable(
 	safer_integer_type_tests_c99
@@ -470,6 +558,17 @@ target_link_libraries(
 	terminal_text_color
 	unit_testing
 )
+add_test(
+	NAME safer_integer_type_tests_c99
+	COMMAND $<TARGET_FILE:safer_integer_type_tests_c99>
+)
+set_tests_properties(
+	safer_integer_type_tests_c99
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
+)
 
 add_executable(
 	safer_integer_type_tests_c11
@@ -493,6 +592,17 @@ target_link_libraries(
 	safer_integer_type_tests_c11
 	terminal_text_color
 	unit_testing
+)
+add_test(
+	NAME safer_integer_type_tests_c11
+	COMMAND $<TARGET_FILE:safer_integer_type_tests_c11>
+)
+set_tests_properties(
+	safer_integer_type_tests_c11
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
 )
 
 add_executable(
@@ -529,6 +639,17 @@ target_link_libraries(
 	terminal_text_color
 	unit_testing
 )
+add_test(
+	NAME safer_integer_type_tests
+	COMMAND $<TARGET_FILE:safer_integer_type_tests>
+)
+set_tests_properties(
+	safer_integer_type_tests
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
+)
 
 add_executable(
 	safer_integer_type_tests_cpp98
@@ -563,6 +684,17 @@ target_link_libraries(
 	safer_integer_type_tests_cpp98
 	terminal_text_color
 	unit_testing
+)
+add_test(
+	NAME safer_integer_type_tests_cpp98
+	COMMAND $<TARGET_FILE:safer_integer_type_tests_cpp98>
+)
+set_tests_properties(
+	safer_integer_type_tests_cpp98
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
 )
 
 add_executable(
@@ -599,6 +731,17 @@ target_link_libraries(
 	terminal_text_color
 	unit_testing
 )
+add_test(
+	NAME safer_integer_type_tests_cpp11
+	COMMAND $<TARGET_FILE:safer_integer_type_tests_cpp11>
+)
+set_tests_properties(
+	safer_integer_type_tests_cpp11
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
+)
 
 add_executable(
 	safer_integer_type_tests_cpp14
@@ -633,6 +776,17 @@ target_link_libraries(
 	safer_integer_type_tests_cpp14
 	terminal_text_color
 	unit_testing
+)
+add_test(
+	NAME safer_integer_type_tests_cpp14
+	COMMAND $<TARGET_FILE:safer_integer_type_tests_cpp14>
+)
+set_tests_properties(
+	safer_integer_type_tests_cpp14
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
 )
 
 add_executable(
@@ -669,6 +823,17 @@ target_link_libraries(
 	terminal_text_color
 	unit_testing
 )
+add_test(
+	NAME safer_integer_type_tests_cpp17
+	COMMAND $<TARGET_FILE:safer_integer_type_tests_cpp17>
+)
+set_tests_properties(
+	safer_integer_type_tests_cpp17
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
+)
 
 add_executable(
 	safer_integer_type_tests_no_source_info
@@ -703,6 +868,17 @@ target_link_libraries(
 	terminal_text_color
 	unit_testing
 )
+add_test(
+	NAME safer_integer_type_tests_no_source_info
+	COMMAND $<TARGET_FILE:safer_integer_type_tests_no_source_info>
+)
+set_tests_properties(
+	safer_integer_type_tests_no_source_info
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
+)
 
 add_executable(
 	safer_integer_type_tests_no_exception
@@ -734,6 +910,17 @@ target_link_libraries(
 	safer_integer_type_tests_no_exception
 	terminal_text_color
 	unit_testing
+)
+add_test(
+	NAME safer_integer_type_tests_no_exception
+	COMMAND $<TARGET_FILE:safer_integer_type_tests_no_exception>
+)
+set_tests_properties(
+	safer_integer_type_tests_no_exception
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
 )
 
 add_executable(
@@ -771,6 +958,17 @@ target_link_libraries(
 	terminal_text_color
 	unit_testing
 )
+add_test(
+	NAME safer_integer_type_tests_use_saturated_results
+	COMMAND $<TARGET_FILE:safer_integer_type_tests_use_saturated_results>
+)
+set_tests_properties(
+	safer_integer_type_tests_use_saturated_results
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
+)
 
 # No exception, no error reporting
 add_executable(
@@ -807,6 +1005,17 @@ target_link_libraries(
 	terminal_text_color
 	unit_testing
 )
+add_test(
+	NAME safer_integer_type_tests_use_saturated_results_2
+	COMMAND $<TARGET_FILE:safer_integer_type_tests_use_saturated_results_2>
+)
+set_tests_properties(
+	safer_integer_type_tests_use_saturated_results_2
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
+)
 
 add_executable(
 	safer_integer_type_tests_no_runtime_checks
@@ -839,6 +1048,17 @@ target_link_libraries(
 	terminal_text_color
 	unit_testing
 )
+add_test(
+	NAME safer_integer_type_tests_no_runtime_checks
+	COMMAND $<TARGET_FILE:safer_integer_type_tests_no_runtime_checks>
+)
+set_tests_properties(
+	safer_integer_type_tests_no_runtime_checks
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
+)
 
 add_executable(
 	safer_integer_math_tests
@@ -862,4 +1082,15 @@ target_link_libraries(
 	safer_integer
 	terminal_text_color
 	unit_testing
+)
+add_test(
+	NAME safer_integer_math_tests
+	COMMAND $<TARGET_FILE:safer_integer_math_tests>
+)
+set_tests_properties(
+	safer_integer_math_tests
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
 )

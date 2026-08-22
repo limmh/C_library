@@ -14,6 +14,7 @@ This header provides a lightweight, macro-driven unit testing framework for C, s
 - Prints failed assertions with file or line info and value details.
 - Collects and prints test statistics.
 - Output can be redirected to any `FILE*`.
+- Each test application can return an error code (zero for success, and non-zero for failure).
 
 ## Usage Example
 
@@ -29,7 +30,7 @@ int main(void) {
     DEFINE_LIST_OF_TESTS(tests) { my_test };
     RUN_TESTS(tests);
     PRINT_TEST_STATISTICS(tests);
-    return 0;
+    return TEST_RESULT_ERROR_CODE;
 }
 ```
 

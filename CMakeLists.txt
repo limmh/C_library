@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
 project(C_library)
-
+enable_testing()
 set(LIBRARY_C_STANDARD "90")
 
 if (CMAKE_C_COMPILER_ID MATCHES "GNU|Clang|AppleClang|IntelLLVM|XLClang|IBMClang")

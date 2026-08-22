@@ -683,5 +683,5 @@ int main(void)
 	PRINT_FILE_NAME();
 	RUN_TESTS(list_of_tests);
 	PRINT_TEST_STATISTICS(list_of_tests);
-	return 0;
+	return TEST_RESULT_ERROR_CODE;
 }

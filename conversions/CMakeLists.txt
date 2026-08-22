@@ -61,6 +61,17 @@ target_link_libraries(
 	terminal_text_color
 	unit_testing
 )
+add_test(
+	NAME integer_to_string_tests
+	COMMAND $<TARGET_FILE:integer_to_string_tests>
+)
+set_tests_properties(
+	integer_to_string_tests
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
+)
 
 add_executable(
 	string_to_integer_tests
@@ -85,4 +96,15 @@ target_link_libraries(
 	safer_integer
 	terminal_text_color
 	unit_testing
+)
+add_test(
+	NAME string_to_integer_tests
+	COMMAND $<TARGET_FILE:string_to_integer_tests>
+)
+set_tests_properties(
+	string_to_integer_tests
+	PROPERTIES
+	WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+	LABELS "unit"
+	TIMEOUT 1
 )

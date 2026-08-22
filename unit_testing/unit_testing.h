@@ -235,6 +235,13 @@ static testing_library_data_type testing_library_data = {
 
 #define ASSERT(condition) testing_library_assert(__LINE__, condition, STRINGIFY(condition), &testing_library_data)
 
+#define TOTAL_NUMBER_OF_FALSE_ASSERTIONS (testing_library_data.number_of_false_assertions)
+#define TOTAL_NUMBER_OF_TRUE_ASSERTIONS (testing_library_data.number_of_true_assertions)
+
+/* Error codes: 0 - test success, other values: test failure */
+#define TEST_RESULT_ERROR_CODE \
+	((TOTAL_NUMBER_OF_FALSE_ASSERTIONS != 0) ? ((int) TOTAL_NUMBER_OF_FALSE_ASSERTIONS) : ((TOTAL_NUMBER_OF_TRUE_ASSERTIONS < 1) ? -1 : 0))
+
 #define COMPARE_USING_OPERATOR(DATA_TYPE, LHS, OPERATOR, RHS, PRINT_FUNCTION) \
 	do { \
 		DATA_TYPE const lhs = (DATA_TYPE) (LHS); \
