@@ -492,7 +492,7 @@ STATIC_ASSERT(sizeof(unsigned long) >= sizeof(uint64_t), "The size of unsigned l
 #define ASSERT_UINT64_GREATER_OR_EQUAL(LHS, RHS) ASSERT_ULONG_GREATER_OR_EQUAL(LHS, RHS)
 #define ASSERT_UINT64_LESS(LHS, RHS)             ASSERT_ULONG_LESS(LHS, RHS)
 #define ASSERT_UINT64_LESS_OR_EQUAL(LHS, RHS)    ASSERT_ULONG_LESS_OR_EQUAL(LHS, RHS)
-#elif defined(ULLONG_MAX) && (ULLONG_MAX >= INT64_MAX)
+#elif defined(ULLONG_MAX) && (ULLONG_MAX >= UINT64_MAX)
 STATIC_ASSERT(sizeof(unsigned long long) >= sizeof(uint64_t), "The size of unsigned long long int shall be at least the size of uint64_t.");
 #define ASSERT_UINT64_EQUAL(LHS, RHS)            ASSERT_ULLONG_EQUAL(LHS, RHS)
 #define ASSERT_UINT64_NOT_EQUAL(LHS, RHS)        ASSERT_ULLONG_NOT_EQUAL(LHS, RHS)

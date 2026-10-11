@@ -231,6 +231,7 @@ size_t simple_tokenizer_tokenize(const char *string, size_t string_length, simpl
 			} else {
 				add_token = true;
 			}
+			break;
 		default:
 			break;
 		}
