@@ -110,8 +110,9 @@ INLINE_OR_STATIC unsigned int safe_uint_left_rotate(unsigned int var, size_t num
 	unsigned int result = 0U, left_part = 0U, right_part = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
 	const size_t effective_number_of_bits = number_of_bits % total_number_of_bits;
+	const size_t difference = total_number_of_bits - effective_number_of_bits;
 	left_part = var << (unsigned int) effective_number_of_bits;
-	right_part = var >> (unsigned int) (total_number_of_bits - effective_number_of_bits);
+	right_part = (difference < total_number_of_bits) ? (var >> (unsigned int) difference) : var;
 	result = left_part | right_part;
 	return result;
 }
@@ -127,8 +128,9 @@ INLINE_OR_STATIC unsigned int safe_uint_right_rotate(unsigned int var, size_t nu
 	unsigned int result = 0U, left_part = 0U, right_part = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
 	const size_t effective_number_of_bits = number_of_bits % total_number_of_bits;
-	left_part = var >> (unsigned int) effective_number_of_bits;
-	right_part = var << (unsigned int) (total_number_of_bits - effective_number_of_bits);
+	const size_t difference = total_number_of_bits - effective_number_of_bits;
+	right_part = var >> (unsigned int) effective_number_of_bits;
+	left_part = (difference < total_number_of_bits) ? (var << (unsigned int) difference) : var;
 	result = left_part | right_part;
 	return result;
 }
@@ -200,8 +202,9 @@ INLINE_OR_STATIC unsigned short safe_ushort_left_rotate(unsigned short var, size
 	unsigned int result = 0U, left_part = 0U, right_part = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
 	const size_t effective_number_of_bits = number_of_bits % total_number_of_bits;
+	const size_t difference = total_number_of_bits - effective_number_of_bits;
 	left_part = (unsigned int) var << (unsigned int) effective_number_of_bits;
-	right_part = (unsigned int) var >> (unsigned int) (total_number_of_bits - effective_number_of_bits);
+	right_part = (difference < total_number_of_bits) ? ((unsigned int) var >> (unsigned int) difference) : var;
 	result = left_part | right_part;
 	return (unsigned short) result;
 }
@@ -212,8 +215,9 @@ INLINE_OR_STATIC unsigned short safe_ushort_right_rotate(unsigned short var, siz
 	unsigned int result = 0U, left_part = 0U, right_part = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
 	const size_t effective_number_of_bits = number_of_bits % total_number_of_bits;
-	left_part = (unsigned int) var >> (unsigned int) effective_number_of_bits;
-	right_part = (unsigned int) var << (unsigned int) (total_number_of_bits - effective_number_of_bits);
+	const size_t difference = total_number_of_bits - effective_number_of_bits;
+	right_part = (unsigned int) var >> (unsigned int) effective_number_of_bits;
+	left_part = (difference < total_number_of_bits) ? ((unsigned int) var << (unsigned int) difference) : var;
 	result = left_part | right_part;
 	return (unsigned short) result;
 }
@@ -285,8 +289,9 @@ INLINE_OR_STATIC unsigned char safe_uchar_left_rotate(unsigned char var, size_t 
 	unsigned int result = 0U, left_part = 0U, right_part = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
 	const size_t effective_number_of_bits = number_of_bits % total_number_of_bits;
+	const size_t difference = total_number_of_bits - effective_number_of_bits;
 	left_part = (unsigned int) var << (unsigned int) effective_number_of_bits;
-	right_part = (unsigned int) var >> (unsigned int) (total_number_of_bits - effective_number_of_bits);
+	right_part = (difference < total_number_of_bits) ? ((unsigned int) var >> (unsigned int) difference) : var;
 	result = left_part | right_part;
 	return (unsigned char) result;
 }
@@ -297,8 +302,9 @@ INLINE_OR_STATIC unsigned char safe_uchar_right_rotate(unsigned char var, size_t
 	unsigned int result = 0U, left_part = 0U, right_part = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
 	const size_t effective_number_of_bits = number_of_bits % total_number_of_bits;
-	left_part = (unsigned int) var >> (unsigned int) effective_number_of_bits;
-	right_part = (unsigned int) var << (unsigned int) (total_number_of_bits - effective_number_of_bits);
+	const size_t difference = total_number_of_bits - effective_number_of_bits;
+	right_part = (unsigned int) var >> (unsigned int) effective_number_of_bits;
+	left_part = (difference < total_number_of_bits) ? ((unsigned int) var << (unsigned int) difference) : var;
 	result = left_part | right_part;
 	return (unsigned char) result;
 }
@@ -370,8 +376,9 @@ INLINE_OR_STATIC unsigned long safe_ulong_left_rotate(unsigned long var, size_t 
 	unsigned long result = 0U, left_part = 0U, right_part = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
 	const size_t effective_number_of_bits = number_of_bits % total_number_of_bits;
+	const size_t difference = total_number_of_bits - effective_number_of_bits;
 	left_part = var << (unsigned long) effective_number_of_bits;
-	right_part = var >> (unsigned long) (total_number_of_bits - effective_number_of_bits);
+	right_part = (difference < total_number_of_bits) ? (var >> (unsigned long) difference) : var;
 	result = left_part | right_part;
 	return result;
 }
@@ -382,8 +389,9 @@ INLINE_OR_STATIC unsigned long safe_ulong_right_rotate(unsigned long var, size_t
 	unsigned long result = 0U, left_part = 0U, right_part = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
 	const size_t effective_number_of_bits = number_of_bits % total_number_of_bits;
-	left_part = var >> (unsigned long) effective_number_of_bits;
-	right_part = var << (unsigned long) (total_number_of_bits - effective_number_of_bits);
+	const size_t difference = total_number_of_bits - effective_number_of_bits;
+	right_part = var >> (unsigned long) effective_number_of_bits;
+	left_part = (difference < total_number_of_bits) ? (var << (unsigned long) difference) : var;
 	result = left_part | right_part;
 	return result;
 }
@@ -455,8 +463,9 @@ INLINE_OR_STATIC unsigned long long safe_ullong_left_rotate(unsigned long long v
 	unsigned long long result = 0U, left_part = 0U, right_part = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
 	const size_t effective_number_of_bits = number_of_bits % total_number_of_bits;
+	const size_t difference = total_number_of_bits - effective_number_of_bits;
 	left_part = var << (unsigned long long) effective_number_of_bits;
-	right_part = var >> (unsigned long long) (total_number_of_bits - effective_number_of_bits);
+	right_part = (difference < total_number_of_bits) ? (var >> (unsigned long long) difference) : var;
 	result = left_part | right_part;
 	return result;
 }
@@ -467,8 +476,9 @@ INLINE_OR_STATIC unsigned long long safe_ullong_right_rotate(unsigned long long 
 	unsigned long long result = 0U, left_part = 0U, right_part = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
 	const size_t effective_number_of_bits = number_of_bits % total_number_of_bits;
-	left_part = var >> (unsigned long long) effective_number_of_bits;
-	right_part = var << (unsigned long long) (total_number_of_bits - effective_number_of_bits);
+	const size_t difference = total_number_of_bits - effective_number_of_bits;
+	right_part = var >> (unsigned long long) effective_number_of_bits;
+	left_part = (difference < total_number_of_bits) ? (var << (unsigned long long) difference) : var;
 	result = left_part | right_part;
 	return result;
 }
@@ -541,8 +551,9 @@ INLINE_OR_STATIC uint8_t safe_u8_left_rotate(uint8_t var, size_t number_of_bits)
 	unsigned int result = 0U, left_part = 0U, right_part = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
 	const size_t effective_number_of_bits = number_of_bits % total_number_of_bits;
+	const size_t difference = total_number_of_bits - effective_number_of_bits;
 	left_part = (unsigned int) var << (unsigned int) effective_number_of_bits;
-	right_part = (unsigned int) var >> (unsigned int) (total_number_of_bits - effective_number_of_bits);
+	right_part = (difference < total_number_of_bits) ? ((unsigned int) var >> (unsigned int) difference) : var;
 	result = left_part | right_part;
 	return (uint8_t) result;
 }
@@ -553,8 +564,9 @@ INLINE_OR_STATIC uint8_t safe_u8_right_rotate(uint8_t var, size_t number_of_bits
 	unsigned int result = 0U, left_part = 0U, right_part = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
 	const size_t effective_number_of_bits = number_of_bits % total_number_of_bits;
-	left_part = (unsigned int) var >> (unsigned int) effective_number_of_bits;
-	right_part = (unsigned int) var << (unsigned int) (total_number_of_bits - effective_number_of_bits);
+	const size_t difference = total_number_of_bits - effective_number_of_bits;
+	right_part = (unsigned int) var >> (unsigned int) effective_number_of_bits;
+	left_part = (difference < total_number_of_bits) ? ((unsigned int) var << (unsigned int) difference) : var;
 	result = left_part | right_part;
 	return (uint8_t) result;
 }
@@ -626,8 +638,9 @@ INLINE_OR_STATIC uint16_t safe_u16_left_rotate(uint16_t var, size_t number_of_bi
 	unsigned int result = 0U, left_part = 0U, right_part = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
 	const size_t effective_number_of_bits = number_of_bits % total_number_of_bits;
+	const size_t difference = total_number_of_bits - effective_number_of_bits;
 	left_part = (unsigned int) var << (unsigned int) effective_number_of_bits;
-	right_part = (unsigned int) var >> (unsigned int) (total_number_of_bits - effective_number_of_bits);
+	right_part = (difference < total_number_of_bits) ? ((unsigned int) var >> (unsigned int) difference) : var;
 	result = left_part | right_part;
 	return (uint16_t) result;
 }
@@ -638,8 +651,9 @@ INLINE_OR_STATIC uint16_t safe_u16_right_rotate(uint16_t var, size_t number_of_b
 	unsigned int result = 0U, left_part = 0U, right_part = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
 	const size_t effective_number_of_bits = number_of_bits % total_number_of_bits;
-	left_part = (unsigned int) var >> (unsigned int) effective_number_of_bits;
-	right_part = (unsigned int) var << (unsigned int) (total_number_of_bits - effective_number_of_bits);
+	const size_t difference = total_number_of_bits - effective_number_of_bits;
+	right_part = (unsigned int) var >> (unsigned int) effective_number_of_bits;
+	left_part = (difference < total_number_of_bits) ? ((unsigned int) var << (unsigned int) difference) : var;
 	result = left_part | right_part;
 	return (uint16_t) result;
 }
@@ -711,8 +725,9 @@ INLINE_OR_STATIC uint32_t safe_u32_left_rotate(uint32_t var, size_t number_of_bi
 	uint32_t result = 0U, left_part = 0U, right_part = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
 	const size_t effective_number_of_bits = number_of_bits % total_number_of_bits;
+	const size_t difference = total_number_of_bits - effective_number_of_bits;
 	left_part = var << (uint32_t) effective_number_of_bits;
-	right_part = var >> (uint32_t) (total_number_of_bits - effective_number_of_bits);
+	right_part = (difference < total_number_of_bits) ? (var >> (uint32_t) difference) : var;
 	result = left_part | right_part;
 	return result;
 }
@@ -723,8 +738,9 @@ INLINE_OR_STATIC uint32_t safe_u32_right_rotate(uint32_t var, size_t number_of_b
 	uint32_t result = 0U, left_part = 0U, right_part = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
 	const size_t effective_number_of_bits = number_of_bits % total_number_of_bits;
-	left_part = var >> (uint32_t) effective_number_of_bits;
-	right_part = var << (uint32_t) (total_number_of_bits - effective_number_of_bits);
+	const size_t difference = total_number_of_bits - effective_number_of_bits;
+	right_part = var >> (uint32_t) effective_number_of_bits;
+	left_part = (difference < total_number_of_bits) ? (var << (uint32_t) difference) : var;
 	result = left_part | right_part;
 	return result;
 }
@@ -796,8 +812,9 @@ INLINE_OR_STATIC uint64_t safe_u64_left_rotate(uint64_t var, size_t number_of_bi
 	uint64_t result = 0U, left_part = 0U, right_part = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
 	const size_t effective_number_of_bits = number_of_bits % total_number_of_bits;
+	const size_t difference = total_number_of_bits - effective_number_of_bits;
 	left_part = var << (uint64_t) effective_number_of_bits;
-	right_part = var >> (uint64_t) (total_number_of_bits - effective_number_of_bits);
+	right_part = (difference < total_number_of_bits) ? (var >> (uint64_t) difference) : var;
 	result = left_part | right_part;
 	return result;
 }
@@ -808,8 +825,9 @@ INLINE_OR_STATIC uint64_t safe_u64_right_rotate(uint64_t var, size_t number_of_b
 	uint64_t result = 0U, left_part = 0U, right_part = 0U;
 	const size_t total_number_of_bits = sizeof(var) * CHAR_BIT;
 	const size_t effective_number_of_bits = number_of_bits % total_number_of_bits;
-	left_part = var >> (uint64_t) effective_number_of_bits;
-	right_part = var << (uint64_t) (total_number_of_bits - effective_number_of_bits);
+	const size_t difference = total_number_of_bits - effective_number_of_bits;
+	right_part = var >> (uint64_t) effective_number_of_bits;
+	left_part = (difference < total_number_of_bits) ? (var << (uint64_t) difference) : var;
 	result = left_part | right_part;
 	return result;
 }
