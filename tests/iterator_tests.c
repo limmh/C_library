@@ -97,10 +97,6 @@ INLINE_OR_STATIC void int_local_copy_inc_by_one(int value) {
 	++value;
 }
 
-INLINE_OR_STATIC void collect_value_to_array(int value) {
-	(void) value;
-}
-
 /* predicate examples */
 INLINE_OR_STATIC bool int_is_even(int value) {
 	return (value % 2) == 0;
@@ -118,11 +114,46 @@ INLINE_OR_STATIC bool int_greater_than_3(int v) {
 	return (v > 3);
 }
 
+/* comparators */
+INLINE_OR_STATIC bool int_equal(int lhs, int rhs) {
+	return (lhs == rhs);
+}
+
+INLINE_OR_STATIC bool int_greater_than(int lhs, int rhs) {
+	return (lhs > rhs);
+}
+
+INLINE_OR_STATIC bool int_greater_than_or_equal(int lhs, int rhs) {
+	return (lhs >= rhs);
+}
+
+INLINE_OR_STATIC bool int_less_than_or_equal(int lhs, int rhs) {
+	return (lhs <= rhs);
+}
+
+INLINE_OR_STATIC bool int_less_than(int lhs, int rhs) {
+	return (lhs < rhs);
+}
+
+INLINE_OR_STATIC bool double_equal(double lhs, double rhs) {
+	return (lhs == rhs);
+}
+
+INLINE_OR_STATIC bool double_greater_than(double lhs, double rhs) {
+	return (lhs > rhs);
+}
+
+INLINE_OR_STATIC bool double_less_than(double lhs, double rhs) {
+	return (lhs < rhs);
+}
+
 /* Instantiate algorithm functions for int */
 ITERATOR_TYPE_DEFINE_COMMON_FUNCTIONS(int, int)
 ITERATOR_TYPE_DEFINE_COMMON_FUNCTIONS(const int, const_int)
 ITERATOR_TYPE_DEFINE_SUM_FUNCTION(int, int)
 ITERATOR_TYPE_DEFINE_REVERSE_FUNCTION(int, int)
+ITERATOR_TYPE_DEFINE_SORT_FUNCTION(int, int)
+ITERATOR_TYPE_DEFINE_COMMON_FUNCTIONS(const double, const_double)
 
 /* Test: empty range */
 TEST(iterator_func_empty_range, "Algorithms handle empty ranges gracefully")
@@ -168,41 +199,104 @@ TEST(iterator_func_for_each, "for_each_value passes copies; for_each passes poin
 	}
 }
 
-/* Test: find, find_if, find_if_not, count, count_if, count_if_not */
+/* Test: find, find_with, find_if, find_if_not, count, count_with, count_if, count_if_not */
 TEST(iterator_func_find_and_count, "find and count variants")
 {
 	int a[] = {1, 2, 3, 2, -1, 2};
-	iterator_type(int) first = iterator_begin(a);
-	iterator_type(int) one_past_last = iterator_end(a, sizeof_array(a));
+	iterator_type(int) const first = iterator_begin(a);
+	iterator_type(int) const one_past_last = iterator_end(a, sizeof_array(a));
 	iterator_type(int) iter = iterator_init();
 
 	/* find first 2 */
 	iter = find(int)(first, one_past_last, 2);
 	ASSERT_PTRDIFF_EQUAL((ptrdiff_t)(iter - first), 1);
 	ASSERT_INT_EQUAL(iterator_deref(iter), 2);
+	iter = find_with(int)(first, one_past_last, 2, int_equal);
+	ASSERT_PTRDIFF_EQUAL((ptrdiff_t)(iter - first), 1);
+	ASSERT_INT_EQUAL(iterator_deref(iter), 2);
+
+	/* find last 2 */
+	iter = reverse_find(int)(first, one_past_last, 2);
+	ASSERT_PTRDIFF_EQUAL((ptrdiff_t)(iter - first), 5);
+	ASSERT_INT_EQUAL(iterator_deref(iter), 2);
+	iter = reverse_find_with(int)(first, one_past_last, 2, int_equal);
+	ASSERT_PTRDIFF_EQUAL((ptrdiff_t)(iter - first), 5);
+	ASSERT_INT_EQUAL(iterator_deref(iter), 2);
 
 	/* find not present */
 	iter = find(int)(first, one_past_last, 99);
 	ASSERT(iter == one_past_last);
+	iter = reverse_find(int)(first, one_past_last, 99);
+	ASSERT(iter == one_past_last);
 
-	/* find_if: first negative */
+	/* first negative */
 	iter = find_if(int)(first, one_past_last, int_is_negative);
 	ASSERT_PTRDIFF_EQUAL((ptrdiff_t)(iter - first), 4);
 	ASSERT_INT_LESS(iterator_deref(iter), 0);
 
-	/* find_if_not: find first element not equal to 1 */
+	/* find last negative */
+	iter = reverse_find_if(int)(first, one_past_last, int_is_negative);
+	ASSERT_PTRDIFF_EQUAL((ptrdiff_t)(iter - first), 4);
+	ASSERT_INT_LESS(iterator_deref(iter), 0);
+
+	/* find first element not equal to 1 */
 	iter = find_if_not(int)(first, one_past_last, int_is_one);
 	ASSERT_PTRDIFF_EQUAL((ptrdiff_t)(iter - first), 1);
 	ASSERT_INT_NOT_EQUAL(iterator_deref(iter), 1);
 
+	/* find last element not equal to 1 */
+	iter = reverse_find_if_not(int)(first, one_past_last, int_is_one);
+	ASSERT_PTRDIFF_EQUAL((ptrdiff_t)(iter - first), 5);
+	ASSERT_INT_NOT_EQUAL(iterator_deref(iter), 1);
+
 	/* count of value 2 */
 	ASSERT_SIZE_EQUAL(count(int)(first, one_past_last, 2), 3U);
+	ASSERT_SIZE_EQUAL(count_with(int)(first, one_past_last, 2, int_equal), 3U);
 
 	/* count of even values */
 	ASSERT_SIZE_EQUAL(count_if(int)(first, one_past_last, int_is_even), 3U);
 
 	/* count of non-negative values */
 	ASSERT_SIZE_EQUAL(count_if_not(int)(first, one_past_last, int_is_negative), 5U);
+}
+
+/* Test: find_with and count with */
+TEST(iterator_func_find_with_and_count_with, "find_with and count_with variants")
+{
+	const int integers[] = {-3, -2, -1, 0, 1, 2, 3};
+	const double numbers[] = {1.0, -0.0, 0.0, 2.0};
+
+	iterator_type(const int) int_iter = iterator_init();
+	iterator_type(const int) const int_first = iterator_begin(integers);
+	iterator_type(const int) const int_one_past_last = iterator_end(integers, sizeof_array(integers));
+	iterator_type(const double) iter = iterator_init();
+	iterator_type(const double) const first = iterator_begin(numbers);
+	iterator_type(const double) const one_past_last = iterator_end(numbers, sizeof_array(numbers));
+
+	int_iter = find_with(const_int)(int_first, int_one_past_last, 0, int_less_than);
+	ASSERT_PTRDIFF_EQUAL((ptrdiff_t)(int_iter - int_first), 0);
+	ASSERT_INT_LESS(iterator_deref(int_iter), 0);
+	int_iter = find_with(const_int)(int_first, int_one_past_last, 0, int_equal);
+	ASSERT_PTRDIFF_EQUAL((ptrdiff_t)(int_iter - int_first), 3);
+	ASSERT_INT_EQUAL(iterator_deref(int_iter), 0);
+	int_iter = find_with(const_int)(int_first, int_one_past_last, 0, int_greater_than);
+	ASSERT_PTRDIFF_EQUAL((ptrdiff_t)(int_iter - int_first), 4);
+	ASSERT_INT_GREATER(iterator_deref(int_iter), 0);
+
+	ASSERT_SIZE_EQUAL(count_with(const_int)(int_first, int_one_past_last, 0, int_less_than), 3U);
+	ASSERT_SIZE_EQUAL(count_with(const_int)(int_first, int_one_past_last, 0, int_equal), 1U);
+	ASSERT_SIZE_EQUAL(count_with(const_int)(int_first, int_one_past_last, 0, int_greater_than), 3U);
+
+	iter = find_with(const_double)(first, one_past_last, 0.0, double_less_than);
+	ASSERT(iter == one_past_last);
+	iter = find_with(const_double)(first, one_past_last, 0.0, double_equal);
+	ASSERT_PTRDIFF_EQUAL((ptrdiff_t)(iter - first), 1);
+	iter = find_with(const_double)(first, one_past_last, 0.0, double_greater_than);
+	ASSERT_PTRDIFF_EQUAL((ptrdiff_t)(iter - first), 0);
+	
+	ASSERT_SIZE_EQUAL(count_with(const_double)(first, one_past_last, 0.0, double_less_than), 0U);
+	ASSERT_SIZE_EQUAL(count_with(const_double)(first, one_past_last, 0.0, double_equal), 2U);
+	ASSERT_SIZE_EQUAL(count_with(const_double)(first, one_past_last, 0.0, double_greater_than), 2U);
 }
 
 /* Test: reverse (odd/even lengths and round-trip) */
@@ -212,6 +306,7 @@ TEST(iterator_func_reverse, "reverse and double-reverse")
 	const int b[5]  = { 1, 2, 3, 4, 5};
 	int a_copy[4] = {0};
 	int b_copy[5] = {0};
+	int single_element_array[] = {1};
 
 	memcpy(a_copy, a, sizeof(a_copy));
 	memcpy(b_copy, b, sizeof(b_copy));
@@ -245,6 +340,10 @@ TEST(iterator_func_reverse, "reverse and double-reverse")
 	ASSERT_INT_EQUAL(b_copy[2], 3);
 	ASSERT_INT_EQUAL(b_copy[3], 4);
 	ASSERT_INT_EQUAL(b_copy[4], 5);
+
+	/* single element */
+	reverse(int)(iterator_begin(single_element_array), iterator_end(single_element_array, sizeof_array(single_element_array)));
+	ASSERT_INT_EQUAL(single_element_array[0], 1);
 }
 
 /* Test: sum and all/any/none */
@@ -271,6 +370,68 @@ TEST(iterator_func_sum_and_predicates, "sum, all_of, any_of, none_of")
 	ASSERT(none_of(const_int)(iterator_begin(c), iterator_end(c, sizeof_array(c)), int_greater_than_3));
 }
 
+/* Test: sort */
+TEST(iterator_func_sort, "sort")
+{
+	int dummy[] = {0};
+	int single_element_array[] = {1};
+	int a[] = {-3, -2, -1, 0, 1, 2, 3};
+	int b[] = {-1, -2, 4, 5, 0};
+	int c[] = {-1, -2, 4, 5, 0};
+	int d[] = {1, 0};
+	int e[] = {0, 1};
+
+	sort(int)(iterator_begin(dummy), iterator_end(dummy, 0), int_less_than_or_equal);
+	ASSERT_INT_EQUAL(dummy[0], 0);
+	sort(int)(iterator_begin(dummy), iterator_end(dummy, 0), int_greater_than_or_equal);
+	ASSERT_INT_EQUAL(dummy[0], 0);
+
+	sort(int)(iterator_begin(single_element_array), iterator_end(single_element_array, sizeof_array(single_element_array)), int_less_than_or_equal);
+	ASSERT_INT_EQUAL(single_element_array[0], 1);
+	sort(int)(iterator_begin(single_element_array), iterator_end(single_element_array, sizeof_array(single_element_array)), int_greater_than_or_equal);
+	ASSERT_INT_EQUAL(single_element_array[0], 1);
+
+	sort(int)(iterator_begin(a), iterator_end(a, sizeof_array(a)), int_less_than_or_equal);
+	ASSERT_INT_EQUAL(a[0], -3);
+	ASSERT_INT_EQUAL(a[1], -2);
+	ASSERT_INT_EQUAL(a[2], -1);
+	ASSERT_INT_EQUAL(a[3],  0);
+	ASSERT_INT_EQUAL(a[4],  1);
+	ASSERT_INT_EQUAL(a[5],  2);
+	ASSERT_INT_EQUAL(a[6],  3);
+
+	sort(int)(iterator_begin(a), iterator_end(a, sizeof_array(a)), int_greater_than_or_equal);
+	ASSERT_INT_EQUAL(a[0],  3);
+	ASSERT_INT_EQUAL(a[1],  2);
+	ASSERT_INT_EQUAL(a[2],  1);
+	ASSERT_INT_EQUAL(a[3],  0);
+	ASSERT_INT_EQUAL(a[4], -1);
+	ASSERT_INT_EQUAL(a[5], -2);
+	ASSERT_INT_EQUAL(a[6], -3);
+
+	sort(int)(iterator_begin(b), iterator_end(b, sizeof_array(b)), int_less_than_or_equal);
+	ASSERT_INT_EQUAL(b[0], -2);
+	ASSERT_INT_EQUAL(b[1], -1);
+	ASSERT_INT_EQUAL(b[2],  0);
+	ASSERT_INT_EQUAL(b[3],  4);
+	ASSERT_INT_EQUAL(b[4],  5);
+
+	sort(int)(iterator_begin(c), iterator_end(c, sizeof_array(c)), int_greater_than_or_equal);
+	ASSERT_INT_EQUAL(c[0],  5);
+	ASSERT_INT_EQUAL(c[1],  4);
+	ASSERT_INT_EQUAL(c[2],  0);
+	ASSERT_INT_EQUAL(c[3], -1);
+	ASSERT_INT_EQUAL(c[4], -2);
+
+	sort(int)(iterator_begin(d), iterator_end(d, sizeof_array(d)), int_less_than_or_equal);
+	ASSERT_INT_EQUAL(d[0], 0);
+	ASSERT_INT_EQUAL(d[1], 1);
+
+	sort(int)(iterator_begin(e), iterator_end(e, sizeof_array(e)), int_greater_than_or_equal);
+	ASSERT_INT_EQUAL(e[0], 1);
+	ASSERT_INT_EQUAL(e[1], 0);
+}
+
 int main(void)
 {
 	DEFINE_LIST_OF_TESTS(tests) {
@@ -281,8 +442,10 @@ int main(void)
 		iterator_func_empty_range,
 		iterator_func_for_each,
 		iterator_func_find_and_count,
+		iterator_func_find_with_and_count_with,
 		iterator_func_reverse,
-		iterator_func_sum_and_predicates
+		iterator_func_sum_and_predicates,
+		iterator_func_sort
 	};
 	PRINT_FILE_NAME();
 	RUN_TESTS(tests);

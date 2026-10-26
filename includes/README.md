@@ -116,9 +116,15 @@ Provides types and utilities for referencing parts of strings without copying:
 **Example usage:**
 ```c
 const char *mystr = "This is an example.";
-stringref_type ref = string_to_stringref(mystr, strlen(mystr));
-if (stringref_is_valid(ref)) {
+const_stringref_type ref = string_to_const_stringref(mystr, strlen(mystr));
+if (const_stringref_is_valid(ref)) {
     // Use ref.string and ref.length
+}
+
+char buffer[] = "This is another example.";
+stringref_type ref = string_to_stringref(buffer, strlen(buffer));
+if (stringref_is_valid(ref)) {
+   // Use ref.string and ref.length
 }
 ```
 

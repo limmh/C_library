@@ -10,6 +10,8 @@
 
 /*
 Usage example:
+#include "iterator_type.h"
+#include <stdio.h>
 
 int main(void)
 {
@@ -64,7 +66,7 @@ int main(void)
 /** @brief foreach macro in reverse */
 #define foreach_iterator_in_reverse(iterator, first_iterator, one_past_last_iterator) \
 	for ((iterator) = (assert((first_iterator) <= (one_past_last_iterator)), one_past_last_iterator); \
-		((iterator) != (first_iterator)) && ((iterator) = iterator_decrement(iterator, 1)); \
+		((iterator) != (first_iterator)) && ((iterator) = iterator_decrement(iterator, 1)) != (one_past_last_iterator); \
 		)
 
 /* These functions are inspired by the C++ STL algorithms (for_each, find, count, all_of, any_of, none_of, reverse, etc.),
@@ -112,7 +114,23 @@ iterator abstraction for arbitrary container types. */
 	) { \
 		iterator_type(element_type) iter = iterator_init(); \
 		foreach_iterator(iter, iter_first, iter_one_past_last) { \
-			if (prefix##_bitwise_compare_equal(&value, iter)) break; \
+			if (prefix##_bitwise_compare_equal(iter, &value)) break; \
+		} \
+		return iter; \
+	}
+
+/** @brief find_with function template */
+#define ITERATOR_TYPE_DEFINE_FIND_WITH_FUNCTION(element_type, prefix) \
+	INLINE_OR_STATIC iterator_type(element_type) prefix##_find_with( \
+		iterator_type(element_type) iter_first, \
+		iterator_type(element_type) iter_one_past_last, \
+		element_type rhs_value, \
+		bool (*compare)(element_type, element_type) \
+	) { \
+		iterator_type(element_type) iter = iterator_init(); \
+		assert(compare != NULL); \
+		foreach_iterator(iter, iter_first, iter_one_past_last) { \
+			if (compare(iterator_deref(iter), rhs_value)) break; \
 		} \
 		return iter; \
 	}
@@ -145,6 +163,64 @@ iterator abstraction for arbitrary container types. */
 		return iter; \
 	}
 
+/** @brief reverse_find function template */
+#define ITERATOR_TYPE_DEFINE_REVERSE_FIND_FUNCTION(element_type, prefix) \
+	INLINE_OR_STATIC iterator_type(element_type) prefix##_reverse_find( \
+		iterator_type(element_type) iter_first, \
+		iterator_type(element_type) iter_one_past_last, \
+		element_type value \
+	) { \
+		iterator_type(element_type) iter = iterator_init(); \
+		foreach_iterator_in_reverse(iter, iter_first, iter_one_past_last) { \
+			if (prefix##_bitwise_compare_equal(iter, &value)) return iter; \
+		} \
+		return iter_one_past_last; \
+	}
+
+/** @brief reverse_find_with function template */
+#define ITERATOR_TYPE_DEFINE_REVERSE_FIND_WITH_FUNCTION(element_type, prefix) \
+	INLINE_OR_STATIC iterator_type(element_type) prefix##_reverse_find_with( \
+		iterator_type(element_type) iter_first, \
+		iterator_type(element_type) iter_one_past_last, \
+		element_type rhs_value, \
+		bool (*compare)(element_type, element_type) \
+	) { \
+		iterator_type(element_type) iter = iterator_init(); \
+		assert(compare != NULL); \
+		foreach_iterator_in_reverse(iter, iter_first, iter_one_past_last) { \
+			if (compare(iterator_deref(iter), rhs_value)) return iter; \
+		} \
+		return iter_one_past_last; \
+	}
+
+/** @brief reverse_find_if function template */
+#define ITERATOR_TYPE_DEFINE_REVERSE_FIND_IF_FUNCTION(element_type, prefix) \
+	INLINE_OR_STATIC iterator_type(element_type) prefix##_reverse_find_if( \
+		iterator_type(element_type) iter_first, \
+		iterator_type(element_type) iter_one_past_last, \
+		bool (*predicate)(element_type) \
+	) { \
+		iterator_type(element_type) iter = iterator_init(); \
+		foreach_iterator_in_reverse(iter, iter_first, iter_one_past_last) { \
+			if (predicate(iterator_deref(iter))) return iter; \
+		} \
+		return iter_one_past_last; \
+	}
+
+/** @brief reverse_find_if_not function template */
+#define ITERATOR_TYPE_DEFINE_REVERSE_FIND_IF_NOT_FUNCTION(element_type, prefix) \
+	INLINE_OR_STATIC iterator_type(element_type) prefix##_reverse_find_if_not( \
+		iterator_type(element_type) iter_first, \
+		iterator_type(element_type) iter_one_past_last, \
+		bool (*predicate)(element_type) \
+	) { \
+		iterator_type(element_type) iter = iterator_init(); \
+		foreach_iterator_in_reverse(iter, iter_first, iter_one_past_last) { \
+			if (!predicate(iterator_deref(iter))) return iter; \
+		} \
+		return iter_one_past_last; \
+	}
+
 /** @brief count function template */
 #define ITERATOR_TYPE_DEFINE_COUNT_FUNCTION(element_type, prefix) \
 	INLINE_OR_STATIC size_t prefix##_count( \
@@ -155,7 +231,24 @@ iterator abstraction for arbitrary container types. */
 		size_t count = 0U; \
 		iterator_type(element_type) iter = iterator_init(); \
 		foreach_iterator(iter, iter_first, iter_one_past_last) { \
-			if (prefix##_bitwise_compare_equal(&value, iter)) ++count; \
+			if (prefix##_bitwise_compare_equal(iter, &value)) ++count; \
+		} \
+		return count; \
+	}
+
+/** @brief count_with function template */
+#define ITERATOR_TYPE_DEFINE_COUNT_WITH_FUNCTION(element_type, prefix) \
+	INLINE_OR_STATIC size_t prefix##_count_with( \
+		iterator_type(element_type) iter_first, \
+		iterator_type(element_type) iter_one_past_last, \
+		element_type rhs_value, \
+		bool (*compare)(element_type, element_type) \
+	) { \
+		size_t count = 0U; \
+		iterator_type(element_type) iter = iterator_init(); \
+		assert(compare != NULL); \
+		foreach_iterator(iter, iter_first, iter_one_past_last) { \
+			if (compare(iterator_deref(iter), rhs_value)) ++count; \
 		} \
 		return count; \
 	}
@@ -266,14 +359,47 @@ iterator abstraction for arbitrary container types. */
 		} \
 	}
 
+/** @brief sort function template (compare returns true: no swapping of two adjacent elements, otherwise swapping takes place) */
+#define ITERATOR_TYPE_DEFINE_SORT_FUNCTION(element_type, prefix) \
+	INLINE_OR_STATIC void prefix##_sort( \
+		iterator_type(element_type) iter_first, \
+		iterator_type(element_type) iter_one_past_last, \
+		bool (*compare)(element_type, element_type) \
+	) { \
+		iterator_type(element_type) iter = iterator_init(); \
+		size_t count = 0U; \
+		size_t distance = (size_t) (iter_one_past_last - iter_first); \
+		assert(compare != NULL); \
+		for (count = 1U; count < distance; ++count) { \
+			bool swap_performed = false; \
+			iterator_type(element_type) iter_end = iterator_decrement(iter_one_past_last, count); \
+			foreach_iterator(iter, iter_first, iter_end) { \
+				iterator_type(element_type) iter_next = iterator_increment(iter, 1); \
+				if (!compare(iterator_deref(iter), iterator_deref(iter_next))) { \
+					element_type tmp = iterator_deref(iter); \
+					iterator_deref(iter) = iterator_deref(iter_next); \
+					iterator_deref(iter_next) = tmp; \
+					swap_performed = true; \
+				} \
+			} \
+			if (!swap_performed) break; \
+		} \
+	}
+
 #define ITERATOR_TYPE_DEFINE_COMMON_FUNCTIONS(element_type, prefix) \
 	ITERATOR_TYPE_DEFINE_FOR_EACH_VALUE_FUNCTION(element_type, prefix) \
 	ITERATOR_TYPE_DEFINE_FOR_EACH_FUNCTION(element_type, prefix) \
 	ITERATOR_TYPE_DEFINE_BITWISE_COMPARE_EQUAL_FUNCTION(element_type, prefix) \
 	ITERATOR_TYPE_DEFINE_FIND_FUNCTION(element_type, prefix) \
+	ITERATOR_TYPE_DEFINE_FIND_WITH_FUNCTION(element_type, prefix) \
 	ITERATOR_TYPE_DEFINE_FIND_IF_FUNCTION(element_type, prefix) \
 	ITERATOR_TYPE_DEFINE_FIND_IF_NOT_FUNCTION(element_type, prefix) \
+	ITERATOR_TYPE_DEFINE_REVERSE_FIND_FUNCTION(element_type, prefix) \
+	ITERATOR_TYPE_DEFINE_REVERSE_FIND_WITH_FUNCTION(element_type, prefix) \
+	ITERATOR_TYPE_DEFINE_REVERSE_FIND_IF_FUNCTION(element_type, prefix) \
+	ITERATOR_TYPE_DEFINE_REVERSE_FIND_IF_NOT_FUNCTION(element_type, prefix) \
 	ITERATOR_TYPE_DEFINE_COUNT_FUNCTION(element_type, prefix) \
+	ITERATOR_TYPE_DEFINE_COUNT_WITH_FUNCTION(element_type, prefix) \
 	ITERATOR_TYPE_DEFINE_COUNT_IF_FUNCTION(element_type, prefix) \
 	ITERATOR_TYPE_DEFINE_COUNT_IF_NOT_FUNCTION(element_type, prefix) \
 	ITERATOR_TYPE_DEFINE_ALL_OF_FUNCTION(element_type, prefix) \
@@ -283,9 +409,15 @@ iterator abstraction for arbitrary container types. */
 #define FOR_EACH_VALUE(prefix) prefix##_for_each_value
 #define FOR_EACH(prefix) prefix##_for_each
 #define FIND(prefix) prefix##_find
+#define FIND_WITH(prefix) prefix##_find_with
 #define FIND_IF(prefix) prefix##_find_if
 #define FIND_IF_NOT(prefix) prefix##_find_if_not
+#define REVERSE_FIND(prefix) prefix##_reverse_find
+#define REVERSE_FIND_WITH(prefix) prefix##_reverse_find_with
+#define REVERSE_FIND_IF(prefix) prefix##_reverse_find_if
+#define REVERSE_FIND_IF_NOT(prefix) prefix##_reverse_find_if_not
 #define COUNT(prefix) prefix##_count
+#define COUNT_WITH(prefix) prefix##_count_with
 #define COUNT_IF(prefix) prefix##_count_if
 #define COUNT_IF_NOT(prefix) prefix##_count_if_not
 #define ALL_OF(prefix) prefix##_all_of
@@ -293,14 +425,21 @@ iterator abstraction for arbitrary container types. */
 #define NONE_OF(prefix) prefix##_none_of
 #define SUM(prefix) prefix##_sum
 #define REVERSE(prefix) prefix##_reverse
+#define SORT(prefix) prefix##_sort
 
 #ifdef ITERATOR_TYPE_SUPPORTS_LOWERCASE_FUNCTION_MACROS
 #define for_each_value(prefix) FOR_EACH_VALUE(prefix)
 #define for_each(prefix) FOR_EACH(prefix)
 #define find(prefix) FIND(prefix)
+#define find_with(prefix) FIND_WITH(prefix)
 #define find_if(prefix) FIND_IF(prefix)
 #define find_if_not(prefix) FIND_IF_NOT(prefix)
+#define reverse_find(prefix) REVERSE_FIND(prefix)
+#define reverse_find_with(prefix) REVERSE_FIND_WITH(prefix)
+#define reverse_find_if(prefix) REVERSE_FIND_IF(prefix)
+#define reverse_find_if_not(prefix) REVERSE_FIND_IF_NOT(prefix)
 #define count(prefix) COUNT(prefix)
+#define count_with(prefix) COUNT_WITH(prefix)
 #define count_if(prefix) COUNT_IF(prefix)
 #define count_if_not(prefix) COUNT_IF_NOT(prefix)
 #define all_of(prefix) ALL_OF(prefix)
@@ -308,6 +447,7 @@ iterator abstraction for arbitrary container types. */
 #define none_of(prefix) NONE_OF(prefix)
 #define sum(prefix) SUM(prefix)
 #define reverse(prefix) REVERSE(prefix)
+#define sort(prefix) SORT(prefix)
 #endif
 
 #endif
