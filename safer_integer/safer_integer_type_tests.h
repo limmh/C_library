@@ -2160,7 +2160,21 @@ TEST(safer_llong_type_addition_error_tests, "safer_llong_type addition error tes
 	}
 
 	TRY {
-		
+		safer_llong_type var = LLONG_MIN;
+		const safer_llong_type offset = -1LL;
+		const long long before = var;
+		var += offset;
+		fprintf(output_file, "Line %d: (%lld += %lld) -> %lld\n", LINE, before, (long long) offset, (long long) var);
+	} CATCH (std::exception&) {
+		ASSERT(safer_integer_type_exception_thrown);
+	}
+
+	TRY {
+		safer_llong_type var = LLONG_MIN;
+		const long long offset = -1LL;
+		const long long before = var;
+		var += offset;
+		fprintf(output_file, "Line %d: (%lld += %lld) -> %lld\n", LINE, before, offset, (long long) var);
 	} CATCH (std::exception&) {
 		ASSERT(safer_integer_type_exception_thrown);
 	}
