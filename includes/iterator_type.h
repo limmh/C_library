@@ -10,6 +10,7 @@
 
 /*
 Usage example:
+
 #include "iterator_type.h"
 #include <stdio.h>
 
@@ -95,14 +96,8 @@ iterator abstraction for arbitrary container types. */
 	) { \
 		iterator_type(element_type) iter = iterator_init(); \
 		foreach_iterator(iter, iter_first, iter_one_past_last) { \
-			func(iter); \
+			func(&iterator_deref(iter)); \
 		} \
-	}
-
-/** @brief bitwise_compare_equal function template */
-#define ITERATOR_TYPE_DEFINE_BITWISE_COMPARE_EQUAL_FUNCTION(element_type, prefix) \
-	INLINE_OR_STATIC bool prefix##_bitwise_compare_equal(element_type *ptr_a, element_type *ptr_b) { \
-		return memcmp(ptr_a, ptr_b, sizeof(*ptr_a)) == 0; \
 	}
 
 /** @brief find function template */
@@ -114,7 +109,7 @@ iterator abstraction for arbitrary container types. */
 	) { \
 		iterator_type(element_type) iter = iterator_init(); \
 		foreach_iterator(iter, iter_first, iter_one_past_last) { \
-			if (prefix##_bitwise_compare_equal(iter, &value)) break; \
+			if (memcmp(&iterator_deref(iter), &value, sizeof(value)) == 0) break; \
 		} \
 		return iter; \
 	}
@@ -172,7 +167,7 @@ iterator abstraction for arbitrary container types. */
 	) { \
 		iterator_type(element_type) iter = iterator_init(); \
 		foreach_iterator_in_reverse(iter, iter_first, iter_one_past_last) { \
-			if (prefix##_bitwise_compare_equal(iter, &value)) return iter; \
+			if (memcmp(&iterator_deref(iter), &value, sizeof(value)) == 0) return iter; \
 		} \
 		return iter_one_past_last; \
 	}
@@ -231,7 +226,7 @@ iterator abstraction for arbitrary container types. */
 		size_t count = 0U; \
 		iterator_type(element_type) iter = iterator_init(); \
 		foreach_iterator(iter, iter_first, iter_one_past_last) { \
-			if (prefix##_bitwise_compare_equal(iter, &value)) ++count; \
+			if (memcmp(&iterator_deref(iter), &value, sizeof(value)) == 0) ++count; \
 		} \
 		return count; \
 	}
@@ -389,7 +384,6 @@ iterator abstraction for arbitrary container types. */
 #define ITERATOR_TYPE_DEFINE_COMMON_FUNCTIONS(element_type, prefix) \
 	ITERATOR_TYPE_DEFINE_FOR_EACH_VALUE_FUNCTION(element_type, prefix) \
 	ITERATOR_TYPE_DEFINE_FOR_EACH_FUNCTION(element_type, prefix) \
-	ITERATOR_TYPE_DEFINE_BITWISE_COMPARE_EQUAL_FUNCTION(element_type, prefix) \
 	ITERATOR_TYPE_DEFINE_FIND_FUNCTION(element_type, prefix) \
 	ITERATOR_TYPE_DEFINE_FIND_WITH_FUNCTION(element_type, prefix) \
 	ITERATOR_TYPE_DEFINE_FIND_IF_FUNCTION(element_type, prefix) \
