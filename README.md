@@ -71,10 +71,27 @@ Hence, it is generally meant for user-mode applications and not for resource-con
 ## Getting Started
 
 1. Clone the repository.
+   ```
+   git clone https://www.github.com/limmh/C_library.git
+   ```
 2. Make sure a recent version of CMake is installed.
 3. In the local repository folder, create a new folder, e.g. build.
+   - Linux
+   ```
+   mkdir build
+   ```
+   - Windows
+   ```
+   md build
+   ```
 4. Use CMake to generate the build files for your target platform in the new folder you created.
+   ```
+   cmake -S . -B build
+   ```
 5. Run the generated build to compile all library modules and programs.
+   ```
+   cmake --build ./build -j 10
+   ```
 
 ## License
 
