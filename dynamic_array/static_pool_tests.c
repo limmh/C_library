@@ -1,3 +1,4 @@
+#define SAFER_C_LIBRARY_STATIC_ASSERT_HAS_SHORT_MACRO
 #include "fixed_width_integer_types.h"
 #include "static_pool.h"
 #include "static_assert.h"

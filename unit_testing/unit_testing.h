@@ -1,5 +1,5 @@
-#ifndef UNIT_TESTING_LIBRARY_H
-#define UNIT_TESTING_LIBRARY_H
+#ifndef SAFER_C_LIBRARY_UNIT_TESTING_H
+#define SAFER_C_LIBRARY_UNIT_TESTING_H
 
 #include "Boolean_type.h"
 #include "macro_stringify.h"
@@ -233,7 +233,7 @@ static testing_library_data_type testing_library_data = {
 #define TEST_NUMBER_OF_FALSE_ASSERTIONS(test) (const size_t) ((test)->number_of_false_assertions)
 #define TEST_NUMBER_OF_TRUE_ASSERTIONS(test)  (const size_t) ((test)->number_of_true_assertions)
 
-#define ASSERT(condition) testing_library_assert(__LINE__, condition, STRINGIFY(condition), &testing_library_data)
+#define ASSERT(condition) testing_library_assert(__LINE__, condition, SAFER_C_LIBRARY_STRINGIFY(condition), &testing_library_data)
 
 #define TOTAL_NUMBER_OF_FALSE_ASSERTIONS (testing_library_data.number_of_false_assertions)
 #define TOTAL_NUMBER_OF_TRUE_ASSERTIONS (testing_library_data.number_of_true_assertions)
@@ -247,7 +247,7 @@ static testing_library_data_type testing_library_data = {
 		DATA_TYPE const lhs = (DATA_TYPE) (LHS); \
 		DATA_TYPE const rhs = (DATA_TYPE) (RHS); \
 		const bool result = (lhs OPERATOR rhs); \
-		testing_library_assert(__LINE__, result, STRINGIFY(LHS OPERATOR RHS), &testing_library_data); \
+		testing_library_assert(__LINE__, result, SAFER_C_LIBRARY_STRINGIFY(LHS OPERATOR RHS), &testing_library_data); \
 		if (!result) { \
 			(void) PRINT_FUNCTION(lhs, rhs); \
 		} \
@@ -258,7 +258,7 @@ static testing_library_data_type testing_library_data = {
 		DATA_TYPE const lhs = (DATA_TYPE) (LHS); \
 		DATA_TYPE const rhs = (DATA_TYPE) (RHS); \
 		const bool result = (bool) COMPARISON_FUNCTION(lhs, rhs); \
-		testing_library_assert(__LINE__, result, STRINGIFY(COMPARISON_FUNCTION(LHS, RHS)), &testing_library_data); \
+		testing_library_assert(__LINE__, result, SAFER_C_LIBRARY_STRINGIFY(COMPARISON_FUNCTION(LHS, RHS)), &testing_library_data); \
 		if (!result) { \
 			(void) PRINT_FUNCTION(lhs, rhs); \
 		} \
@@ -374,7 +374,7 @@ INLINE_OR_STATIC void testing_library_print_LHS_and_RHS_as_unsigned_long_long_in
 #endif /* ULLONG_MAX */
 
 #if (INT_MIN < INT8_MIN) && (INT_MAX > INT8_MAX)
-STATIC_ASSERT(sizeof(int) > sizeof(int8_t), "The size of int shall be larger than the size of int8_t.");
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(int) > sizeof(int8_t), "The size of int shall be larger than the size of int8_t.");
 #define ASSERT_INT8_EQUAL(LHS, RHS)            ASSERT_INT_EQUAL(LHS, RHS)
 #define ASSERT_INT8_NOT_EQUAL(LHS, RHS)        ASSERT_INT_NOT_EQUAL(LHS, RHS)
 #define ASSERT_INT8_GREATER(LHS, RHS)          ASSERT_INT_GREATER(LHS, RHS)
@@ -386,7 +386,7 @@ STATIC_ASSERT(sizeof(int) > sizeof(int8_t), "The size of int shall be larger tha
 #endif
 
 #if (UINT_MAX > UINT8_MAX)
-STATIC_ASSERT(sizeof(unsigned int) > sizeof(uint8_t), "The size of unsigned int shall be larger the size of uint8_t.");
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(unsigned int) > sizeof(uint8_t), "The size of unsigned int shall be larger the size of uint8_t.");
 #define ASSERT_UINT8_EQUAL(LHS, RHS)            ASSERT_UINT_EQUAL(LHS, RHS)
 #define ASSERT_UINT8_NOT_EQUAL(LHS, RHS)        ASSERT_UINT_NOT_EQUAL(LHS, RHS)
 #define ASSERT_UINT8_GREATER(LHS, RHS)          ASSERT_UINT_GREATER(LHS, RHS)
@@ -398,7 +398,7 @@ STATIC_ASSERT(sizeof(unsigned int) > sizeof(uint8_t), "The size of unsigned int 
 #endif
 
 #if (INT_MIN <= INT16_MIN) && (INT_MAX >= INT16_MAX)
-STATIC_ASSERT(sizeof(int) >= sizeof(int16_t), "The size of int shall be at least the size of int16_t.");
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(int) >= sizeof(int16_t), "The size of int shall be at least the size of int16_t.");
 #define ASSERT_INT16_EQUAL(LHS, RHS)            ASSERT_INT_EQUAL(LHS, RHS)
 #define ASSERT_INT16_NOT_EQUAL(LHS, RHS)        ASSERT_INT_NOT_EQUAL(LHS, RHS)
 #define ASSERT_INT16_GREATER(LHS, RHS)          ASSERT_INT_GREATER(LHS, RHS)
@@ -410,7 +410,7 @@ STATIC_ASSERT(sizeof(int) >= sizeof(int16_t), "The size of int shall be at least
 #endif
 
 #if (UINT_MAX >= UINT16_MAX)
-STATIC_ASSERT(sizeof(unsigned int) >= sizeof(uint16_t), "The size of unsigned int shall be at least the size of uint16_t.");
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(unsigned int) >= sizeof(uint16_t), "The size of unsigned int shall be at least the size of uint16_t.");
 #define ASSERT_UINT16_EQUAL(LHS, RHS)            ASSERT_UINT_EQUAL(LHS, RHS)
 #define ASSERT_UINT16_NOT_EQUAL(LHS, RHS)        ASSERT_UINT_NOT_EQUAL(LHS, RHS)
 #define ASSERT_UINT16_GREATER(LHS, RHS)          ASSERT_UINT_GREATER(LHS, RHS)
@@ -422,7 +422,7 @@ STATIC_ASSERT(sizeof(unsigned int) >= sizeof(uint16_t), "The size of unsigned in
 #endif
 
 #if (INT_MIN <= INT32_MIN) && (INT_MAX >= INT32_MAX)
-STATIC_ASSERT(sizeof(int) >= sizeof(int32_t), "The size of int shall be at least the size of int32_t.");
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(int) >= sizeof(int32_t), "The size of int shall be at least the size of int32_t.");
 #define ASSERT_INT32_EQUAL(LHS, RHS)            ASSERT_INT_EQUAL(LHS, RHS)
 #define ASSERT_INT32_NOT_EQUAL(LHS, RHS)        ASSERT_INT_NOT_EQUAL(LHS, RHS)
 #define ASSERT_INT32_GREATER(LHS, RHS)          ASSERT_INT_GREATER(LHS, RHS)
@@ -430,7 +430,7 @@ STATIC_ASSERT(sizeof(int) >= sizeof(int32_t), "The size of int shall be at least
 #define ASSERT_INT32_LESS(LHS, RHS)             ASSERT_INT_LESS(LHS, RHS)
 #define ASSERT_INT32_LESS_OR_EQUAL(LHS, RHS)    ASSERT_INT_LESS_OR_EQUAL(LHS, RHS)
 #elif (LONG_MIN <= INT32_MIN) && (LONG_MAX >= INT32_MAX)
-STATIC_ASSERT(sizeof(long) >= sizeof(int32_t), "The size of long int shall be at least the size of int32_t.");
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(long) >= sizeof(int32_t), "The size of long int shall be at least the size of int32_t.");
 #define ASSERT_INT32_EQUAL(LHS, RHS)            ASSERT_LONG_EQUAL(LHS, RHS)
 #define ASSERT_INT32_NOT_EQUAL(LHS, RHS)        ASSERT_LONG_NOT_EQUAL(LHS, RHS)
 #define ASSERT_INT32_GREATER(LHS, RHS)          ASSERT_LONG_GREATER(LHS, RHS)
@@ -442,7 +442,7 @@ STATIC_ASSERT(sizeof(long) >= sizeof(int32_t), "The size of long int shall be at
 #endif
 
 #if (UINT_MAX >= UINT32_MAX)
-STATIC_ASSERT(sizeof(unsigned int) >= sizeof(uint32_t), "The size of unsigned int shall be at least the size of uint32_t.");
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(unsigned int) >= sizeof(uint32_t), "The size of unsigned int shall be at least the size of uint32_t.");
 #define ASSERT_UINT32_EQUAL(LHS, RHS)            ASSERT_UINT_EQUAL(LHS, RHS)
 #define ASSERT_UINT32_NOT_EQUAL(LHS, RHS)        ASSERT_UINT_NOT_EQUAL(LHS, RHS)
 #define ASSERT_UINT32_GREATER(LHS, RHS)          ASSERT_UINT_GREATER(LHS, RHS)
@@ -450,7 +450,7 @@ STATIC_ASSERT(sizeof(unsigned int) >= sizeof(uint32_t), "The size of unsigned in
 #define ASSERT_UINT32_LESS(LHS, RHS)             ASSERT_UINT_LESS(LHS, RHS)
 #define ASSERT_UINT32_LESS_OR_EQUAL(LHS, RHS)    ASSERT_UINT_LESS_OR_EQUAL(LHS, RHS)
 #elif (ULONG_MAX >= UINT32_MAX)
-STATIC_ASSERT(sizeof(unsigned long) >= sizeof(uint32_t), "The size of unsigned long int shall be at least the size of uint32_t.");
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(unsigned long) >= sizeof(uint32_t), "The size of unsigned long int shall be at least the size of uint32_t.");
 #define ASSERT_UINT32_EQUAL(LHS, RHS)            ASSERT_ULONG_EQUAL(LHS, RHS)
 #define ASSERT_UINT32_NOT_EQUAL(LHS, RHS)        ASSERT_ULONG_NOT_EQUAL(LHS, RHS)
 #define ASSERT_UINT32_GREATER(LHS, RHS)          ASSERT_ULONG_GREATER(LHS, RHS)
@@ -463,7 +463,7 @@ STATIC_ASSERT(sizeof(unsigned long) >= sizeof(uint32_t), "The size of unsigned l
 
 #if defined(INT64_MIN) && defined(INT64_MAX)
 #if (LONG_MIN <= INT64_MIN) && (LONG_MAX >= INT64_MAX)
-STATIC_ASSERT(sizeof(long) >= sizeof(int64_t), "The size of long int shall be at least the sizeof int64_t.");
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(long) >= sizeof(int64_t), "The size of long int shall be at least the sizeof int64_t.");
 #define ASSERT_INT64_EQUAL(LHS, RHS)            ASSERT_LONG_EQUAL(LHS, RHS)
 #define ASSERT_INT64_NOT_EQUAL(LHS, RHS)        ASSERT_LONG_NOT_EQUAL(LHS, RHS)
 #define ASSERT_INT64_GREATER(LHS, RHS)          ASSERT_LONG_GREATER(LHS, RHS)
@@ -471,7 +471,7 @@ STATIC_ASSERT(sizeof(long) >= sizeof(int64_t), "The size of long int shall be at
 #define ASSERT_INT64_LESS(LHS, RHS)             ASSERT_LONG_LESS(LHS, RHS)
 #define ASSERT_INT64_LESS_OR_EQUAL(LHS, RHS)    ASSERT_LONG_LESS_OR_EQUAL(LHS, RHS)
 #elif defined(LLONG_MIN) && (LLONG_MIN <= INT64_MIN) && defined(LLONG_MAX) && (LLONG_MAX >= INT64_MAX)
-STATIC_ASSERT(sizeof(long long) >= sizeof(int64_t), "The size of long long int shall be at least the size of int64_t.");
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(long long) >= sizeof(int64_t), "The size of long long int shall be at least the size of int64_t.");
 #define ASSERT_INT64_EQUAL(LHS, RHS)            ASSERT_LLONG_EQUAL(LHS, RHS)
 #define ASSERT_INT64_NOT_EQUAL(LHS, RHS)        ASSERT_LLONG_NOT_EQUAL(LHS, RHS)
 #define ASSERT_INT64_GREATER(LHS, RHS)          ASSERT_LLONG_GREATER(LHS, RHS)
@@ -485,7 +485,7 @@ STATIC_ASSERT(sizeof(long long) >= sizeof(int64_t), "The size of long long int s
 
 #if defined(UINT64_MAX)
 #if (ULONG_MAX >= UINT64_MAX)
-STATIC_ASSERT(sizeof(unsigned long) >= sizeof(uint64_t), "The size of unsigned long int shall be at least the size of uint64_t.");
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(unsigned long) >= sizeof(uint64_t), "The size of unsigned long int shall be at least the size of uint64_t.");
 #define ASSERT_UINT64_EQUAL(LHS, RHS)            ASSERT_ULONG_EQUAL(LHS, RHS)
 #define ASSERT_UINT64_NOT_EQUAL(LHS, RHS)        ASSERT_ULONG_NOT_EQUAL(LHS, RHS)
 #define ASSERT_UINT64_GREATER(LHS, RHS)          ASSERT_ULONG_GREATER(LHS, RHS)
@@ -493,7 +493,7 @@ STATIC_ASSERT(sizeof(unsigned long) >= sizeof(uint64_t), "The size of unsigned l
 #define ASSERT_UINT64_LESS(LHS, RHS)             ASSERT_ULONG_LESS(LHS, RHS)
 #define ASSERT_UINT64_LESS_OR_EQUAL(LHS, RHS)    ASSERT_ULONG_LESS_OR_EQUAL(LHS, RHS)
 #elif defined(ULLONG_MAX) && (ULLONG_MAX >= UINT64_MAX)
-STATIC_ASSERT(sizeof(unsigned long long) >= sizeof(uint64_t), "The size of unsigned long long int shall be at least the size of uint64_t.");
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(unsigned long long) >= sizeof(uint64_t), "The size of unsigned long long int shall be at least the size of uint64_t.");
 #define ASSERT_UINT64_EQUAL(LHS, RHS)            ASSERT_ULLONG_EQUAL(LHS, RHS)
 #define ASSERT_UINT64_NOT_EQUAL(LHS, RHS)        ASSERT_ULLONG_NOT_EQUAL(LHS, RHS)
 #define ASSERT_UINT64_GREATER(LHS, RHS)          ASSERT_ULLONG_GREATER(LHS, RHS)
@@ -506,7 +506,7 @@ STATIC_ASSERT(sizeof(unsigned long long) >= sizeof(uint64_t), "The size of unsig
 #endif /* UINT64_MAX defined */
 
 #if (PTRDIFF_MIN == INT64_MIN) && (PTRDIFF_MAX == INT64_MAX)
-STATIC_ASSERT(sizeof(ptrdiff_t) == sizeof(int64_t), "The size of ptrdiff_t shall be equal to the size of int64_t.");
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(ptrdiff_t) == sizeof(int64_t), "The size of ptrdiff_t shall be equal to the size of int64_t.");
 #define ASSERT_PTRDIFF_EQUAL(LHS, RHS)            ASSERT_INT64_EQUAL(LHS, RHS)
 #define ASSERT_PTRDIFF_NOT_EQUAL(LHS, RHS)        ASSERT_INT64_NOT_EQUAL(LHS, RHS)
 #define ASSERT_PTRDIFF_GREATER(LHS, RHS)          ASSERT_INT64_GREATER(LHS, RHS)
@@ -514,7 +514,7 @@ STATIC_ASSERT(sizeof(ptrdiff_t) == sizeof(int64_t), "The size of ptrdiff_t shall
 #define ASSERT_PTRDIFF_LESS(LHS, RHS)             ASSERT_INT64_LESS(LHS, RHS)
 #define ASSERT_PTRDIFF_LESS_OR_EQUAL(LHS, RHS)    ASSERT_INT64_LESS_OR_EQUAL(LHS, RHS)
 #elif (PTRDIFF_MIN == INT32_MIN) && (PTRDIFF_MAX == INT32_MAX)
-STATIC_ASSERT(sizeof(ptrdiff_t) == sizeof(int32_t), "The size of ptrdiff_t shall be equal to the size of int32_t.");
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(ptrdiff_t) == sizeof(int32_t), "The size of ptrdiff_t shall be equal to the size of int32_t.");
 #define ASSERT_PTRDIFF_EQUAL(LHS, RHS)            ASSERT_INT32_EQUAL(LHS, RHS)
 #define ASSERT_PTRDIFF_NOT_EQUAL(LHS, RHS)        ASSERT_INT32_NOT_EQUAL(LHS, RHS)
 #define ASSERT_PTRDIFF_GREATER(LHS, RHS)          ASSERT_INT32_GREATER(LHS, RHS)
@@ -522,7 +522,7 @@ STATIC_ASSERT(sizeof(ptrdiff_t) == sizeof(int32_t), "The size of ptrdiff_t shall
 #define ASSERT_PTRDIFF_LESS(LHS, RHS)             ASSERT_INT32_LESS(LHS, RHS)
 #define ASSERT_PTRDIFF_LESS_OR_EQUAL(LHS, RHS)    ASSERT_INT32_LESS_OR_EQUAL(LHS, RHS)
 #elif (PTRDIFF_MIN == INT16_MIN) && (PTRDIFF_MAX == INT16_MAX)
-STATIC_ASSERT(sizeof(ptrdiff_t) == sizeof(int16_t), "The size of ptrdiff_t shall be equal to the size of int16_t.");
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(ptrdiff_t) == sizeof(int16_t), "The size of ptrdiff_t shall be equal to the size of int16_t.");
 #define ASSERT_PTRDIFF_EQUAL(LHS, RHS)            ASSERT_INT16_EQUAL(LHS, RHS)
 #define ASSERT_PTRDIFF_NOT_EQUAL(LHS, RHS)        ASSERT_INT16_NOT_EQUAL(LHS, RHS)
 #define ASSERT_PTRDIFF_GREATER(LHS, RHS)          ASSERT_INT16_GREATER(LHS, RHS)
@@ -534,7 +534,7 @@ STATIC_ASSERT(sizeof(ptrdiff_t) == sizeof(int16_t), "The size of ptrdiff_t shall
 #endif
 
 #if SIZE_MAX == UINT64_MAX
-STATIC_ASSERT(sizeof(size_t) == sizeof(uint64_t), "The size of size_t shall be equal to the size of uint64_t.");
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(size_t) == sizeof(uint64_t), "The size of size_t shall be equal to the size of uint64_t.");
 #define ASSERT_SIZE_EQUAL(LHS, RHS)            ASSERT_UINT64_EQUAL(LHS, RHS)
 #define ASSERT_SIZE_NOT_EQUAL(LHS, RHS)        ASSERT_UINT64_NOT_EQUAL(LHS, RHS)
 #define ASSERT_SIZE_GREATER(LHS, RHS)          ASSERT_UINT64_GREATER(LHS, RHS)
@@ -542,7 +542,7 @@ STATIC_ASSERT(sizeof(size_t) == sizeof(uint64_t), "The size of size_t shall be e
 #define ASSERT_SIZE_LESS(LHS, RHS)             ASSERT_UINT64_LESS(LHS, RHS)
 #define ASSERT_SIZE_LESS_OR_EQUAL(LHS, RHS)    ASSERT_UINT64_LESS_OR_EQUAL(LHS, RHS)
 #elif SIZE_MAX == UINT32_MAX
-STATIC_ASSERT(sizeof(size_t) == sizeof(uint32_t), "The size of size_t shall be equal to the size of uint32_t.");
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(size_t) == sizeof(uint32_t), "The size of size_t shall be equal to the size of uint32_t.");
 #define ASSERT_SIZE_EQUAL(LHS, RHS)            ASSERT_UINT32_EQUAL(LHS, RHS)
 #define ASSERT_SIZE_NOT_EQUAL(LHS, RHS)        ASSERT_UINT32_NOT_EQUAL(LHS, RHS)
 #define ASSERT_SIZE_GREATER(LHS, RHS)          ASSERT_UINT32_GREATER(LHS, RHS)
@@ -550,7 +550,7 @@ STATIC_ASSERT(sizeof(size_t) == sizeof(uint32_t), "The size of size_t shall be e
 #define ASSERT_SIZE_LESS(LHS, RHS)             ASSERT_UINT32_LESS(LHS, RHS)
 #define ASSERT_SIZE_LESS_OR_EQUAL(LHS, RHS)    ASSERT_UINT32_LESS_OR_EQUAL(LHS, RHS)
 #elif SIZE_MAX == UINT16_MAX
-STATIC_ASSERT(sizeof(size_t) == sizeof(uint16_t), "The size of size_t shall be equal to the size of uint16_t.");
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(size_t) == sizeof(uint16_t), "The size of size_t shall be equal to the size of uint16_t.");
 #define ASSERT_SIZE_EQUAL(LHS, RHS)            ASSERT_UINT16_EQUAL(LHS, RHS)
 #define ASSERT_SIZE_NOT_EQUAL(LHS, RHS)        ASSERT_UINT16_NOT_EQUAL(LHS, RHS)
 #define ASSERT_SIZE_GREATER(LHS, RHS)          ASSERT_UINT16_GREATER(LHS, RHS)

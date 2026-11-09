@@ -1,72 +1,113 @@
-#ifndef FIXED_WIDTH_INTEGER_TYPES_H
-#define FIXED_WIDTH_INTEGER_TYPES_H
+#ifndef SAFER_C_LIBRARY_FIXED_WIDTH_INTEGER_TYPES_H
+#define SAFER_C_LIBRARY_FIXED_WIDTH_INTEGER_TYPES_H
 
 #include "static_assert.h"
 #include <limits.h>
 #include <stddef.h>
 
-#if (defined(__cplusplus) && (__cplusplus >= 201103L)) || (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L))
+/* Note:
+Define SAFER_C_LIBRARY_FIXED_WIDTH_INTEGER_TYPES_USE_STDINT in the compiler flags to include <stdint.h> instead of using the custom
+implementation below, if your toolchain provides <stdint.h> but the C or C++ version reported by your compiler is too old. */
+#if (defined(__cplusplus) && (__cplusplus >= 201103L)) || (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)) \
+	|| defined(SAFER_C_LIBRARY_FIXED_WIDTH_INTEGER_TYPES_USE_STDINT)
+
 #include <stdint.h>
+
 #else /* C++ or C version detection */
 
 #pragma message("Using a custom implementation for fixed-width integer types.")
 
+#ifndef INT8_MAX
 #define INT8_MAX   (0x7F)
+#endif
+#ifndef INT8_MIN
 #define INT8_MIN   (-INT8_MAX - 1)
+#endif
+#ifndef UINT8_MAX
 #define UINT8_MAX  (0xFFU)
+#endif
+#ifndef INT16_MAX
 #define INT16_MAX  (0x7FFF)
+#endif
+#ifndef INT16_MIN
 #define INT16_MIN  (-INT16_MAX - 1)
+#endif
+#ifndef UINT16_MAX
 #define UINT16_MAX (0xFFFFU)
+#endif
+#ifndef INT32_MAX
 #define INT32_MAX  (0x7FFFFFFF)
+#endif
+#ifndef INT32_MIN
 #define INT32_MIN  (-INT32_MAX - 1)
+#endif
+#ifndef UINT32_MAX
 #define UINT32_MAX (0xFFFFFFFFU)
+#endif
 
 #if (LONG_MIN < INT32_MIN) && (LONG_MAX > INT32_MAX)
-STATIC_ASSERT((sizeof(long) * CHAR_BIT) == 64U, "The size of long must be 64-bit.");
+SAFER_C_LIBRARY_STATIC_ASSERT((sizeof(long) * CHAR_BIT) == 64U, "The size of long must be 64-bit.");
+#ifndef INT64_MAX
 #define INT64_MAX (0x7FFFFFFFFFFFFFFFL)
+#endif
+#ifndef INT64_MIN
 #define INT64_MIN (-INT64_MAX - 1L)
+#endif
 #elif defined(LLONG_MIN) && (LLONG_MIN < INT32_MIN) && defined(LLONG_MAX) && (LLONG_MAX > INT32_MAX)
-STATIC_ASSERT((sizeof(long long) * CHAR_BIT) == 64U, "The size of long long must be 64-bit.");
+SAFER_C_LIBRARY_STATIC_ASSERT((sizeof(long long) * CHAR_BIT) == 64U, "The size of long long must be 64-bit.");
+#ifndef INT64_MAX
 #define INT64_MAX (0x7FFFFFFFFFFFFFFFLL)
+#endif
+#ifndef INT64_MIN
 #define INT64_MIN (-INT64_MAX - 1LL)
+#endif
 #endif
 
 #if (ULONG_MAX > UINT32_MAX)
-STATIC_ASSERT((sizeof(unsigned long) * CHAR_BIT) == 64U, "The size of unsigned long must be 64-bit.");
+SAFER_C_LIBRARY_STATIC_ASSERT((sizeof(unsigned long) * CHAR_BIT) == 64U, "The size of unsigned long must be 64-bit.");
+#ifndef UINT64_MAX
 #define UINT64_MAX (0xFFFFFFFFFFFFFFFFUL)
-#define FIXED_WIDTH_INTEGER_TYPE_UINT64_IS_SUPPORTED 1
+#endif
 #elif defined(ULLONG_MAX) && (ULLONG_MAX > UINT32_MAX)
-STATIC_ASSERT((sizeof(unsigned long long) * CHAR_BIT) == 64U, "The size of unsigned long long must be 64-bit.");
+SAFER_C_LIBRARY_STATIC_ASSERT((sizeof(unsigned long long) * CHAR_BIT) == 64U, "The size of unsigned long long must be 64-bit.");
+#ifndef UINT64_MAX
 #define UINT64_MAX (0xFFFFFFFFFFFFFFFFULL)
+#endif
 #endif
 
 #if (SCHAR_MIN == INT8_MIN) && (SCHAR_MAX == INT8_MAX)
-STATIC_ASSERT((sizeof(signed char) * CHAR_BIT) == 8U, "The size of signed char must be 8-bit.");
+SAFER_C_LIBRARY_STATIC_ASSERT((sizeof(signed char) * CHAR_BIT) == 8U, "The size of signed char must be 8-bit.");
 typedef signed char int8_t;
 typedef int8_t int_least8_t;
 typedef int8_t int_fast8_t;
+#ifndef INT_FAST8_MIN
 #define INT_FAST8_MIN INT8_MIN
+#endif
+#ifndef INT_FAST8_MAX
 #define INT_FAST8_MAX INT8_MAX
+#endif
 #else
 #error "int8_t cannot be implemented properly."
 #endif
 
 #if (UCHAR_MAX == UINT8_MAX)
-STATIC_ASSERT((sizeof(unsigned char) * CHAR_BIT) == 8U, "The size of unsigned char must be 8-bit.");
+SAFER_C_LIBRARY_STATIC_ASSERT((sizeof(unsigned char) * CHAR_BIT) == 8U, "The size of unsigned char must be 8-bit.");
 typedef unsigned char uint8_t;
 typedef uint8_t uint_least8_t;
 typedef uint8_t uint_fast8_t;
+#ifndef UINT_FAST8_MAX
 #define UINT_FAST8_MAX UINT8_MAX
+#endif
 #else
 #error "uint8_t cannot be implemented properly."
 #endif
 
 #if (INT_MIN == INT16_MIN) && (INT_MAX == INT16_MAX)
-STATIC_ASSERT((sizeof(int) * CHAR_BIT) == 16U, "The size of int must be 16-bit.");
+SAFER_C_LIBRARY_STATIC_ASSERT((sizeof(int) * CHAR_BIT) == 16U, "The size of int must be 16-bit.");
 typedef int int16_t;
 typedef int16_t int_least16_t;
 #elif (SHRT_MIN == INT16_MIN) && (SHRT_MAX == INT16_MAX)
-STATIC_ASSERT((sizeof(short) * CHAR_BIT) == 16U, "The size of short must be 16-bit.");
+SAFER_C_LIBRARY_STATIC_ASSERT((sizeof(short) * CHAR_BIT) == 16U, "The size of short must be 16-bit.");
 typedef short int16_t;
 typedef int16_t int_least16_t;
 #else
@@ -74,15 +115,19 @@ typedef int16_t int_least16_t;
 #endif
 
 typedef int int_fast16_t;
+#ifndef INT_FAST16_MIN
 #define INT_FAST16_MIN INT_MIN
+#endif
+#ifndef INT_FAST16_MAX
 #define INT_FAST16_MAX INT_MAX
+#endif
 
 #if (UINT_MAX == UINT16_MAX)
-STATIC_ASSERT((sizeof(unsigned int) * CHAR_BIT) == 16U, "The size of unsigned int must be 16-bit.");
+SAFER_C_LIBRARY_STATIC_ASSERT((sizeof(unsigned int) * CHAR_BIT) == 16U, "The size of unsigned int must be 16-bit.");
 typedef unsigned int uint16_t;
 typedef uint16_t uint_least16_t;
 #elif (USHRT_MAX == UINT16_MAX)
-STATIC_ASSERT((sizeof(unsigned short) * CHAR_BIT) == 16U, "The size of unsigned short must be 16-bit.");
+SAFER_C_LIBRARY_STATIC_ASSERT((sizeof(unsigned short) * CHAR_BIT) == 16U, "The size of unsigned short must be 16-bit.");
 typedef unsigned short uint16_t;
 typedef uint16_t uint_least16_t;
 #else
@@ -90,109 +135,165 @@ typedef uint16_t uint_least16_t;
 #endif
 
 typedef unsigned int uint_fast16_t;
+#ifndef UINT_FAST16_MAX
 #define UINT_FAST16_MAX UINT_MAX
+#endif
 
 #if (INT_MIN == INT32_MIN) && (INT_MAX == INT32_MAX)
-STATIC_ASSERT((sizeof(int) * CHAR_BIT) == 32U, "The size of int must be 32-bit.");
+SAFER_C_LIBRARY_STATIC_ASSERT((sizeof(int) * CHAR_BIT) == 32U, "The size of int must be 32-bit.");
 typedef int int32_t;
 typedef int32_t int_least32_t;
 typedef int32_t int_fast32_t;
+#ifndef INT_FAST32_MIN
 #define INT_FAST32_MIN   INT_MIN
+#endif
+#ifndef INT_FAST32_MAX
 #define INT_FAST32_MAX   INT_MAX
+#endif
 #elif (LONG_MIN == INT32_MIN) && (LONG_MAX == INT32_MAX)
-STATIC_ASSERT((sizeof(long) * CHAR_BIT) == 32U, "The size of long must be 32-bit.");
+SAFER_C_LIBRARY_STATIC_ASSERT((sizeof(long) * CHAR_BIT) == 32U, "The size of long must be 32-bit.");
 typedef long int32_t;
 typedef int32_t int_least32_t;
 typedef int32_t int_fast32_t;
+#ifndef INT_FAST32_MIN
 #define INT_FAST32_MIN   LONG_MIN
+#endif
+#ifndef INT_FAST32_MAX
 #define INT_FAST32_MAX   LONG_MAX
+#endif
 #else
 #error "int32_t cannot be implemented properly."
 #endif
 
 #if (UINT_MAX == UINT32_MAX)
-STATIC_ASSERT((sizeof(unsigned int) * CHAR_BIT) == 32U, "The size of unsigned int must be 32-bit.");
+SAFER_C_LIBRARY_STATIC_ASSERT((sizeof(unsigned int) * CHAR_BIT) == 32U, "The size of unsigned int must be 32-bit.");
 typedef unsigned int uint32_t;
 typedef uint32_t uint_least32_t;
 typedef uint32_t uint_fast32_t;
+#ifndef UINT_FAST32_MAX
 #define UINT_FAST32_MAX  UINT_MAX
+#endif
 #elif (ULONG_MAX == UINT32_MAX)
-STATIC_ASSERT((sizeof(unsigned long) * CHAR_BIT) == 32U, "The size of unsigned long must be 32-bit.");
+SAFER_C_LIBRARY_STATIC_ASSERT((sizeof(unsigned long) * CHAR_BIT) == 32U, "The size of unsigned long must be 32-bit.");
 typedef unsigned long uint32_t;
 typedef uint32_t uint_least32_t;
 typedef uint32_t uint_fast32_t;
+#ifndef UINT_FAST32_MAX
 #define UINT_FAST32_MAX  ULONG_MAX
+#endif
 #else
 #error "uint32_t cannot be implemented properly."
 #endif
 
+#ifndef INT_LEAST8_MIN
 #define INT_LEAST8_MIN    INT8_MIN
+#endif
+#ifndef INT_LEAST8_MAX
 #define INT_LEAST8_MAX    INT8_MAX
+#endif
+#ifndef INT_LEAST16_MIN
 #define INT_LEAST16_MIN   INT16_MIN
+#endif
+#ifndef INT_LEAST16_MAX
 #define INT_LEAST16_MAX   INT16_MAX
+#endif
+#ifndef INT_LEAST32_MIN
 #define INT_LEAST32_MIN   INT32_MIN
+#endif
+#ifndef INT_LEAST32_MAX
 #define INT_LEAST32_MAX   INT32_MAX
+#endif
+#ifndef UINT_LEAST8_MAX
 #define UINT_LEAST8_MAX   UINT8_MAX
+#endif
+#ifndef UINT_LEAST16_MAX
 #define UINT_LEAST16_MAX  UINT16_MAX
+#endif
+#ifndef UINT_LEAST32_MAX
 #define UINT_LEAST32_MAX  UINT32_MAX
+#endif
 
 #if defined(INT64_MIN) && defined(INT64_MAX)
 #if defined(_MSC_VER)
-STATIC_ASSERT((sizeof(__int64) * CHAR_BIT) == 64U, "The size of __int64 must be 64-bit.");
+SAFER_C_LIBRARY_STATIC_ASSERT((sizeof(__int64) * CHAR_BIT) == 64U, "The size of __int64 must be 64-bit.");
 typedef __int64 int64_t;
 #elif (LONG_MIN == INT64_MIN) && (LONG_MAX == INT64_MAX)
-STATIC_ASSERT((sizeof(long) * CHAR_BIT) == 64U, "The size of long must be 64-bit.");
+SAFER_C_LIBRARY_STATIC_ASSERT((sizeof(long) * CHAR_BIT) == 64U, "The size of long must be 64-bit.");
 typedef long int64_t;
 #else
-STATIC_ASSERT((sizeof(long long) * CHAR_BIT) == 64U, "The size of long long must be 64-bit.");
+SAFER_C_LIBRARY_STATIC_ASSERT((sizeof(long long) * CHAR_BIT) == 64U, "The size of long long must be 64-bit.");
 typedef long long int64_t;
 #endif
 typedef int64_t int_least64_t;
 typedef int64_t int_fast64_t;
+#ifndef INT_LEAST64_MIN
 #define INT_LEAST64_MIN   INT64_MIN
+#endif
+#ifndef INT_LEAST64_MAX
 #define INT_LEAST64_MAX   INT64_MAX
+#endif
+#ifndef INT_FAST64_MIN
 #define INT_FAST64_MIN    INT64_MIN
+#endif
+#ifndef INT_FAST64_MAX
 #define INT_FAST64_MAX    INT64_MAX
+#endif
 typedef int64_t intmax_t;
+#ifndef INTMAX_MIN
 #define INTMAX_MIN        INT64_MIN
+#endif
+#ifndef INTMAX_MAX
 #define INTMAX_MAX        INT64_MAX
+#endif
 #else
 typedef int32_t intmax_t;
+#ifndef INTMAX_MIN
 #define INTMAX_MIN        INT32_MIN
+#endif
+#ifndef INTMAX_MAX
 #define INTMAX_MAX        INT32_MAX
+#endif
 #endif
 
 #if defined(UINT64_MAX)
 #ifdef _MSC_VER
-STATIC_ASSERT((sizeof(unsigned __int64) * CHAR_BIT) == 64U, "The size of unsigned __int64 must be 64-bit.");
+SAFER_C_LIBRARY_STATIC_ASSERT((sizeof(unsigned __int64) * CHAR_BIT) == 64U, "The size of unsigned __int64 must be 64-bit.");
 typedef unsigned __int64 uint64_t; 
 #elif (ULONG_MAX == UINT64_MAX)
-STATIC_ASSERT((sizeof(unsigned long) * CHAR_BIT) == 64U, "The size of unsigned long must be 64-bit.");
+SAFER_C_LIBRARY_STATIC_ASSERT((sizeof(unsigned long) * CHAR_BIT) == 64U, "The size of unsigned long must be 64-bit.");
 typedef unsigned long uint64_t;
 #else
-STATIC_ASSERT((sizeof(unsigned long long) * CHAR_BIT) == 64U, "The size of unsigned long long must be 64-bit.");
+SAFER_C_LIBRARY_STATIC_ASSERT((sizeof(unsigned long long) * CHAR_BIT) == 64U, "The size of unsigned long long must be 64-bit.");
 typedef unsigned long long uint64_t;
 #endif
 typedef uint64_t uint_least64_t;
 typedef uint64_t uint_fast64_t;
+#ifndef UINT_LEAST64_MAX
 #define UINT_LEAST64_MAX   UINT64_MAX
+#endif
+#ifndef UINT_FAST64_MAX
 #define UINT_FAST64_MAX    UINT64_MAX
+#endif
 typedef uint64_t uintmax_t;
+#ifndef UINTMAX_MAX
 #define UINTMAX_MAX        UINT64_MAX
+#endif
 #else
 typedef uint32_t uintmax_t;
+#ifndef UINTMAX_MAX
 #define UINTMAX_MAX        UINT32_MAX
+#endif
 #endif
 
 /* Integer types for storing addresses */
-STATIC_ASSERT(sizeof(ptrdiff_t) == sizeof(void*), "intptr_t must be of the same size as a pointer type.");
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(ptrdiff_t) == sizeof(void*), "intptr_t must be of the same size as a pointer type.");
 typedef ptrdiff_t intptr_t;
-STATIC_ASSERT(sizeof(size_t) == sizeof(void*), "uintptr_t must be of the same size as a pointer type.");
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(size_t) == sizeof(void*), "uintptr_t must be of the same size as a pointer type.");
 typedef size_t uintptr_t;
 
 /* Modify this part based on your computer architecture */
 #if defined(_WIN64) || defined(WIN64)
-STATIC_ASSERT((sizeof(void*) * CHAR_BIT) == 64U, "Windows 64-bit: A pointer type is supposed to be 64-bit.");
+SAFER_C_LIBRARY_STATIC_ASSERT((sizeof(void*) * CHAR_BIT) == 64U, "Windows 64-bit: A pointer type is supposed to be 64-bit.");
 #ifndef PTRDIFF_MIN
 #define PTRDIFF_MIN INT64_MIN
 #endif
@@ -203,7 +304,7 @@ STATIC_ASSERT((sizeof(void*) * CHAR_BIT) == 64U, "Windows 64-bit: A pointer type
 #define SIZE_MAX UINT64_MAX
 #endif
 #elif defined(_WIN32) || defined(WIN32)
-STATIC_ASSERT((sizeof(void*) * CHAR_BIT) == 32U, "Windows 32-bit: A pointer type is supposed to be 32-bit.");
+SAFER_C_LIBRARY_STATIC_ASSERT((sizeof(void*) * CHAR_BIT) == 32U, "Windows 32-bit: A pointer type is supposed to be 32-bit.");
 #ifndef PTRDIFF_MIN
 #define PTRDIFF_MIN INT32_MIN
 #endif
@@ -214,7 +315,7 @@ STATIC_ASSERT((sizeof(void*) * CHAR_BIT) == 32U, "Windows 32-bit: A pointer type
 #define SIZE_MAX UINT32_MAX
 #endif
 #elif (LONG_MIN == INT64_MIN) && (LONG_MAX == INT64_MAX) && (ULONG_MAX == UINT64_MAX)
-STATIC_ASSERT((sizeof(void*) * CHAR_BIT) == 64U, "A pointer type is supposed to be 64-bit.");
+SAFER_C_LIBRARY_STATIC_ASSERT((sizeof(void*) * CHAR_BIT) == 64U, "A pointer type is supposed to be 64-bit.");
 #ifndef PTRDIFF_MIN
 #define PTRDIFF_MIN INT64_MIN
 #endif
@@ -225,7 +326,7 @@ STATIC_ASSERT((sizeof(void*) * CHAR_BIT) == 64U, "A pointer type is supposed to 
 #define SIZE_MAX UINT64_MAX
 #endif
 #elif (INT_MIN == INT32_MIN) && (INT_MAX == INT32_MAX) && (UINT_MAX == UINT32_MAX)
-STATIC_ASSERT((sizeof(void*) * CHAR_BIT) == 32U, "A pointer type is supposed to be 32-bit.");
+SAFER_C_LIBRARY_STATIC_ASSERT((sizeof(void*) * CHAR_BIT) == 32U, "A pointer type is supposed to be 32-bit.");
 #ifndef PTRDIFF_MIN
 #define PTRDIFF_MIN INT32_MIN
 #endif
@@ -236,7 +337,7 @@ STATIC_ASSERT((sizeof(void*) * CHAR_BIT) == 32U, "A pointer type is supposed to 
 #define SIZE_MAX UINT32_MAX
 #endif
 #elif (INT_MIN == INT16_MIN) && (INT_MAX == INT16_MAX) && (UINT_MAX == UINT16_MAX)
-STATIC_ASSERT((sizeof(void*) * CHAR_BIT) == 16U, "A pointer type is supposed to be 16-bit.");
+SAFER_C_LIBRARY_STATIC_ASSERT((sizeof(void*) * CHAR_BIT) == 16U, "A pointer type is supposed to be 16-bit.");
 #ifndef PTRDIFF_MIN
 #define PTRDIFF_MIN INT16_MIN
 #endif
@@ -295,11 +396,20 @@ STATIC_ASSERT((sizeof(void*) * CHAR_BIT) == 16U, "A pointer type is supposed to 
 #endif
 
 /* Function macros for minimum-width integer constants */
+#ifndef INT8_C
 #define INT8_C(integer) (integer)
+#endif
+#ifndef UINT8_C
 #define UINT8_C(integer) (integer##U)
+#endif
+#ifndef INT16_C
 #define INT16_C(integer) (integer)
+#endif
+#ifndef UINT16_C
 #define UINT16_C(integer) (integer##U)
+#endif
 
+#ifndef INT32_C
 #if (INT_MIN == INT32_MIN) && (INT_MAX == INT32_MAX)
 #define INT32_C(integer) (integer)
 #elif (LONG_MIN == INT32_MIN) && (LONG_MAX == INT32_MAX)
@@ -307,7 +417,9 @@ STATIC_ASSERT((sizeof(void*) * CHAR_BIT) == 16U, "A pointer type is supposed to 
 #else
 #define INT32_C(integer) (integer)
 #endif
+#endif
 
+#ifndef UINT32_C
 #if (UINT_MAX == UINT32_MAX)
 #define UINT32_C(integer) (integer##U)
 #elif (ULONG_MAX == UINT32_MAX)
@@ -315,30 +427,55 @@ STATIC_ASSERT((sizeof(void*) * CHAR_BIT) == 16U, "A pointer type is supposed to 
 #else
 #define UINT32_C(integer) (integer##U)
 #endif
+#endif
 
 #if defined(INT64_MIN) && defined(INT64_MAX)
 #if (LONG_MIN == INT64_MIN) && (LONG_MAX == INT64_MAX)
+#ifndef INT64_C
 #define INT64_C(integer) (integer##L)
+#endif
+#ifndef INTMAX_C
 #define INTMAX_C(integer) (integer##L)
+#endif
 #elif defined(LLONG_MIN) && (LLONG_MIN == INT64_MIN) && defined(LLONG_MAX) && (LLONG_MAX == INT64_MAX)
+#ifndef INT64_C
 #define INT64_C(integer) (integer##LL)
+#endif
+#ifndef INTMAX_C
 #define INTMAX_C(integer) (integer##LL)
+#endif
 #else
+#ifndef INT64_C
 #define INT64_C(integer) (integer)
+#endif
+#ifndef INTMAX_C
 #define INTMAX_C(integer) (integer)
+#endif
 #endif
 #endif
 
 #if defined(UINT64_MAX)
 #if (ULONG_MAX == UINT64_MAX)
+#ifndef UINT64_C
 #define UINT64_C(integer) (integer##UL)
+#endif
+#ifndef UINTMAX_C
 #define UINTMAX_C(integer) (integer##UL)
+#endif
 #elif defined(ULLONG_MAX) && (ULLONG_MAX == UINT64_MAX)
+#ifndef UINT64_C
 #define UINT64_C(integer) (integer##ULL)
+#endif
+#ifndef UINTMAX_C
 #define UINTMAX_C(integer) (integer##ULL)
+#endif
 #else
+#ifndef UINT64_C
 #define UINT64_C(integer) (integer)
+#endif
+#ifndef UINTMAX_C
 #define UINTMAX_C(integer) (integer)
+#endif
 #endif
 #endif
 
@@ -641,4 +778,4 @@ STATIC_ASSERT((sizeof(void*) * CHAR_BIT) == 16U, "A pointer type is supposed to 
 #pragma message("uint64_t is probably not supported.")
 #endif
 
-#endif /* FIXED_WIDTH_INTEGER_TYPES_H */
+#endif /* include guard */

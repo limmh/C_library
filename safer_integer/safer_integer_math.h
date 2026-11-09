@@ -1,5 +1,5 @@
-#ifndef SAFER_INTEGER_MATH
-#define SAFER_INTEGER_MATH
+#ifndef SAFER_C_LIBRARY_SAFER_INTEGER_MATH
+#define SAFER_C_LIBRARY_SAFER_INTEGER_MATH
 
 #include "Boolean_type.h"
 #include "fixed_width_integer_types.h"

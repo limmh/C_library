@@ -1,5 +1,5 @@
-#ifndef SAFER_FIXED_WIDTH_INTEGERS_H
-#define SAFER_FIXED_WIDTH_INTEGERS_H
+#ifndef SAFER_C_LIBRARY_SAFER_FIXED_WIDTH_INTEGERS_H
+#define SAFER_C_LIBRARY_SAFER_FIXED_WIDTH_INTEGERS_H
 
 #include "fixed_width_integer_types.h"
 #include "safer_integer.h"
@@ -69,11 +69,11 @@ typedef struct u32_result_type
 i8_result_type safer_i8_add(int8_t a, int8_t b);
 
 /**
-* @brief Subtracts an int8_t operand from an int8_t operand
-* @param [in] a Operand 1
-* @param [in] b Operand 2
-* @return i8_result_type
-*/
+ * @brief Subtracts an int8_t operand from an int8_t operand
+ * @param [in] a Operand 1
+ * @param [in] b Operand 2
+ * @return i8_result_type
+ */
 i8_result_type safer_i8_minus(int8_t a, int8_t b);
 
 /**
@@ -101,11 +101,11 @@ i8_result_type safer_i8_divide(int8_t a, int8_t b);
 int16_t safe_i8_add(int8_t a, int8_t b);
 
 /**
-* @brief Subtracts an int8_t operand from an int8_t operand and returns an int16_t value
-* @param [in] a Operand 1
-* @param [in] b Operand 2
-* @return int16_t
-*/
+ * @brief Subtracts an int8_t operand from an int8_t operand and returns an int16_t value
+ * @param [in] a Operand 1
+ * @param [in] b Operand 2
+ * @return int16_t
+ */
 int16_t safe_i8_minus(int8_t a, int8_t b);
 
 /**
@@ -588,10 +588,12 @@ u64_result_type safer_u64_multiply(uint64_t a, uint64_t b);
  */
 u64_result_type safer_u64_divide(uint64_t a, uint64_t b);
 
-#if (PTRDIFF_MIN == INT64_MIN) && (PTRDIFF_MAX == INT64_MAX)
+#endif /* defined(INT64_MIN) && defined(INT64_MAX) && defined(UINT64_MAX) */
+
+#if defined(INT64_MIN) && defined(INT64_MAX) && (PTRDIFF_MIN == INT64_MIN) && (PTRDIFF_MAX == INT64_MAX)
 typedef i64_result_type ptrdiff_result_type;
 
-STATIC_ASSERT(sizeof(ptrdiff_t) == sizeof(int64_t), "The size of ptrdiff_t must be the same as the size of int64_t.");
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(ptrdiff_t) == sizeof(int64_t), "The size of ptrdiff_t must be the same as the size of int64_t.");
 
 /** @brief Safer addition for ptrdiff_t */
 INLINE_OR_STATIC ptrdiff_result_type safer_ptrdiff_add(ptrdiff_t a, ptrdiff_t b) {
@@ -612,40 +614,10 @@ INLINE_OR_STATIC ptrdiff_result_type safer_ptrdiff_multiply(ptrdiff_t a, ptrdiff
 INLINE_OR_STATIC ptrdiff_result_type safer_ptrdiff_divide(ptrdiff_t a, ptrdiff_t b) {
 	return safer_i64_divide(a, b);
 }
-#endif
-
-#if SIZE_MAX == UINT64_MAX
-typedef u64_result_type size_result_type;
-
-STATIC_ASSERT(sizeof(size_t) == sizeof(uint64_t), "The size of size_t must be the same as the size of uint64_t.");
-
-/** @brief Safer addition for size_t */
-INLINE_OR_STATIC size_result_type safer_size_add(size_t a, size_t b) {
-	return safer_u64_add(a, b);
-}
-
-/** @brief Safer subtraction for size_t */
-INLINE_OR_STATIC size_result_type safer_size_minus(size_t a, size_t b) {
-	return safer_u64_minus(a, b);
-}
-
-/** @brief Safer multiplication for size_t */
-INLINE_OR_STATIC size_result_type safer_size_multiply(size_t a, size_t b) {
-	return safer_u64_multiply(a, b);
-}
-
-/** @brief Safer division for size_t */
-INLINE_OR_STATIC size_result_type safer_size_divide(size_t a, size_t b) {
-	return safer_u64_divide(a, b);
-}
-#endif
-
-#else
-
-#if (PTRDIFF_MIN == INT32_MIN) && (PTRDIFF_MAX == INT32_MAX)
+#elif (PTRDIFF_MIN == INT32_MIN) && (PTRDIFF_MAX == INT32_MAX)
 typedef i32_result_type ptrdiff_result_type;
 
-STATIC_ASSERT(sizeof(ptrdiff_t) == sizeof(int32_t), "The size of ptrdiff_t must be the same as the size of int32_t.");
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(ptrdiff_t) == sizeof(int32_t), "The size of ptrdiff_t must be the same as the size of int32_t.");
 
 /** @brief Safer addition for ptrdiff_t */
 INLINE_OR_STATIC ptrdiff_result_type safer_ptrdiff_add(ptrdiff_t a, ptrdiff_t b) {
@@ -666,11 +638,10 @@ INLINE_OR_STATIC ptrdiff_result_type safer_ptrdiff_multiply(ptrdiff_t a, ptrdiff
 INLINE_OR_STATIC ptrdiff_result_type safer_ptrdiff_divide(ptrdiff_t a, ptrdiff_t b) {
 	return safer_i32_divide(a, b);
 }
-
 #elif (PTRDIFF_MIN == INT16_MIN) && (PTRDIFF_MAX == INT16_MAX)
 typedef i16_result_type ptrdiff_result_type;
 
-STATIC_ASSERT(sizeof(ptrdiff_t) == sizeof(int16_t), "The size of ptrdiff_t must be the same as the size of int16_t.");
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(ptrdiff_t) == sizeof(int16_t), "The size of ptrdiff_t must be the same as the size of int16_t.");
 
 /** @brief Safer addition for ptrdiff_t */
 INLINE_OR_STATIC ptrdiff_result_type safer_ptrdiff_add(ptrdiff_t a, ptrdiff_t b) {
@@ -695,10 +666,34 @@ INLINE_OR_STATIC ptrdiff_result_type safer_ptrdiff_divide(ptrdiff_t a, ptrdiff_t
 #pragma message("The size of ptrdiff_t is not 64-bit, 32-bit or 16-bit. Please provide your own implementation.")
 #endif
 
-#if SIZE_MAX == UINT32_MAX
+#if defined(UINT64_MAX) && (SIZE_MAX == UINT64_MAX)
+typedef u64_result_type size_result_type;
+
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(size_t) == sizeof(uint64_t), "The size of size_t must be the same as the size of uint64_t.");
+
+/** @brief Safer addition for size_t */
+INLINE_OR_STATIC size_result_type safer_size_add(size_t a, size_t b) {
+	return safer_u64_add(a, b);
+}
+
+/** @brief Safer subtraction for size_t */
+INLINE_OR_STATIC size_result_type safer_size_minus(size_t a, size_t b) {
+	return safer_u64_minus(a, b);
+}
+
+/** @brief Safer multiplication for size_t */
+INLINE_OR_STATIC size_result_type safer_size_multiply(size_t a, size_t b) {
+	return safer_u64_multiply(a, b);
+}
+
+/** @brief Safer division for size_t */
+INLINE_OR_STATIC size_result_type safer_size_divide(size_t a, size_t b) {
+	return safer_u64_divide(a, b);
+}
+#elif SIZE_MAX == UINT32_MAX
 typedef u32_result_type size_result_type;
 
-STATIC_ASSERT(sizeof(size_t) == sizeof(uint32_t), "The size of size_t must be the same as the size of uint32_t.");
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(size_t) == sizeof(uint32_t), "The size of size_t must be the same as the size of uint32_t.");
 
 /** @brief Safer addition for size_t */
 INLINE_OR_STATIC size_result_type safer_size_add(size_t a, size_t b) {
@@ -722,7 +717,7 @@ INLINE_OR_STATIC size_result_type safer_size_divide(size_t a, size_t b) {
 #elif SIZE_MAX == UINT16_MAX
 typedef u16_result_type size_result_type;
 
-STATIC_ASSERT(sizeof(size_t) == sizeof(uint16_t), "The size of size_t must be the same as the size of uint16_t.");
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(size_t) == sizeof(uint16_t), "The size of size_t must be the same as the size of uint16_t.");
 
 /** @brief Safer addition for size_t */
 INLINE_OR_STATIC size_result_type safer_size_add(size_t a, size_t b) {
@@ -746,8 +741,6 @@ INLINE_OR_STATIC size_result_type safer_size_divide(size_t a, size_t b) {
 #else
 #pragma message("The size of size_t is not 64-bit, 32-bit or 16-bit. Please provide your own implementation.")
 #endif
-
-#endif /* INT64_MIN and INT64_MAX and UINT64_MAX */
 
 #ifdef __cplusplus
 }

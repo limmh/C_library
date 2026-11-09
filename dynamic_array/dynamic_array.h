@@ -1,5 +1,5 @@
-#ifndef DYNAMIC_ARRAY_H
-#define DYNAMIC_ARRAY_H
+#ifndef SAFER_C_LIBRARY_DYNAMIC_ARRAY_H
+#define SAFER_C_LIBRARY_DYNAMIC_ARRAY_H
 
 #include "dynamic_array_interface.h"
 #include "static_assert.h"
@@ -332,7 +332,7 @@ void dynamic_array_add_elements_at_index_(
  */
 #define dynamic_array_add_elements_at_index(element_type, array, index, elements, element_count) \
 	do { \
-		STATIC_ASSERT(sizeof(element_type) == sizeof((elements)[0]), "Mismatch between type size and element size."); \
+		SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(element_type) == sizeof((elements)[0]), "Mismatch between type size and element size."); \
 		dynamic_array_add_elements_at_index_(&(array), index, elements, element_count, sizeof((elements)[0]), \
 			__FILE__, __LINE__, sizeof(array)); \
 	} while (0)
@@ -364,7 +364,7 @@ void dynamic_array_add_elements_at_index_(
  */
 #define dynamic_array_append_elements(element_type, array, elements, element_count) \
 	do { \
-		STATIC_ASSERT(sizeof(element_type) == sizeof((elements)[0]), "Mismatch between type size and element size."); \
+		SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(element_type) == sizeof((elements)[0]), "Mismatch between type size and element size."); \
 		dynamic_array_add_elements_at_index_(&(array), dynamic_array_size(array), elements, element_count, sizeof((elements)[0]), \
 			__FILE__, __LINE__, sizeof(array)); \
 	} while (0)
@@ -378,7 +378,7 @@ void dynamic_array_add_elements_at_index_(
  */
 #define dynamic_array_assign(element_type, array, elements, element_count) \
 	do { \
-		STATIC_ASSERT(sizeof(element_type) == sizeof((elements)[0]), "Mismatch between type size and element size."); \
+		SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(element_type) == sizeof((elements)[0]), "Mismatch between type size and element size."); \
 		dynamic_array_clear(array); \
 		dynamic_array_add_elements_at_index_(&(array), 0U, elements, element_count, sizeof((elements)[0]), \
 			__FILE__, __LINE__, sizeof(array)); \
@@ -442,7 +442,7 @@ void dynamic_array_remove_elements_starting_from_index_(
  */
 #define dynamic_array_move_elements_starting_from_index_to_buffer(element_type, array, index, buffer, number_of_elements) \
 	do { \
-		STATIC_ASSERT(sizeof(element_type) == sizeof((buffer)[0]), "Mismatch between type size and buffer element size."); \
+		SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(element_type) == sizeof((buffer)[0]), "Mismatch between type size and buffer element size."); \
 		assert(buffer != NULL); \
 		dynamic_array_remove_elements_starting_from_index_(&(array), index, buffer, number_of_elements, sizeof((buffer)[0]), \
 			__FILE__, __LINE__, sizeof(array)); \
@@ -456,7 +456,7 @@ void dynamic_array_remove_elements_starting_from_index_(
  */
 #define dynamic_array_pop_back(element_type, array, variable) \
 	do { \
-		STATIC_ASSERT(sizeof(element_type) == sizeof(variable), "Mismatch between type size and variable size."); \
+		SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(element_type) == sizeof(variable), "Mismatch between type size and variable size."); \
 		size_t last_element_index = 0U, array_length = 0U; \
 		array_length = dynamic_array_size(array); \
 		assert(array_length >= 1U); \

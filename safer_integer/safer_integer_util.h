@@ -1,5 +1,5 @@
-#ifndef SAFER_INTEGER_UTIL_H
-#define SAFER_INTEGER_UTIL_H
+#ifndef SAFER_C_LIBRARY_SAFER_INTEGER_UTIL_H
+#define SAFER_C_LIBRARY_SAFER_INTEGER_UTIL_H
 
 #include "inline_or_static.h"
 #include "macro_stringify.h"
@@ -28,7 +28,7 @@ INLINE_OR_STATIC void safer_integer_assert(FILE *file, int Boolean_condition, co
 
 #ifndef SAFER_INTEGER_ASSERT
 /** @brief Macro for safer integer assertion (can be overridden by your own custom version) */
-#define SAFER_INTEGER_ASSERT(condition) safer_integer_assert(stderr, condition, __FILE__, __LINE__, STRINGIFY(condition))
+#define SAFER_INTEGER_ASSERT(condition) safer_integer_assert(stderr, condition, __FILE__, __LINE__, SAFER_C_LIBRARY_STRINGIFY(condition))
 #endif
 
 /*

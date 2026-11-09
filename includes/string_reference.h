@@ -1,7 +1,8 @@
-#ifndef STRING_REFERENCE_H
-#define STRING_REFERENCE_H
+#ifndef SAFER_C_LIBRARY_STRING_REFERENCE_H
+#define SAFER_C_LIBRARY_STRING_REFERENCE_H
 
 #include "Boolean_type.h"
+#include "fixed_width_integer_types.h"
 #include "inline_or_static.h"
 #include <assert.h>
 #include <stddef.h>
@@ -285,6 +286,75 @@ const_stringref_contents_are_equal(const_stringref_type strref1, const_stringref
 }
 
 /**
+ * @brief Returns a size_t value which represents an invalid index
+ * @return size_t
+ */
+INLINE_OR_STATIC size_t stringref_invalid_index(void)
+{
+	return SIZE_MAX;
+}
+
+/**
+ * @brief Finds the zero-based index which corresponds to the first occurrence of the substring pattern
+ * @param [in] stringref Constant string reference
+ * @param [in] substringref Constant string reference to substring pattern
+ * @return size_t
+ */
+INLINE_OR_STATIC
+size_t
+const_stringref_find_first(const_stringref_type stringref, const_stringref_type substringref)
+{
+	size_t index = stringref_invalid_index();
+	if (const_stringref_string_is_empty(substringref)) {
+		index = 0U;
+	} else if (!const_stringref_string_is_empty(stringref) && stringref.length >= substringref.length) {
+		size_t i = 0U;
+		const size_t last_position = stringref.length - substringref.length;
+		for (; i <= last_position; ++i) {
+			const_stringref_type partial_stringref = {NULL, 0U};
+			partial_stringref.string = stringref.string + i;
+			partial_stringref.length = substringref.length;
+			if (const_stringref_contents_are_equal(partial_stringref, substringref)) {
+				index = i;
+				break;
+			}
+		}
+	}
+	return index;
+}
+
+/**
+ * @brief Finds the zero-based index which corresponds to the last occurrence of the substring pattern
+ * @param [in] stringref Constant string reference
+ * @param [in] substringref Constant string reference to substring pattern
+ * @return size_t
+ */
+INLINE_OR_STATIC
+size_t
+const_stringref_find_last(const_stringref_type stringref, const_stringref_type substringref)
+{
+	size_t index = stringref_invalid_index();
+	if (const_stringref_string_is_empty(substringref)) {
+		index = const_stringref_string_is_empty(stringref) ? 0U: stringref.length;
+		if (index > 0U) --index;
+	} else if (!const_stringref_string_is_empty(stringref) && stringref.length >= substringref.length) {
+		size_t i = 0U;
+		const size_t last_position = stringref.length - substringref.length;
+		for (i = last_position + 1U; i > 0U; --i) {
+			const size_t j = i - 1U;
+			const_stringref_type partial_stringref = {NULL, 0U};
+			partial_stringref.string = stringref.string + j;
+			partial_stringref.length = substringref.length;
+			if (const_stringref_contents_are_equal(partial_stringref, substringref)) {
+				index = j;
+				break;
+			}
+		}
+	}
+	return index;
+}
+
+/**
  * @brief Reverses a mutable referenced string
  * @param [in, out] stringref Mutable string reference
  */
@@ -293,7 +363,7 @@ void
 stringref_reverse_string(stringref_type stringref)
 {
 	assert(stringref.string != NULL);
-	if (stringref.string != NULL && stringref.length > 0U) {
+	if (stringref.string != NULL && stringref.length > 1U) {
 		size_t left_index = 0U;
 		size_t right_index = stringref.length - 1U;
 		while (left_index < right_index) {

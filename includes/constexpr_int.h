@@ -1,5 +1,5 @@
-#ifndef CONSTEXPR_INT_H
-#define CONSTEXPR_INT_H
+#ifndef SAFER_C_LIBRARY_CONSTEXPR_INT_H
+#define SAFER_C_LIBRARY_CONSTEXPR_INT_H
 
 #include "macro_stringify.h"
 
@@ -26,20 +26,20 @@ Make sure the second argument is really a constant expression.
 #if defined(__cplusplus)
 
 #if __cplusplus >= 201103L
-#pragma message("C++ standard: " STRINGIFY(__cplusplus) ", using constexpr int")
+#pragma message("C++ standard: " SAFER_C_LIBRARY_STRINGIFY(__cplusplus) ", using constexpr int")
 #define CONSTEXPR_INT(name, constant_expression) constexpr int name = (constant_expression)
 #else
-#pragma message("C++ standard: " STRINGIFY(__cplusplus) ", using const int")
+#pragma message("C++ standard: " SAFER_C_LIBRARY_STRINGIFY(__cplusplus) ", using const int")
 #define CONSTEXPR_INT(name, constant_expression) const int name = (constant_expression)
 #endif /* C++ standard detection */
 
 #elif defined(__STDC_VERSION__)
 
 #if __STDC_VERSION__ >= 202311L
-#pragma message("C standard: " STRINGIFY(__STDC_VERSION__) ", using constexpr int")
+#pragma message("C standard: " SAFER_C_LIBRARY_STRINGIFY(__STDC_VERSION__) ", using constexpr int")
 #define CONSTEXPR_INT(name, constant_expression) constexpr int name = (constant_expression)
 #else
-#pragma message("C standard: " STRINGIFY(__STDC_VERSION__) ", using enum")
+#pragma message("C standard: " SAFER_C_LIBRARY_STRINGIFY(__STDC_VERSION__) ", using enum")
 #define CONSTEXPR_INT(name, constant_expression) enum { name = (constant_expression) }
 #endif /* C standard detection */
 

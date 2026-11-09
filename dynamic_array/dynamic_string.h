@@ -1,5 +1,5 @@
-#ifndef DYNAMIC_STRING_H
-#define DYNAMIC_STRING_H
+#ifndef SAFER_C_LIBRARY_DYNAMIC_STRING_H
+#define SAFER_C_LIBRARY_DYNAMIC_STRING_H
 
 #include "dynamic_array_interface.h"
 #include <stddef.h>

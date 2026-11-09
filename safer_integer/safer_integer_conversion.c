@@ -1,3 +1,4 @@
+#define SAFER_C_LIBRARY_STATIC_ASSERT_HAS_SHORT_MACRO
 #include "safer_integer_conversion.h"
 #include "alternative_operators.h"
 #include "static_assert.h"

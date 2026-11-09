@@ -1,5 +1,5 @@
-#ifndef ALLOCATOR_TYPE_H
-#define ALLOCATOR_TYPE_H
+#ifndef SAFER_C_LIBRARY_ALLOCATOR_TYPE_H
+#define SAFER_C_LIBRARY_ALLOCATOR_TYPE_H
 
 #include "inline_or_static.h"
 #include <assert.h>

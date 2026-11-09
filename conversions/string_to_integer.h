@@ -1,5 +1,5 @@
-#ifndef STRING_TO_INTEGER_H
-#define STRING_TO_INTEGER_H
+#ifndef SAFER_C_LIBRARY_STRING_TO_INTEGER_H
+#define SAFER_C_LIBRARY_STRING_TO_INTEGER_H
 
 #include "string_to_integer_error_codes.h"
 #include "integer_to_string.h"

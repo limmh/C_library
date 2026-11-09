@@ -1,5 +1,5 @@
-#ifndef DYNAMIC_ARRAY_INTERFACE_H
-#define DYNAMIC_ARRAY_INTERFACE_H
+#ifndef SAFER_C_LIBRARY_DYNAMIC_ARRAY_INTERFACE_H
+#define SAFER_C_LIBRARY_DYNAMIC_ARRAY_INTERFACE_H
 
 #include "allocator_type.h"
 
@@ -57,7 +57,7 @@ void dynamic_array_default_exception_handler(dynamic_array_error_type error);
 
 /**
  * @brief The default error reporting function
- * @param debug_info Debug information
+ * @param [in] debug_info Debug information
  *
  * Errors and additional debug info:
  * 1.  dynamic_array_error_none: no additional info (info_1 == 0, info_2 == 0)

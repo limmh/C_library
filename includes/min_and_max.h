@@ -1,5 +1,5 @@
-#ifndef MIN_AND_MAX_H
-#define MIN_AND_MAX_H
+#ifndef SAFER_C_LIBRARY_MIN_AND_MAX_H
+#define SAFER_C_LIBRARY_MIN_AND_MAX_H
 
 #include "fixed_width_integer_types.h"
 #include "inline_or_static.h"

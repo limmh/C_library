@@ -1,5 +1,9 @@
-#ifndef MACRO_ALIGNOF_H
-#define MACRO_ALIGNOF_H
+#ifndef SAFER_C_LIBRARY_MACRO_ALIGNOF_H
+#define SAFER_C_LIBRARY_MACRO_ALIGNOF_H
+
+#ifdef ALIGNOF
+#error "ALIGNOF has been defined and shall not be redefined."
+#endif
 
 /** @brief Determines the alignment of a data typedef */
 

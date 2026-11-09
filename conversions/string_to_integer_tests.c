@@ -1,3 +1,4 @@
+#define SAFER_C_LIBRARY_STATIC_ASSERT_HAS_SHORT_MACRO
 #include "string_to_integer.h"
 #include "static_assert.h"
 #include "unit_testing.h"

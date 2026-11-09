@@ -1,3 +1,4 @@
+#define SAFER_C_LIBRARY_STATIC_ASSERT_HAS_SHORT_MACRO
 #include "static_pool.h"
 #include "alternative_operators.h"
 #include "macro_alignof.h"

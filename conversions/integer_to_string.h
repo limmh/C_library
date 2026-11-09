@@ -1,5 +1,5 @@
-#ifndef INTEGER_TO_STRING_H
-#define INTEGER_TO_STRING_H
+#ifndef SAFER_C_LIBRARY_INTEGER_TO_STRING_H
+#define SAFER_C_LIBRARY_INTEGER_TO_STRING_H
 
 #include "fixed_width_integer_types.h"
 #include "inline_or_static.h"

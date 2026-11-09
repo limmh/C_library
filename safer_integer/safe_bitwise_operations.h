@@ -1,5 +1,5 @@
-#ifndef SAFE_BITWISE_OPERATIONS_H
-#define SAFE_BITWISE_OPERATIONS_H
+#ifndef SAFER_C_LIBRARY_SAFE_BITWISE_OPERATIONS_H
+#define SAFER_C_LIBRARY_SAFE_BITWISE_OPERATIONS_H
 
 #include "fixed_width_integer_types.h"
 #include "inline_or_static.h"

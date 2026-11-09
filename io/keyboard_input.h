@@ -1,5 +1,5 @@
-#ifndef KEYBOARD_INPUT_H
-#define KEYBOARD_INPUT_H
+#ifndef SAFER_C_LIBRARY_KEYBOARD_INPUT_H
+#define SAFER_C_LIBRARY_KEYBOARD_INPUT_H
 
 #include "Boolean_type.h"
 #include <stddef.h>

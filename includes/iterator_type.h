@@ -1,5 +1,5 @@
-#ifndef ITERATOR_TYPE_H
-#define ITERATOR_TYPE_H
+#ifndef SAFER_C_LIBRARY_ITERATOR_TYPE_H
+#define SAFER_C_LIBRARY_ITERATOR_TYPE_H
 
 #include "Boolean_type.h"
 #include "inline_or_static.h"

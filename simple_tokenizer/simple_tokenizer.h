@@ -1,5 +1,5 @@
-#ifndef SIMPLE_TOKENIZER_H
-#define SIMPLE_TOKENIZER_H
+#ifndef SAFER_C_LIBRARY_SIMPLE_TOKENIZER_H
+#define SAFER_C_LIBRARY_SIMPLE_TOKENIZER_H
 
 #include "string_reference.h"
 

@@ -1,5 +1,5 @@
-#ifndef SAFER_INTEGER_TYPE_TESTS_H
-#define SAFER_INTEGER_TYPE_TESTS_H
+#ifndef SAFER_C_LIBRARY_SAFER_INTEGER_TYPE_TESTS_H
+#define SAFER_C_LIBRARY_SAFER_INTEGER_TYPE_TESTS_H
 
 #include "safer_integer_type.h"
 #include "safer_integer_comparison.h"
@@ -22,33 +22,33 @@
 #define CATCH(EXCEPTION) else
 #endif
 
-STATIC_ASSERT(sizeof(bool) == 1U, "Test environment assumption failure: sizeof(bool) == 1");
-STATIC_ASSERT(sizeof(char) == 1U, "Test environment assumption failure: sizeof(char) == 1");
-STATIC_ASSERT(sizeof(char) == sizeof(signed char), "Test environment assumption failure: sizeof(char) == sizeof(signed char)");
-STATIC_ASSERT(sizeof(char) == sizeof(unsigned char), "Test environment assumption failure: sizeof(char) == sizeof(unsigned char)");
-STATIC_ASSERT(sizeof(short) == 2U, "Test environment assumption failure: sizeof(short) == 2");
-STATIC_ASSERT(sizeof(short) == sizeof(unsigned short), "Test environment assumption failure: sizeof(short) == sizeof(unsigned short)");
-STATIC_ASSERT(sizeof(int) == 4U, "Test environment assumption failure: sizeof(int) == 4");
-STATIC_ASSERT(sizeof(int) == sizeof(unsigned int), "Test environment assumption failure: sizeof(int) == sizeof(unsigned int)");
-STATIC_ASSERT(sizeof(long) >= sizeof(int), "Test environment assumption failure: sizeof(long) >= sizeof(int)");
-STATIC_ASSERT(sizeof(long) == sizeof(unsigned long), "Test environment assumption failure: sizeof(long) == sizeof(unsigned long)");
-STATIC_ASSERT(sizeof(long long) == 8U, "Test environment assumption failure: sizeof(long long) == 8");
-STATIC_ASSERT(sizeof(long long) >= sizeof(long), "Test environment assumption failure: sizeof(long long) >= sizeof(long)");
-STATIC_ASSERT(sizeof(long long) == sizeof(unsigned long long), "Test environment assumption failure: sizeof(long long) == sizeof(unsigned long long)");
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(bool) == 1U, "Test environment assumption failure: sizeof(bool) == 1");
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(char) == 1U, "Test environment assumption failure: sizeof(char) == 1");
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(char) == sizeof(signed char), "Test environment assumption failure: sizeof(char) == sizeof(signed char)");
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(char) == sizeof(unsigned char), "Test environment assumption failure: sizeof(char) == sizeof(unsigned char)");
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(short) == 2U, "Test environment assumption failure: sizeof(short) == 2");
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(short) == sizeof(unsigned short), "Test environment assumption failure: sizeof(short) == sizeof(unsigned short)");
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(int) == 4U, "Test environment assumption failure: sizeof(int) == 4");
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(int) == sizeof(unsigned int), "Test environment assumption failure: sizeof(int) == sizeof(unsigned int)");
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(long) >= sizeof(int), "Test environment assumption failure: sizeof(long) >= sizeof(int)");
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(long) == sizeof(unsigned long), "Test environment assumption failure: sizeof(long) == sizeof(unsigned long)");
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(long long) == 8U, "Test environment assumption failure: sizeof(long long) == 8");
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(long long) >= sizeof(long), "Test environment assumption failure: sizeof(long long) >= sizeof(long)");
+SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(long long) == sizeof(unsigned long long), "Test environment assumption failure: sizeof(long long) == sizeof(unsigned long long)");
 
-STATIC_ASSERT(CHAR_MIN > SHRT_MIN, "Test environment assumption failure: CHAR_MIN > SHRT_MIN");
-STATIC_ASSERT(CHAR_MAX < SHRT_MAX, "Test environment assumption failure: CHAR_MAX < SHRT_MAX");
-STATIC_ASSERT(SCHAR_MIN > SHRT_MIN, "Test environment assumption failure: SCHAR_MIN > SHRT_MIN");
-STATIC_ASSERT(SCHAR_MAX < SHRT_MAX, "Test environment assumption failure: SCHAR_MAX < SHRT_MAX");
-STATIC_ASSERT(UCHAR_MAX < USHRT_MAX, "Test environment assumption failure: UCHAR_MAX < USHRT_MAX");
-STATIC_ASSERT(SHRT_MIN > INT_MIN, "Test environment assumption failure: SHRT_MIN > INT_MIN");
-STATIC_ASSERT(SHRT_MAX < INT_MAX, "Test environment assumption failure: SHRT_MAX < INT_MAX");
-STATIC_ASSERT(USHRT_MAX < UINT_MAX, "Test environment assumption failure: USHRT_MAX < UINT_MAX");
-STATIC_ASSERT(INT_MIN >= LONG_MIN, "Test environment assumption failure: INT_MIN >= LONG_MIN");
-STATIC_ASSERT(INT_MAX <= LONG_MAX, "Test environment assumption failure: INT_MAX <= LONG_MAX");
-STATIC_ASSERT(UINT_MAX <= ULONG_MAX, "Test environment assumption failure: UINT_MAX <= ULONG_MAX");
-STATIC_ASSERT(LONG_MIN >= LLONG_MIN, "Test environment assumption failure: LONG_MIN >= LLONG_MIN");
-STATIC_ASSERT(LONG_MAX <= LLONG_MAX, "Test environment assumption failure: LONG_MAX <= LLONG_MAX");
+SAFER_C_LIBRARY_STATIC_ASSERT(CHAR_MIN > SHRT_MIN, "Test environment assumption failure: CHAR_MIN > SHRT_MIN");
+SAFER_C_LIBRARY_STATIC_ASSERT(CHAR_MAX < SHRT_MAX, "Test environment assumption failure: CHAR_MAX < SHRT_MAX");
+SAFER_C_LIBRARY_STATIC_ASSERT(SCHAR_MIN > SHRT_MIN, "Test environment assumption failure: SCHAR_MIN > SHRT_MIN");
+SAFER_C_LIBRARY_STATIC_ASSERT(SCHAR_MAX < SHRT_MAX, "Test environment assumption failure: SCHAR_MAX < SHRT_MAX");
+SAFER_C_LIBRARY_STATIC_ASSERT(UCHAR_MAX < USHRT_MAX, "Test environment assumption failure: UCHAR_MAX < USHRT_MAX");
+SAFER_C_LIBRARY_STATIC_ASSERT(SHRT_MIN > INT_MIN, "Test environment assumption failure: SHRT_MIN > INT_MIN");
+SAFER_C_LIBRARY_STATIC_ASSERT(SHRT_MAX < INT_MAX, "Test environment assumption failure: SHRT_MAX < INT_MAX");
+SAFER_C_LIBRARY_STATIC_ASSERT(USHRT_MAX < UINT_MAX, "Test environment assumption failure: USHRT_MAX < UINT_MAX");
+SAFER_C_LIBRARY_STATIC_ASSERT(INT_MIN >= LONG_MIN, "Test environment assumption failure: INT_MIN >= LONG_MIN");
+SAFER_C_LIBRARY_STATIC_ASSERT(INT_MAX <= LONG_MAX, "Test environment assumption failure: INT_MAX <= LONG_MAX");
+SAFER_C_LIBRARY_STATIC_ASSERT(UINT_MAX <= ULONG_MAX, "Test environment assumption failure: UINT_MAX <= ULONG_MAX");
+SAFER_C_LIBRARY_STATIC_ASSERT(LONG_MIN >= LLONG_MIN, "Test environment assumption failure: LONG_MIN >= LLONG_MIN");
+SAFER_C_LIBRARY_STATIC_ASSERT(LONG_MAX <= LLONG_MAX, "Test environment assumption failure: LONG_MAX <= LLONG_MAX");
 
 static FILE *output_file = NULL;
 static const bool safer_integer_type_exception_thrown = true;

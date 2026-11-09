@@ -1,5 +1,5 @@
-#ifndef SAFER_INTEGER_TYPE_H
-#define SAFER_INTEGER_TYPE_H
+#ifndef SAFER_C_LIBRARY_SAFER_INTEGER_TYPE_H
+#define SAFER_C_LIBRARY_SAFER_INTEGER_TYPE_H
 
 #include "fixed_width_integer_types.h"
 #include <limits.h>
@@ -78,8 +78,8 @@ by calling safer_integer::set_output_file_pointer(FILE*) in your application cod
 
 #if __cplusplus < 202002L
 #include "macro_stringify.h"
-#define DECLARE_SAFER_INTEGER(type, name) type name(#name " (type: " #type ") [defined at line " STRINGIFY(__LINE__) " of " __FILE__ "]")
-#define DEFINE_SAFER_INTEGER(type, name, value) type name(value, #name " (type: " #type ") [defined at line " STRINGIFY(__LINE__) " of " __FILE__ "]")
+#define DECLARE_SAFER_INTEGER(type, name) type name(#name " (type: " #type ") [defined at line " SAFER_C_LIBRARY_STRINGIFY(__LINE__) " of " __FILE__ "]")
+#define DEFINE_SAFER_INTEGER(type, name, value) type name(value, #name " (type: " #type ") [defined at line " SAFER_C_LIBRARY_STRINGIFY(__LINE__) " of " __FILE__ "]")
 #else
 #include <source_location>
 #define DECLARE_SAFER_INTEGER(type, name) type name
@@ -1251,12 +1251,12 @@ template<typename number_type>
 struct number_parts_type {
 	number_type integer_part;
 	number_type fractional_part;
-	STATIC_ASSERT(std::numeric_limits<number_type>::is_specialized, "The type number_type must be a numeric type.");
+	SAFER_C_LIBRARY_STATIC_ASSERT(std::numeric_limits<number_type>::is_specialized, "The type number_type must be a numeric type.");
 };
 
 template<typename integer_type>
 number_parts_type<integer_type> split_number_into_integer_and_fractional_parts(integer_type number) {
-	STATIC_ASSERT(std::numeric_limits<integer_type>::is_integer, "The type integer_type must be an integer type.");
+	SAFER_C_LIBRARY_STATIC_ASSERT(std::numeric_limits<integer_type>::is_integer, "The type integer_type must be an integer type.");
 	number_parts_type<integer_type> result = {number, 0};
 	return result;
 }
@@ -1284,8 +1284,8 @@ bool can_cast_properly(src_type src)
 {
 	typedef std::numeric_limits<dst_type> dst_type_info;
 	typedef std::numeric_limits<src_type> src_type_info;
-	STATIC_ASSERT(dst_type_info::is_specialized, "The destination type is NOT supported.");
-	STATIC_ASSERT(src_type_info::is_specialized, "The source type is NOT supported.");
+	SAFER_C_LIBRARY_STATIC_ASSERT(dst_type_info::is_specialized, "The destination type is NOT supported.");
+	SAFER_C_LIBRARY_STATIC_ASSERT(src_type_info::is_specialized, "The source type is NOT supported.");
 	const dst_type dst_min = dst_type_info::min();
 	const dst_type dst_max = dst_type_info::max();
 	bool result = false;
@@ -1427,19 +1427,19 @@ final
 {
 	typedef T type;
 	typedef std::numeric_limits<T> type_info;
-	STATIC_ASSERT(type_info::is_integer, "The template parameter type T must be an integer type.");
-	STATIC_ASSERT(sizeof(typename integer_policy::bool_type) <= sizeof(typename integer_policy::char_type), "The size of bool_type shall not exceed the size of char_type.");
-	STATIC_ASSERT(sizeof(typename integer_policy::char_type) == sizeof(typename integer_policy::schar_type), "char_type and schar_type must have the same size.");
-	STATIC_ASSERT(sizeof(typename integer_policy::char_type) == sizeof(typename integer_policy::uchar_type), "char_type and uchar_type must have the same size.");
-	STATIC_ASSERT(sizeof(typename integer_policy::char_type) <= sizeof(typename integer_policy::short_type), "The size of char_type must not exceed the size of short_type.");
-	STATIC_ASSERT(sizeof(typename integer_policy::short_type) == sizeof(typename integer_policy::ushort_type), "short_type and ushort_type must have the same size.");
-	STATIC_ASSERT(sizeof(typename integer_policy::short_type) <= sizeof(typename integer_policy::int_type), "The size of short_type must not exceed the size of int_type.");
-	STATIC_ASSERT(sizeof(typename integer_policy::int_type) == sizeof(typename integer_policy::uint_type), "int_type and uint_type must have the same_size.");
-	STATIC_ASSERT(sizeof(typename integer_policy::int_type) <= sizeof(typename integer_policy::long_type), "The size of int_type must not exceed the size of long_type.");
-	STATIC_ASSERT(sizeof(typename integer_policy::long_type) == sizeof(typename integer_policy::ulong_type), "long_type and ulong_type must have the same size.");
- 	STATIC_ASSERT(sizeof(typename integer_policy::long_type) <= sizeof(typename integer_policy::llong_type), "The size of long_type must not exceed the size of llong_type.");
-	STATIC_ASSERT(sizeof(typename integer_policy::llong_type) == sizeof(typename integer_policy::ullong_type), "llong_type and ullong_type must have the same size.");
-	STATIC_ASSERT(sizeof(typename integer_policy::ptrdiff_type) == sizeof(typename integer_policy::size_type), "ptrdiff_type and size_type must have the same size.");
+	SAFER_C_LIBRARY_STATIC_ASSERT(type_info::is_integer, "The template parameter type T must be an integer type.");
+	SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(typename integer_policy::bool_type) <= sizeof(typename integer_policy::char_type), "The size of bool_type shall not exceed the size of char_type.");
+	SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(typename integer_policy::char_type) == sizeof(typename integer_policy::schar_type), "char_type and schar_type must have the same size.");
+	SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(typename integer_policy::char_type) == sizeof(typename integer_policy::uchar_type), "char_type and uchar_type must have the same size.");
+	SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(typename integer_policy::char_type) <= sizeof(typename integer_policy::short_type), "The size of char_type must not exceed the size of short_type.");
+	SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(typename integer_policy::short_type) == sizeof(typename integer_policy::ushort_type), "short_type and ushort_type must have the same size.");
+	SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(typename integer_policy::short_type) <= sizeof(typename integer_policy::int_type), "The size of short_type must not exceed the size of int_type.");
+	SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(typename integer_policy::int_type) == sizeof(typename integer_policy::uint_type), "int_type and uint_type must have the same_size.");
+	SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(typename integer_policy::int_type) <= sizeof(typename integer_policy::long_type), "The size of int_type must not exceed the size of long_type.");
+	SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(typename integer_policy::long_type) == sizeof(typename integer_policy::ulong_type), "long_type and ulong_type must have the same size.");
+ 	SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(typename integer_policy::long_type) <= sizeof(typename integer_policy::llong_type), "The size of long_type must not exceed the size of llong_type.");
+	SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(typename integer_policy::llong_type) == sizeof(typename integer_policy::ullong_type), "llong_type and ullong_type must have the same size.");
+	SAFER_C_LIBRARY_STATIC_ASSERT(sizeof(typename integer_policy::ptrdiff_type) == sizeof(typename integer_policy::size_type), "ptrdiff_type and size_type must have the same size.");
 
 	template <typename native_integer_type, typename integer_policy_type, typename conversion_error_policy_type>
 	friend void print_source_file_info(const integer_type<native_integer_type, integer_policy_type, conversion_error_policy_type>& self);
@@ -1526,7 +1526,7 @@ final
 		}
 #endif
 #endif
-		STATIC_ASSERT(std::numeric_limits<src_type>::is_specialized, "The source type is NOT supported.");
+		SAFER_C_LIBRARY_STATIC_ASSERT(std::numeric_limits<src_type>::is_specialized, "The source type is NOT supported.");
 		if (not can_cast_properly<T>(src)) {
 			print_source_file_info(*this);
 			integer_error_policy::handle_conversion_error(src, static_cast<T>(src));
@@ -1586,7 +1586,7 @@ final
 		}
 #endif
 #endif
-		STATIC_ASSERT(std::numeric_limits<src_type>::is_specialized, "The source type is NOT supported.");
+		SAFER_C_LIBRARY_STATIC_ASSERT(std::numeric_limits<src_type>::is_specialized, "The source type is NOT supported.");
 		const src_type src = static_cast<src_type>(rhs);
 		if (not can_cast_properly<T>(src)) {
 			print_source_file_info(*this);
@@ -1612,7 +1612,7 @@ final
 
 	template<typename src_type>
 	integer_type& operator=(src_type src) {
-		STATIC_ASSERT(std::numeric_limits<src_type>::is_specialized, "The source type is NOT supported.");
+		SAFER_C_LIBRARY_STATIC_ASSERT(std::numeric_limits<src_type>::is_specialized, "The source type is NOT supported.");
 		if (not can_cast_properly<T>(src)) {
 			print_source_file_info(*this);
 			integer_error_policy::handle_conversion_error(src, static_cast<T>(src));
@@ -1628,7 +1628,7 @@ final
 
 	template<typename src_type>
 	integer_type& operator=(const integer_type<src_type>& rhs) {
-		STATIC_ASSERT(std::numeric_limits<src_type>::is_specialized, "The source type is NOT supported.");
+		SAFER_C_LIBRARY_STATIC_ASSERT(std::numeric_limits<src_type>::is_specialized, "The source type is NOT supported.");
 		const src_type src = static_cast<src_type>(rhs);
 		if (not can_cast_properly<T>(src)) {
 			print_source_file_info(*this);
@@ -1647,7 +1647,7 @@ final
 	>
 	operator dst_type() const {
 		typedef T src_type;
-		STATIC_ASSERT(std::numeric_limits<dst_type>::is_specialized, "The destination type is NOT supported.");
+		SAFER_C_LIBRARY_STATIC_ASSERT(std::numeric_limits<dst_type>::is_specialized, "The destination type is NOT supported.");
 		if (not can_cast_properly<dst_type>(m_value)) {
 			print_source_file_info(*this);
 			integer_error_policy::handle_conversion_error(m_value, static_cast<dst_type>(m_value));

@@ -642,6 +642,251 @@ TEST(stringref_reverse_string_with_spaces, "stringref_reverse_string with spaces
 	ASSERT_EQUAL(strcmp(buffer, "c b a"), 0);
 }
 
+TEST(const_stringref_find_first_in_empty_string, "find a substring pattern in an empty string")
+{
+	size_t index = 0U;
+	const char *str = "";
+	const char *substring = "";
+	const_stringref_type ref = {NULL, 0U}, substring_ref = {NULL, 0U};
+	ref.string = str;
+	ref.length = strlen(str);
+
+	substring_ref.string = substring;
+	substring_ref.length = strlen(substring);
+	index = const_stringref_find_first(ref, substring_ref);
+	ASSERT_SIZE_EQUAL(index, 0U);
+
+	substring_ref.string = NULL; /* treated as an empty string */
+	substring_ref.length = 1U;
+	index = const_stringref_find_first(ref, substring_ref);
+	ASSERT_SIZE_EQUAL(index, 0U);
+
+	substring = "A";
+	substring_ref.string = substring;
+	substring_ref.length = strlen(substring);
+	index = const_stringref_find_first(ref, substring_ref);
+	ASSERT_SIZE_EQUAL(index, stringref_invalid_index());
+
+	substring = "abc";
+	substring_ref.string = substring;
+	substring_ref.length = strlen(substring);
+	index = const_stringref_find_first(ref, substring_ref);
+	ASSERT_SIZE_EQUAL(index, stringref_invalid_index());
+}
+
+TEST(const_stringref_find_first_in_short_string, "find a substring pattern in a short string")
+{
+	size_t index = 0U;
+	const char *str = "a";
+	const char *substring = "";
+	const_stringref_type ref = {NULL, 0U}, substring_ref = {NULL, 0U};
+	ref.string = str;
+	ref.length = strlen(str);
+
+	substring_ref.string = substring;
+	substring_ref.length = strlen(substring);
+	index = const_stringref_find_first(ref, substring_ref);
+	ASSERT_SIZE_EQUAL(index, 0U);
+
+	substring_ref.string = NULL; /* treated as an empty string */
+	substring_ref.length = 1U;
+	index = const_stringref_find_first(ref, substring_ref);
+	ASSERT_SIZE_EQUAL(index, 0U);
+
+	substring = "a";
+	substring_ref.string = substring;
+	substring_ref.length = strlen(substring);
+	index = const_stringref_find_first(ref, substring_ref);
+	ASSERT_SIZE_EQUAL(index, 0U);
+
+	substring = "A";
+	substring_ref.string = substring;
+	substring_ref.length = strlen(substring);
+	index = const_stringref_find_first(ref, substring_ref);
+	ASSERT_SIZE_EQUAL(index, stringref_invalid_index());
+
+	substring = "abc";
+	substring_ref.string = substring;
+	substring_ref.length = strlen(substring);
+	index = const_stringref_find_first(ref, substring_ref);
+	ASSERT_SIZE_EQUAL(index, stringref_invalid_index());
+}
+
+TEST(const_stringref_find_first_in_long_string, "find a substring pattern in a long string")
+{
+	size_t index = 0U;
+	const char *str = "The quick brown fox jumps over the lazy dog.";
+	const char *substring = "";
+	const_stringref_type ref = {NULL, 0U}, substring_ref = {NULL, 0U};
+	ref.string = str;
+	ref.length = strlen(str);
+
+	substring_ref.string = substring;
+	substring_ref.length = strlen(substring);
+	index = const_stringref_find_first(ref, substring_ref);
+	ASSERT_SIZE_EQUAL(index, 0U);
+
+	substring_ref.string = NULL; /* treated as an empty string */
+	substring_ref.length = 1U;
+	index = const_stringref_find_first(ref, substring_ref);
+	ASSERT_SIZE_EQUAL(index, 0U);
+
+	substring = "abc";
+	substring_ref.string = substring;
+	substring_ref.length = strlen(substring);
+	index = const_stringref_find_first(ref, substring_ref);
+	ASSERT_SIZE_EQUAL(index, stringref_invalid_index());
+
+	substring = "The";
+	substring_ref.string = substring;
+	substring_ref.length = strlen(substring);
+	index = const_stringref_find_first(ref, substring_ref);
+	ASSERT_SIZE_EQUAL(index, 0U);
+}
+
+TEST(const_stringref_find_last_in_empty_string, "find the last substring pattern in an empty string")
+{
+	size_t index = 0U;
+	const char *str = "";
+	const char *substring = "";
+	const_stringref_type ref = {NULL, 0U}, substring_ref = {NULL, 0U};
+	ref.string = str;
+	ref.length = strlen(str);
+
+	substring_ref.string = substring;
+	substring_ref.length = strlen(substring);
+	index = const_stringref_find_last(ref, substring_ref);
+	ASSERT_SIZE_EQUAL(index, 0U);
+
+	substring_ref.string = NULL; /* treated as an empty string */
+	substring_ref.length = 1U;
+	index = const_stringref_find_last(ref, substring_ref);
+	ASSERT_SIZE_EQUAL(index, 0U);
+
+	substring = "A";
+	substring_ref.string = substring;
+	substring_ref.length = strlen(substring);
+	index = const_stringref_find_last(ref, substring_ref);
+	ASSERT_SIZE_EQUAL(index, stringref_invalid_index());
+
+	substring = "abc";
+	substring_ref.string = substring;
+	substring_ref.length = strlen(substring);
+	index = const_stringref_find_last(ref, substring_ref);
+	ASSERT_SIZE_EQUAL(index, stringref_invalid_index());
+}
+
+TEST(const_stringref_find_last_in_short_string, "find the last substring pattern in a short string")
+{
+	size_t index = 0U;
+	const char *str = "a";
+	const char *substring = "";
+	const_stringref_type ref = {NULL, 0U}, substring_ref = {NULL, 0U};
+	ref.string = str;
+	ref.length = strlen(str);
+
+	substring_ref.string = substring;
+	substring_ref.length = strlen(substring);
+	index = const_stringref_find_last(ref, substring_ref);
+	ASSERT_SIZE_EQUAL(index, 0U);
+
+	substring_ref.string = NULL; /* treated as an empty string */
+	substring_ref.length = 1U;
+	index = const_stringref_find_last(ref, substring_ref);
+	ASSERT_SIZE_EQUAL(index, 0U);
+
+	substring = "a";
+	substring_ref.string = substring;
+	substring_ref.length = strlen(substring);
+	index = const_stringref_find_last(ref, substring_ref);
+	ASSERT_SIZE_EQUAL(index, 0U);
+
+	substring = "A";
+	substring_ref.string = substring;
+	substring_ref.length = strlen(substring);
+	index = const_stringref_find_last(ref, substring_ref);
+	ASSERT_SIZE_EQUAL(index, stringref_invalid_index());
+
+	substring = "abc";
+	substring_ref.string = substring;
+	substring_ref.length = strlen(substring);
+	index = const_stringref_find_last(ref, substring_ref);
+	ASSERT_SIZE_EQUAL(index, stringref_invalid_index());
+}
+
+
+TEST(const_stringref_find_last_in_long_string, "find the last substring pattern in a long string")
+{
+	size_t index = 0U;
+	const char *str = "The quick brown fox jumps over the lazy dog.";
+	const char *substring = "";
+	const_stringref_type ref = {NULL, 0U}, substring_ref = {NULL, 0U};
+	ref.string = str;
+	ref.length = strlen(str);
+
+	substring_ref.string = substring;
+	substring_ref.length = strlen(substring);
+	index = const_stringref_find_last(ref, substring_ref);
+	ASSERT_SIZE_EQUAL(index, strlen(str) - 1U);
+
+	substring_ref.string = NULL; /* treated as an empty string */
+	substring_ref.length = 1U;
+	index = const_stringref_find_last(ref, substring_ref);
+	ASSERT_SIZE_EQUAL(index, strlen(str) - 1U);
+
+	substring = "abc";
+	substring_ref.string = substring;
+	substring_ref.length = strlen(substring);
+	index = const_stringref_find_last(ref, substring_ref);
+	ASSERT_SIZE_EQUAL(index, stringref_invalid_index());
+
+	substring = "The";
+	substring_ref.string = substring;
+	substring_ref.length = strlen(substring);
+	index = const_stringref_find_last(ref, substring_ref);
+	ASSERT_SIZE_EQUAL(index, 0U);
+
+	substring = "the";
+	substring_ref.string = substring;
+	substring_ref.length = strlen(substring);
+	index = const_stringref_find_last(ref, substring_ref);
+	ASSERT_SIZE_EQUAL(index, 31U);
+}
+
+TEST(const_stringref_find_first_and_const_stringref_find_last, "find first and find last")
+{
+	size_t index = 0U;
+	const char *str = "the quick brown fox jumps over the lazy dog";
+	const char *substring = NULL;
+	const_stringref_type ref = {NULL, 0U}, substring_ref = {NULL, 0U};
+	ref.string = str;
+	ref.length = strlen(str);
+
+	substring = "the";
+	substring_ref.string = substring;
+	substring_ref.length = strlen(substring);
+	index = const_stringref_find_first(ref, substring_ref);
+	ASSERT_SIZE_EQUAL(index, 0U);
+	index = const_stringref_find_last(ref, substring_ref);
+	ASSERT_SIZE_EQUAL(index, 31U);
+
+	substring = "fox";
+	substring_ref.string = substring;
+	substring_ref.length = strlen(substring);
+	index = const_stringref_find_first(ref, substring_ref);
+	ASSERT_SIZE_EQUAL(index, 16U);
+	index = const_stringref_find_last(ref, substring_ref);
+	ASSERT_SIZE_EQUAL(index, 16U);
+
+	substring = "dog";
+	substring_ref.string = substring;
+	substring_ref.length = strlen(substring);
+	index = const_stringref_find_first(ref, substring_ref);
+	ASSERT_SIZE_EQUAL(index, 40U);
+	index = const_stringref_find_last(ref, substring_ref);
+	ASSERT_SIZE_EQUAL(index, 40U);
+}
+
 /* MAIN TEST RUNNER */
 
 int main(void)
@@ -742,7 +987,16 @@ int main(void)
 		stringref_reverse_string_even_length,
 		stringref_reverse_string_odd_length,
 		stringref_reverse_string_with_special_chars,
-		stringref_reverse_string_with_spaces
+		stringref_reverse_string_with_spaces,
+
+		/* const_stringref_find_first and const_stringref_find_last */
+		const_stringref_find_first_in_empty_string,
+		const_stringref_find_first_in_short_string,
+		const_stringref_find_first_in_long_string,
+		const_stringref_find_last_in_empty_string,
+		const_stringref_find_last_in_short_string,
+		const_stringref_find_last_in_long_string,
+		const_stringref_find_first_and_const_stringref_find_last
 	};
 
 	PRINT_FILE_NAME();

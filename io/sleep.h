@@ -1,5 +1,5 @@
-#ifndef IO_SLEEP_H
-#define IO_SLEEP_H
+#ifndef SAFER_C_LIBRARY_IO_SLEEP_H
+#define SAFER_C_LIBRARY_IO_SLEEP_H
 
 #ifdef __cplusplus
 extern "C" {

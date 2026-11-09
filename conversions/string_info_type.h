@@ -1,5 +1,5 @@
-#ifndef STRING_INFO_TYPE_H
-#define STRING_INFO_TYPE_H
+#ifndef SAFER_C_LIBRARY_STRING_INFO_TYPE_H
+#define SAFER_C_LIBRARY_STRING_INFO_TYPE_H
 
 #include "string_to_integer_error_codes.h"
 #include "Boolean_type.h"

@@ -1,5 +1,5 @@
-#ifndef FAT_POINTER_H
-#define FAT_POINTER_H
+#ifndef SAFER_C_LIBRARY_FAT_POINTER_H
+#define SAFER_C_LIBRARY_FAT_POINTER_H
 
 #include <assert.h>
 #include <stddef.h>

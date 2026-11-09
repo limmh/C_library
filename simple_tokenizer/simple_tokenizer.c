@@ -1,3 +1,4 @@
+#define SAFER_C_LIBRARY_STATIC_ASSERT_HAS_SHORT_MACRO
 #include "simple_tokenizer.h"
 #include "alternative_operators.h"
 #include "Boolean_type.h"
@@ -278,7 +279,7 @@ simple_tokenizer_utf8_char_type  simple_tokenizer_stringref_to_utf8_char(const_s
 		utf8_char.error = simple_tokenizer_utf8_char_error_more_than_4_bytes;
 	}
 
-	utf8_char.number_of_bytes = utf8_char_stringref.length;
+	utf8_char.number_of_bytes = (unsigned int) utf8_char_stringref.length;
 
 	switch (utf8_char_stringref.length) {
 	case 1U:

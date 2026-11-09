@@ -1,3 +1,4 @@
+#define SAFER_C_LIBRARY_STATIC_ASSERT_HAS_SHORT_MACRO
 #include "debug_mode_integer.h"
 #include "alternative_operators.h"
 #include "Boolean_type.h"

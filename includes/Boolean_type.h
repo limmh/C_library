@@ -1,5 +1,5 @@
-#ifndef BOOLEAN_TYPE_H
-#define BOOLEAN_TYPE_H
+#ifndef SAFER_C_LIBRARY_BOOLEAN_TYPE_H
+#define SAFER_C_LIBRARY_BOOLEAN_TYPE_H
 
 /*
 Notes:

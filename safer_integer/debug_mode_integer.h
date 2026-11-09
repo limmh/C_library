@@ -1,5 +1,5 @@
-#ifndef DEBUG_MODE_INTEGER_H
-#define DEBUG_MODE_INTEGER_H
+#ifndef SAFER_C_LIBRARY_DEBUG_MODE_INTEGER_H
+#define SAFER_C_LIBRARY_DEBUG_MODE_INTEGER_H
 
 #include "safer_integer.h"
 #include "fixed_width_integer_types.h"

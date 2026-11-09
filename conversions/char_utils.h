@@ -1,5 +1,5 @@
-#ifndef CHAR_UTILS_H
-#define CHAR_UTILS_H
+#ifndef SAFER_C_LIBRARY_CHAR_UTILS_H
+#define SAFER_C_LIBRARY_CHAR_UTILS_H
 
 #include "Boolean_type.h"
 #include "inline_or_static.h"

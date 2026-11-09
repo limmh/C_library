@@ -1,3 +1,4 @@
+#define SAFER_C_LIBRARY_STATIC_ASSERT_HAS_SHORT_MACRO
 #include "safer_fixed_width_integers.h"
 #include "safer_integer_util.h"
 #include "alternative_operators.h"

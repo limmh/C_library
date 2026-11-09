@@ -1,5 +1,5 @@
-#ifndef STATIC_POOL_H
-#define STATIC_POOL_H
+#ifndef SAFER_C_LIBRARY_STATIC_POOL_H
+#define SAFER_C_LIBRARY_STATIC_POOL_H
 
 #include <stddef.h>
 

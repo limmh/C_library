@@ -1,5 +1,5 @@
-#ifndef TERMINAL_TEXT_COLOR_H
-#define TERMINAL_TEXT_COLOR_H
+#ifndef SAFER_C_LIBRARY_TERMINAL_TEXT_COLOR_H
+#define SAFER_C_LIBRARY_TERMINAL_TEXT_COLOR_H
 
 #ifdef __cplusplus
 extern "C" {

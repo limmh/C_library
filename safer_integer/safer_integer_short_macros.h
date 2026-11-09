@@ -1,5 +1,5 @@
-#ifndef SAFER_INTEGER_SHORT_MACROS_H
-#define SAFER_INTEGER_SHORT_MACROS_H
+#ifndef SAFER_C_LIBRARY_SAFER_INTEGER_SHORT_MACROS_H
+#define SAFER_C_LIBRARY_SAFER_INTEGER_SHORT_MACROS_H
 
 #include "safer_integer.h"
 #include "safer_fixed_width_integers.h"

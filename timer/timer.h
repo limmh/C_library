@@ -1,5 +1,5 @@
-#ifndef TIMER_H
-#define TIMER_H
+#ifndef SAFER_C_LIBRARY_TIMER_H
+#define SAFER_C_LIBRARY_TIMER_H
 
 #include "Boolean_type.h"
 #include "fixed_width_integer_types.h"

@@ -1,5 +1,5 @@
-#ifndef SAFER_INTEGER_COMPARISON_H
-#define SAFER_INTEGER_COMPARISON_H
+#ifndef SAFER_C_LIBRARY_SAFER_INTEGER_COMPARISON_H
+#define SAFER_C_LIBRARY_SAFER_INTEGER_COMPARISON_H
 
 #include "fixed_width_integer_types.h"
 #include "Boolean_type.h"

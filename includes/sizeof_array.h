@@ -1,5 +1,5 @@
-#ifndef SIZEOF_ARRAY_H
-#define SIZEOF_ARRAY_H
+#ifndef SAFER_C_LIBRARY_SIZEOF_ARRAY_H
+#define SAFER_C_LIBRARY_SIZEOF_ARRAY_H
 
 /*
 SIZEOF_ARRAY(array) or sizeof_array(array):
@@ -8,6 +8,14 @@ WARNING: Only returns correct size values for true arrays, not pointers.
 If you pass a pointer instead of an array in C, you will get incorrect results.
 In C++, using sizeof_array(array) or SIZEOF_ARRAY(array) will result in a compile-time error if a pointer is passed to it.
  */
+
+#ifdef SIZEOF_ARRAY
+#error "SIZEOF_ARRAY has been defined and shall not be redefined."
+#endif
+
+#ifdef sizeof_array
+#error "sizeof_array has been defined and shall not be redefined."
+#endif
 
 #ifndef __cplusplus
 
